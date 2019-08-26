@@ -1,0 +1,352 @@
+/* 
+ * File:   main.c
+ * Author: pconroy
+ *
+ * Created on June 12, 2019, 1:12 PM
+ */
+
+#include <stdlib.h>
+#include <ncurses.h>
+#include <locale.h>
+#include <string.h>
+#include "ncurses-menu.h"
+#include <cdk/cdk.h>
+
+#include <libmqttrv.h>
+
+
+extern  int doBatteryMenu (int topLeft_Y, int topLeft_X, int menuMinWidth);
+extern  int doChargingMenu (int topLeft_Y, int topLeft_X, int menuMinWidth);
+extern  int doChargingBoundsMenu (int topLeft_Y, int topLeft_X, int menuMinWidth);
+extern  int doLoadMenu (int topLeft_Y, int topLeft_X, int menuMinWidth);
+
+// ----------------------------------------------------------------------------
+void    showErrorMessage (const int y, const int x, const char *errorMessage, const char *inputStr)
+{
+    char    buffer[ 255 ];
+    
+    snprintf( buffer, sizeof( buffer ), "%s   %s", errorMessage, "Press <Enter>" );
+    mvprintw( y, x, buffer );
+    clrtoeol();
+}
+
+// ----------------------------------------------------------------------------
+void    showSuccessMessage (const int y, const int x, const char *successMessage, const char *inputStr)
+{
+    char    buffer[ 255 ];
+    
+    snprintf( buffer, sizeof( buffer ), "%s   %s", successMessage, "Proceed" );
+    mvprintw( y, x, buffer );
+    clrtoeol();
+}
+
+// ----------------------------------------------------------------------------
+int getIntParam (const char *prompt, const char *description, const char *errMsg, const char *successMsg, const int minVal, const int maxVal)
+{
+    char    inputStr[ 1024 ];
+    
+    mvprintw( LINES - 1, 0, "" );               clrtoeol();
+    mvprintw( LINES - 2, 0, description );      clrtoeol();
+    mvprintw( LINES - 3, 0, prompt );           clrtoeol();
+    refresh();
+    
+    echo();
+    getstr( inputStr );
+    noecho();
+    
+    int intVal = atoi( inputStr );
+    
+    if (strlen( inputStr ) > 0 && (intVal >= minVal && intVal <= maxVal)) {
+        showSuccessMessage( LINES - 1, 0, successMsg, inputStr );
+    } else {
+        //mvprintw( LINES - 1, 0, errMsg, inputStr ); clrtoeol();
+        showErrorMessage( LINES - 1, 0, errMsg, inputStr );
+    }
+
+   return intVal; 
+
+}
+
+// ----------------------------------------------------------------------------
+double  getFloatParam (const char *prompt, const char *description, const char *errMsg, const char *successMsg, const double minVal, const double maxVal)
+{
+    char    inputStr[ 1024 ];
+    
+    mvprintw( LINES - 1, 0, "" );               clrtoeol();
+    mvprintw( LINES - 2, 0, description );      clrtoeol();
+    mvprintw( LINES - 3, 0, prompt );           clrtoeol();
+    refresh();
+    
+    echo();
+    getstr( inputStr );
+    noecho();
+    
+    double dVal = atof( inputStr );
+    
+    if (dVal >= minVal && dVal <= maxVal) {
+        showSuccessMessage( LINES - 1, 0, successMsg, inputStr );
+    } else {
+        //mvprintw( LINES - 1, 0, errMsg, inputStr ); clrtoeol();
+        showErrorMessage( LINES - 1, 0, errMsg, inputStr );
+    }
+
+   return dVal; 
+
+}
+
+// ----------------------------------------------------------------------------
+char    *getHHMMSSParam (const char *prompt, const char *description, const char *errMsg, const char *successMsg, const char *minVal, const char *maxVal)
+{
+    static char    inputStr[ 1024 ];
+    
+    
+    memset( inputStr, '\0', sizeof inputStr );
+ 
+    mvprintw( LINES - 1, 0, "" );               clrtoeol();
+    mvprintw( LINES - 2, 0, description );      clrtoeol();
+    mvprintw( LINES - 3, 0, prompt );           clrtoeol();
+    refresh();
+    
+    echo();
+    getstr( inputStr );
+    noecho();
+
+    
+    if (strlen( inputStr ) != 6)
+        return FALSE;
+    
+    long    lVal = atol( inputStr );
+    int     hour = ((int) (inputStr[ 0 ] - '0') * 10) + (int) (inputStr[ 1 ] - '0');
+    int     min  = ((int) (inputStr[ 2 ] - '0') * 10) + (int) (inputStr[ 3 ] - '0');
+    int     sec  = ((int) (inputStr[ 4 ] - '0') * 10) + (int) (inputStr[ 5 ] - '0');
+    
+    if ((lVal >= 0L && lVal <= 235959L) &&
+       (hour >= 0 && hour <= 23)  &&
+       (min >= 0 && min <= 59)  &&
+       (sec >= 0 && sec <= 59))
+    {
+        showSuccessMessage( LINES - 1, 0, successMsg, inputStr );
+    } else {
+        //mvprintw( LINES - 1, 0, errMsg, inputStr ); clrtoeol();
+        showErrorMessage( LINES - 1, 0, errMsg, inputStr );
+    }
+
+
+   return inputStr;
+}
+
+// -----------------------------------------------------------------------------
+void    showCurrentParameters ( int y, const int x)
+{
+    mvprintw( y, x, "Quick Glance" );  y += 1;
+    mvprintw( y, x, " 08/20/19 16:24:36   Night: True" );  y += 1;
+    mvprintw( y, x, " Battery SoC: 87%    Floating" );  y += 1;
+    mvprintw( y, x, " PV: 14.79V, 0.26A" );  y += 1;
+    mvprintw( y, x, " Load: 13.49V, 0.17A" );  y += 1;
+    mvprintw( y, x, " Battery: 13.2V 0.1A" );  y += 1;
+    mvprintw( y, x, " Charging: Yes" );  y += 1;
+    mvprintw( y, x, " Discharging: Light Load" );  y += 1;
+
+    mvprintw( y, x, "Load Control" );  y += 1;
+    mvprintw( y, x, " Mode: Manual (1)" );  y += 1;
+    mvprintw( y, x, " Turn On 1  - 05:30:00" );  y += 1;
+    mvprintw( y, x, " Turn Off 1 - 21:00:00" );  y += 1;
+    mvprintw( y, x, " Turn On 2  - 08:00:00" );  y += 1;
+    mvprintw( y, x, " Turn Off 2 - 22:30:00" ); 
+    
+    refresh();
+}
+
+#define MAX(a,b) ((a) > (b) ? (a) : (b))
+#define MIN(a,b) ((a) < (b) ? (a) : (b))
+#define TF_PAIR         1
+#define VALUE_PAIR      2
+#define ERROR_PAIR      3
+#define TOOHIGH_PAIR    4
+#define TOOLOW_PAIR     5
+#define OK_PAIR         6
+
+// -----------------------------------------------------------------------------
+WINDOW *grouping (WINDOW **window, const int startY, const int startX, const int rows, const int cols, const char *title)
+{
+    *window = newwin( rows, cols, startY, startX );
+    box( *window, ACS_VLINE, ACS_HLINE );  
+    wrefresh( *window );
+    
+    int  width = (cols);
+    int  len = strlen( title );
+   
+    //
+    // Windows coordinate systems are local to that window!
+    wmove( *window, 0, 1 );
+
+    int last = MIN( width, len );
+    int mx = MAX( width, len );
+    for (int i = 0; i < last; i += 1) {
+        waddch( *window, title[ i ] );
+    }
+    
+    wrefresh( *window );
+    
+    return *window;
+}
+
+// -----------------------------------------------------------------------------
+void    addTextField (WINDOW *window, const int startY, const int startX, const char *fieldName, const char *initialValue)
+{
+    wmove( window, startY, startX );
+    wattron( window,  COLOR_PAIR( TF_PAIR ) );
+    wattron( window, A_BOLD );			/* cut bold on */
+    for (int i = 0; i < strlen( fieldName ); i += 1)
+        waddch( window, fieldName[ i ] );
+    wattroff( window, COLOR_PAIR( TF_PAIR ) );
+    wattron( window, A_BOLD );			/* cut bold on */
+    wrefresh( window );
+
+    wattron( window, COLOR_PAIR( VALUE_PAIR ) );
+    wmove( window, startY + 1, startX +1 );
+    for (int i = 0; i < strlen( initialValue ); i += 1)
+        waddch( window, initialValue[ i ] );
+    wattroff( window, COLOR_PAIR( VALUE_PAIR ) );
+    wrefresh( window );
+}
+
+
+// -----------------------------------------------------------------------------
+/* Prints typical menus that you might see in games */
+int
+main (int argc, char *argv[])
+{
+    CDKSCREEN *cdkscreen;
+    CDKSCROLL *dowList;
+    WINDOW *pvWin, *batteryWin, *loadWin, *ctlWin;
+    CDK_PARAMS params;
+
+    CDKparseParams( argc, argv, &params, "s:" CDK_CLI_PARAMS );
+    (void) initCDKScreen (NULL);
+    curs_set( 0 );
+
+ 
+    if (has_colors() == FALSE) {
+        fprintf(stderr, "Your terminal does not support color\n" );
+    }
+
+    start_color();
+    init_pair( TF_PAIR, COLOR_WHITE, COLOR_BLACK );
+    init_pair( VALUE_PAIR, COLOR_WHITE, COLOR_BLUE );
+    init_pair( ERROR_PAIR, COLOR_WHITE, COLOR_RED );
+    init_pair( TOOHIGH_PAIR, COLOR_WHITE, COLOR_RED );
+    init_pair( TOOLOW_PAIR, COLOR_WHITE, COLOR_MAGENTA );
+    init_pair( OK_PAIR, COLOR_WHITE, COLOR_GREEN );
+   
+    
+    
+   /* Create a basic window. */
+    int     pvY = 0, pvX = 0;
+    int     pvRows = 10;
+    int     pvCols = 12;
+    
+    pvWin = grouping( &pvWin, pvY, pvX, pvRows, pvCols, "PV" );
+    addTextField( pvWin, 1, 1, "Voltage", "21.1V" );
+    addTextField( pvWin, 3, 1, "Current", "5.2A" );
+    addTextField( pvWin, 5, 1, "Power", "110W" );
+    addTextField( pvWin, 7, 1, "Status", "Cut Out" );
+   
+    int     battY = pvY;
+    int     battX = pvCols + 1;
+    int     battRows = pvRows;
+    int     battCols = 25;
+    batteryWin = grouping( &batteryWin, battY, battX, battRows, battCols, "Battery" );
+    addTextField( batteryWin, 1, 1, "Voltage", "13.2V" );
+    addTextField( batteryWin, 1, 14, "Current", "8.2A" );
+    addTextField( batteryWin, 3, 1, "Min", "12.5V" );
+    addTextField( batteryWin, 3, 14, "Max", "14.4V" );
+    addTextField( batteryWin, 5, 1, "Temp", "104*F" );
+    addTextField( batteryWin, 5, 14, "SoC", "93%" );
+    addTextField( batteryWin, 7, 1, "Charging", "Equalizing" );
+    addTextField( batteryWin, 7, 14, "Status", "Normal" );
+
+    int     loadY = pvY;
+    int     loadX = pvCols + battCols + 2;
+    int     loadRows = pvRows;
+    int     loadCols = 15;
+    loadWin = grouping( &loadWin, loadY, loadX, loadRows, loadCols, "Load" );
+    addTextField( loadWin, 1, 1, "Voltage", "13.1VV" );
+    addTextField( loadWin, 3, 1, "Current", "0.25A" );
+    addTextField( loadWin, 5, 1, "Power", "4W" );
+    addTextField( loadWin, 7, 1, "Status", "On" );
+   
+    int     ctlY = pvY;
+    int     ctlX = pvCols + battCols + + loadCols + 3;
+    int     ctlRows = pvRows - 4;
+    int     ctlCols = 15;
+    ctlWin = grouping( &ctlWin, ctlY, ctlX, ctlRows, ctlCols, "Controller" );
+    addTextField( ctlWin, 1, 1, "Temp", "76*F" );
+    addTextField( ctlWin, 3, 1, "Status", "Normal" );
+
+    
+    
+    /* Start Cdk. */
+   cdkscreen = initCDKScreen( pvWin );
+
+   /* Box our window. */
+   //box(subWindow, ACS_VLINE, ACS_HLINE );
+   //wrefresh( subWindow );
+
+
+
+
+    int menu_ret = 1, menu_ret2 = 1;
+    
+    
+/*
+    setlocale (LC_CTYPE, "");
+
+    initscr();                   Most of the below initialisers are 
+    noecho();                    not necessary for this example.    
+    keypad (stdscr, TRUE);       It's just a template for a         
+    meta (stdscr, TRUE);        hypothetical program that might    
+    nodelay (stdscr, FALSE);     need them.                         
+    notimeout (stdscr, TRUE);
+    raw();
+    curs_set (0);
+
+    do {
+        int topLeft_Y = 0;
+        int topLeft_X = 0;
+        int numMenuEntries = NUM_MENU_ITEMS;
+        int menuMinWidth = 15;
+        char *menuTitle = "EPSOLAR Solar Charge Controller";
+        int menuStartIndex = 1;
+        
+
+        showCurrentParameters( topLeft_Y + 4, topLeft_X + 30);
+        menu_ret = print_menu ( topLeft_Y, 
+                                topLeft_X, 
+                                numMenuEntries, 
+                                menuMinWidth,
+                                menuTitle, topMenu, menuStartIndex );
+
+   
+        if (menu_ret == 1) {
+            doBatteryMenu( topLeft_Y, topLeft_X, menuMinWidth );
+            
+        } else if (menu_ret == 2) {
+            doChargingMenu( topLeft_Y, topLeft_X, menuMinWidth );
+            
+        } else if (menu_ret == 3) {
+            doChargingBoundsMenu( topLeft_Y, topLeft_X, menuMinWidth );
+            
+        } else if (menu_ret == 4) {
+            doLoadMenu( topLeft_Y, topLeft_X, menuMinWidth );
+        }
+
+        //  erase();    
+    }               
+    while (menu_ret != NUM_MENU_ITEMS); 
+
+    endwin();
+    */
+    return 0;
+}
+
