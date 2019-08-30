@@ -20,6 +20,21 @@
 #include <pthread.h>
 
 
+#ifndef MAX
+ #define MAX(a,b) ((a) > (b) ? (a) : (b))
+#endif
+#ifndef MIN
+ #define MIN(a,b) ((a) < (b) ? (a) : (b))
+#endif 
+
+#define TF_PAIR         1
+#define VALUE_PAIR      2
+#define ERROR_PAIR      3
+#define TOOHIGH_PAIR    4
+#define TOOLOW_PAIR     5
+#define OK_PAIR         6
+
+
 extern  float   deviceTemp;
 extern  float   batteryTemp;
 extern  float   loadPower;
@@ -29,6 +44,13 @@ extern  float   pvInputPower;
 extern  float   pvInputCurrent;
 extern  float   pvInputVoltage;
 extern  int     isNight;
+extern  int     batterySoC;
+extern  float   batteryVoltage;
+extern  float   batteryCurrent;
+extern  float   batteryPower;
+extern  float   minBatteryVoltage;
+extern  float   maxBatteryVoltage;
+
 
 
 static  CDKSCREEN *cdkscreen;
@@ -36,6 +58,7 @@ static  CDKSCROLL *dowList;
 static  WINDOW *pvWin, *batteryWin, *loadWin, *ctlWin;
 static  CDK_PARAMS params;
 
+/*
 // -----------------------------------------------------------------------------
 void    showCurrentParameters ( int y, const int x)
 {
@@ -57,20 +80,8 @@ void    showCurrentParameters ( int y, const int x)
     
     refresh();
 }
+*/
 
-#ifndef MAX
- #define MAX(a,b) ((a) > (b) ? (a) : (b))
-#endif
-#ifndef MIN
- #define MIN(a,b) ((a) < (b) ? (a) : (b))
-#endif 
-
-#define TF_PAIR         1
-#define VALUE_PAIR      2
-#define ERROR_PAIR      3
-#define TOOHIGH_PAIR    4
-#define TOOLOW_PAIR     5
-#define OK_PAIR         6
 
 // -----------------------------------------------------------------------------
 WINDOW *grouping (WINDOW **window, const int startY, const int startX, const int rows, const int cols, const char *title)
@@ -136,6 +147,15 @@ void    floatAddTextField (WINDOW *window, const int startY, const int startX, c
     addTextField( window, startY, startX, fieldName, buffer );
 }
 
+// -----------------------------------------------------------------------------
+void    intAddTextField (WINDOW *window, const int startY, const int startX, const char *fieldName, const int iVal, const int precision, const int width)
+{
+    char    buffer[ 80 ];
+    
+    snprintf( buffer, sizeof buffer, "%-*.*d", width, precision, iVal );
+    
+    addTextField( window, startY, startX, fieldName, buffer );
+}
 
 
 static  char    *version = "0.1.c";
@@ -161,12 +181,12 @@ void    firstPanel ()
     int     battRows = pvRows;
     int     battCols = 25;
     batteryWin = grouping( &batteryWin, battY, battX, battRows, battCols, "Battery" );
-    floatAddTextField( batteryWin, 1, 1, "Voltage", 13.2, 1, 4 );
-    floatAddTextField( batteryWin, 1, 14, "Current", 8.2, 2, 4 );
-    floatAddTextField( batteryWin, 3, 1, "Min", 11.4, 1, 4 );
-    floatAddTextField( batteryWin, 3, 14, "Max", 14.4, 1, 4 );
-    floatAddTextField( batteryWin, 5, 1, "Temp", 72.123456789, 0, 3 );
-    floatAddTextField( batteryWin, 5, 14, "SoC", 93, 0, 3 );
+    floatAddTextField( batteryWin, 1, 1, "Voltage", batteryVoltage, 1, 4 );
+    floatAddTextField( batteryWin, 1, 14, "Current", batteryCurrent, 2, 4 );
+    floatAddTextField( batteryWin, 3, 1, "Min", minBatteryVoltage, 1, 4 );
+    floatAddTextField( batteryWin, 3, 14, "Max", maxBatteryVoltage, 1, 4 );
+    floatAddTextField( batteryWin, 5, 1, "Temp", batteryTemp,  0, 3 );
+    floatAddTextField( batteryWin, 5, 14, "SoC", batterySoC,  0, 3 );
     addTextField( batteryWin, 7, 1, "Charging", "Equalizing" );
     addTextField( batteryWin, 7, 14, "Status", "Normal" );
 
@@ -185,7 +205,7 @@ void    firstPanel ()
     int     ctlRows = pvRows - 4;
     int     ctlCols = 15;
     ctlWin = grouping( &ctlWin, ctlY, ctlX, ctlRows, ctlCols, "Controller" );
-    addTextField( ctlWin, 1, 1, "Temp", "76*F" );
+    floatAddTextField( ctlWin, 1, 1, "Temp", deviceTemp, 1, 5 );
     addTextField( ctlWin, 3, 1, "Status", "Normal" );    
 }
 

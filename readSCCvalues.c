@@ -9,15 +9,22 @@
 
 static  modbus_t    *ctx = NULL;
 
-float   deviceTemp = -999.99;
-float   batteryTemp = -999.99;
-float   loadPower = -999.99;
-float   loadCurrent = -999.99;
-float   loadVoltage = -999.99;
-float   pvInputPower =  -999.99;
-float   pvInputCurrent = -999.99;
-float   pvInputVoltage = -999.99;
+float   deviceTemp = -99.99;
+float   batteryTemp = -99.99;
+float   loadPower = -99.99;
+float   loadCurrent = -99.99;
+float   loadVoltage = -99.99;
+float   pvInputPower =  -99.99;
+float   pvInputCurrent = -99.99;
+float   pvInputVoltage = -99.99;
 int     isNight = -1;
+int     batterySoC = -99;
+float   batteryVoltage = -99.99;
+float   batteryCurrent = -99.99;
+float   batteryPower = -99.99;
+
+float   minBatteryVoltage = -99.99;
+float   maxBatteryVoltage = -99.99;
 
 // -----------------------------------------------------------------------------
 void    connectLocally ()
@@ -57,7 +64,13 @@ void    connectLocally ()
     pvInputCurrent = getPVArrayInputCurrent( ctx );
     pvInputVoltage = getPVArrayInputVoltage( ctx );
     isNight = isNightTime( ctx );
-    
+    batterySoC = getBatteryStateOfCharge( ctx );
+    batteryVoltage = getBatteryVoltage( ctx );
+    batteryCurrent = getBatteryCurrent( ctx );
+    batteryPower = (batteryVoltage * batteryCurrent);
+    minBatteryVoltage = getMinimumBatteryVoltageToday( ctx );
+    maxBatteryVoltage = getMaximumBatteryVoltageToday( ctx );
+
     Logger_LogInfo( "Load voltage: %.1f, current: %.2f, power: %.2f\n", loadVoltage, loadCurrent, loadPower );
     Logger_LogInfo( "PV voltage: %.1f, current: %.2f, power: %.2f\n", pvInputVoltage, pvInputCurrent, pvInputPower );
 }
