@@ -217,6 +217,13 @@ WINDOW *grouping (WINDOW **window, const int startY, const int startX, const int
 // -----------------------------------------------------------------------------
 void    addTextField (WINDOW *window, const int startY, const int startX, const char *fieldName, const char *initialValue)
 {
+    //
+    // Before we write it out - figure out if our string is too long for the window?
+    int valueLength = strlen( initialValue );
+    int windowCols = window->_maxx;
+    
+    Logger_LogDebug( "  Painting a field [%s].  Window's maxx: %d, string length %5\n", initialValue, windowCols, valueLength );
+    
     wmove( window, startY, startX );
     wattron( window,  COLOR_PAIR( TF_PAIR ) );
     wattron( window, A_BOLD );			/* cut bold on */
@@ -237,10 +244,12 @@ void    addTextField (WINDOW *window, const int startY, const int startX, const 
 
 
 // -----------------------------------------------------------------------------
-void    floatAddTextField (WINDOW *window, const int startY, const int startX, const char *fieldName, const float fVal, const int precision)
+void    floatAddTextField (WINDOW *window, const int startY, const int startX, const char *fieldName, const float fVal, const int precision, const int width)
 {
     char    buffer[ 80 ];
-    snprintf( buffer, sizeof buffer, "%.*f", precision, fVal );
+    
+    snprintf( buffer, sizeof buffer, "%-*.*f", width, precision, fVal );
+    
     addTextField( window, startY, startX, fieldName, buffer );
 }
 
@@ -332,9 +341,9 @@ int main (int argc, char *argv[])
     int     pvCols = 12;
     
     pvWin = grouping( &pvWin, pvY, pvX, pvRows, pvCols, "PV" );
-    floatAddTextField( pvWin, 1, 1, "Voltage", pvInputVoltage, 1 );
-    floatAddTextField( pvWin, 3, 1, "Current", pvInputCurrent, 2 );
-    floatAddTextField( pvWin, 5, 1, "Power", pvInputPower, 2 );
+    floatAddTextField( pvWin, 1, 1, "Voltage", pvInputVoltage, 1, 4 );
+    floatAddTextField( pvWin, 3, 1, "Current", pvInputCurrent, 2, 4 );
+    floatAddTextField( pvWin, 5, 1, "Power", pvInputPower, 2, 4 );
     addTextField( pvWin, 7, 1, "Status", "Cut Out" );
    
     int     battY = pvY;
@@ -342,12 +351,12 @@ int main (int argc, char *argv[])
     int     battRows = pvRows;
     int     battCols = 25;
     batteryWin = grouping( &batteryWin, battY, battX, battRows, battCols, "Battery" );
-    floatAddTextField( batteryWin, 1, 1, "Voltage", 13.2, 1 );
-    floatAddTextField( batteryWin, 1, 14, "Current", 8.2, 2 );
-    floatAddTextField( batteryWin, 3, 1, "Min", 11.4, 1 );
-    floatAddTextField( batteryWin, 3, 14, "Max", 14.4, 1 );
-    floatAddTextField( batteryWin, 5, 1, "Temp", 72.1, 0 );
-    floatAddTextField( batteryWin, 5, 14, "SoC", 93, 0 );
+    floatAddTextField( batteryWin, 1, 1, "Voltage", 13.2, 1, 4 );
+    floatAddTextField( batteryWin, 1, 14, "Current", 8.2, 2, 4 );
+    floatAddTextField( batteryWin, 3, 1, "Min", 11.4, 1, 4 );
+    floatAddTextField( batteryWin, 3, 14, "Max", 14.4, 1, 4 );
+    floatAddTextField( batteryWin, 5, 1, "Temp", 72.123456789, 0, 3 );
+    floatAddTextField( batteryWin, 5, 14, "SoC", 93, 0, 3 );
     addTextField( batteryWin, 7, 1, "Charging", "Equalizing" );
     addTextField( batteryWin, 7, 14, "Status", "Normal" );
 
@@ -356,9 +365,9 @@ int main (int argc, char *argv[])
     int     loadRows = pvRows;
     int     loadCols = 15;
     loadWin = grouping( &loadWin, loadY, loadX, loadRows, loadCols, "Load" );
-    floatAddTextField( loadWin, 1, 1, "Voltage", loadVoltage, 1 );
-    floatAddTextField( loadWin, 3, 1, "Current", loadCurrent, 2 );
-    floatAddTextField( loadWin, 5, 1, "Power", loadPower, 2 );
+    floatAddTextField( loadWin, 1, 1, "Voltage", loadVoltage, 1, 4 );
+    floatAddTextField( loadWin, 3, 1, "Current", loadCurrent, 2, 4 );
+    floatAddTextField( loadWin, 5, 1, "Power", loadPower, 2, 4 );
     addTextField( loadWin, 7, 1, "Status", "On" );
    
     int     ctlY = pvY;
