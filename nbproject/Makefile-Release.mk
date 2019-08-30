@@ -35,12 +35,9 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/battery.o \
-	${OBJECTDIR}/charging.o \
-	${OBJECTDIR}/loads.o \
 	${OBJECTDIR}/main.o \
 	${OBJECTDIR}/ncurses-menu.o \
-	${OBJECTDIR}/protection.o \
+	${OBJECTDIR}/readSCCvalues.o \
 	${OBJECTDIR}/scc_settings.o
 
 
@@ -68,21 +65,6 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/epsolar_commander: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.c} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/epsolar_commander ${OBJECTFILES} ${LDLIBSOPTIONS}
 
-${OBJECTDIR}/battery.o: battery.c
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} "$@.d"
-	$(COMPILE.c) -O2 -std=c99 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/battery.o battery.c
-
-${OBJECTDIR}/charging.o: charging.c
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} "$@.d"
-	$(COMPILE.c) -O2 -std=c99 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/charging.o charging.c
-
-${OBJECTDIR}/loads.o: loads.c
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} "$@.d"
-	$(COMPILE.c) -O2 -std=c99 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/loads.o loads.c
-
 ${OBJECTDIR}/main.o: main.c
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
@@ -93,10 +75,10 @@ ${OBJECTDIR}/ncurses-menu.o: ncurses-menu.c
 	${RM} "$@.d"
 	$(COMPILE.c) -O2 -std=c99 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ncurses-menu.o ncurses-menu.c
 
-${OBJECTDIR}/protection.o: protection.c
+${OBJECTDIR}/readSCCvalues.o: readSCCvalues.c
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.c) -O2 -std=c99 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/protection.o protection.c
+	$(COMPILE.c) -O2 -std=c99 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/readSCCvalues.o readSCCvalues.c
 
 ${OBJECTDIR}/scc_settings.o: scc_settings.c
 	${MKDIR} -p ${OBJECTDIR}

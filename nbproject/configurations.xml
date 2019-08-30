@@ -13,12 +13,9 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
-      <itemPath>battery.c</itemPath>
-      <itemPath>charging.c</itemPath>
-      <itemPath>loads.c</itemPath>
       <itemPath>main.c</itemPath>
       <itemPath>ncurses-menu.c</itemPath>
-      <itemPath>protection.c</itemPath>
+      <itemPath>readSCCvalues.c</itemPath>
       <itemPath>scc_settings.c</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
@@ -50,6 +47,7 @@
           <linkerLibItems>
             <linkerLibStdlibItem>Curses</linkerLibStdlibItem>
             <linkerLibLibItem>menu</linkerLibLibItem>
+            <linkerLibStdlibItem>PosixThreads</linkerLibStdlibItem>
           </linkerLibItems>
           <commandLine>-lcdk -llog4c -lmodbus -lepsolar</commandLine>
         </linkerTool>
@@ -119,19 +117,13 @@
                             group="bin"/>
         </packFileList>
       </packaging>
-      <item path="battery.c" ex="false" tool="0" flavor2="0">
-      </item>
-      <item path="charging.c" ex="false" tool="0" flavor2="0">
-      </item>
-      <item path="loads.c" ex="false" tool="0" flavor2="0">
-      </item>
       <item path="main.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="ncurses-menu.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="ncurses-menu.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="protection.c" ex="false" tool="0" flavor2="0">
+      <item path="readSCCvalues.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="scc_settings.c" ex="false" tool="0" flavor2="0">
       </item>
@@ -157,19 +149,13 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
-      <item path="battery.c" ex="false" tool="0" flavor2="0">
-      </item>
-      <item path="charging.c" ex="false" tool="0" flavor2="0">
-      </item>
-      <item path="loads.c" ex="false" tool="0" flavor2="0">
-      </item>
       <item path="main.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="ncurses-menu.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="ncurses-menu.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="protection.c" ex="false" tool="0" flavor2="0">
+      <item path="readSCCvalues.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="scc_settings.c" ex="false" tool="0" flavor2="0">
       </item>

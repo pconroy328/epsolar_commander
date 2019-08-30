@@ -14,144 +14,27 @@
 #include <cdk/cdk.h>
 
 #include <libmqttrv.h>
-#include <modbus/modbus.h>
+//#include <modbus/modbus.h>
 #include <log4c.h>
 #include <libepsolar.h>
-
-extern  int doBatteryMenu (int topLeft_Y, int topLeft_X, int menuMinWidth);
-extern  int doChargingMenu (int topLeft_Y, int topLeft_X, int menuMinWidth);
-extern  int doChargingBoundsMenu (int topLeft_Y, int topLeft_X, int menuMinWidth);
-extern  int doLoadMenu (int topLeft_Y, int topLeft_X, int menuMinWidth);
+#include <pthread.h>
 
 
-
-static  modbus_t    *ctx = NULL;
-float   deviceTemp = -999.99;
-float   batteryTemp = -999.99;
-float   loadPower = -999.99;
-float   loadCurrent = -999.99;
-float   loadVoltage = -999.99;
-float   pvInputPower =  -999.99;
-float   pvInputCurrent = -999.99;
-float   pvInputVoltage = -999.99;
-int     isNight = -1;
+extern  float   deviceTemp;
+extern  float   batteryTemp;
+extern  float   loadPower;
+extern  float   loadCurrent;
+extern  float   loadVoltage;
+extern  float   pvInputPower;
+extern  float   pvInputCurrent;
+extern  float   pvInputVoltage;
+extern  int     isNight;
 
 
-
-// ----------------------------------------------------------------------------
-void    showErrorMessage (const int y, const int x, const char *errorMessage, const char *inputStr)
-{
-    char    buffer[ 255 ];
-    
-    snprintf( buffer, sizeof( buffer ), "%s   %s", errorMessage, "Press <Enter>" );
-    mvprintw( y, x, buffer );
-    clrtoeol();
-}
-
-// ----------------------------------------------------------------------------
-void    showSuccessMessage (const int y, const int x, const char *successMessage, const char *inputStr)
-{
-    char    buffer[ 255 ];
-    
-    snprintf( buffer, sizeof( buffer ), "%s   %s", successMessage, "Proceed" );
-    mvprintw( y, x, buffer );
-    clrtoeol();
-}
-
-// ----------------------------------------------------------------------------
-int getIntParam (const char *prompt, const char *description, const char *errMsg, const char *successMsg, const int minVal, const int maxVal)
-{
-    char    inputStr[ 1024 ];
-    
-    mvprintw( LINES - 1, 0, "" );               clrtoeol();
-    mvprintw( LINES - 2, 0, description );      clrtoeol();
-    mvprintw( LINES - 3, 0, prompt );           clrtoeol();
-    refresh();
-    
-    echo();
-    getstr( inputStr );
-    noecho();
-    
-    int intVal = atoi( inputStr );
-    
-    if (strlen( inputStr ) > 0 && (intVal >= minVal && intVal <= maxVal)) {
-        showSuccessMessage( LINES - 1, 0, successMsg, inputStr );
-    } else {
-        //mvprintw( LINES - 1, 0, errMsg, inputStr ); clrtoeol();
-        showErrorMessage( LINES - 1, 0, errMsg, inputStr );
-    }
-
-   return intVal; 
-
-}
-
-// ----------------------------------------------------------------------------
-double  getFloatParam (const char *prompt, const char *description, const char *errMsg, const char *successMsg, const double minVal, const double maxVal)
-{
-    char    inputStr[ 1024 ];
-    
-    mvprintw( LINES - 1, 0, "" );               clrtoeol();
-    mvprintw( LINES - 2, 0, description );      clrtoeol();
-    mvprintw( LINES - 3, 0, prompt );           clrtoeol();
-    refresh();
-    
-    echo();
-    getstr( inputStr );
-    noecho();
-    
-    double dVal = atof( inputStr );
-    
-    if (dVal >= minVal && dVal <= maxVal) {
-        showSuccessMessage( LINES - 1, 0, successMsg, inputStr );
-    } else {
-        //mvprintw( LINES - 1, 0, errMsg, inputStr ); clrtoeol();
-        showErrorMessage( LINES - 1, 0, errMsg, inputStr );
-    }
-
-   return dVal; 
-
-}
-
-// ----------------------------------------------------------------------------
-char    *getHHMMSSParam (const char *prompt, const char *description, const char *errMsg, const char *successMsg, const char *minVal, const char *maxVal)
-{
-    static char    inputStr[ 1024 ];
-    
-    
-    memset( inputStr, '\0', sizeof inputStr );
- 
-    mvprintw( LINES - 1, 0, "" );               clrtoeol();
-    mvprintw( LINES - 2, 0, description );      clrtoeol();
-    mvprintw( LINES - 3, 0, prompt );           clrtoeol();
-    refresh();
-    
-    echo();
-    getstr( inputStr );
-    noecho();
-
-    
-    if (strlen( inputStr ) != 6)
-        return FALSE;
-    
-    long    lVal = atol( inputStr );
-    int     hour = ((int) (inputStr[ 0 ] - '0') * 10) + (int) (inputStr[ 1 ] - '0');
-    int     min  = ((int) (inputStr[ 2 ] - '0') * 10) + (int) (inputStr[ 3 ] - '0');
-    int     sec  = ((int) (inputStr[ 4 ] - '0') * 10) + (int) (inputStr[ 5 ] - '0');
-    
-    if ((lVal >= 0L && lVal <= 235959L) &&
-       (hour >= 0 && hour <= 23)  &&
-       (min >= 0 && min <= 59)  &&
-       (sec >= 0 && sec <= 59))
-    {
-        showSuccessMessage( LINES - 1, 0, successMsg, inputStr );
-    } else {
-        //mvprintw( LINES - 1, 0, errMsg, inputStr ); clrtoeol();
-        showErrorMessage( LINES - 1, 0, errMsg, inputStr );
-    }
-
-
-   return inputStr;
-}
+static  CDKSCREEN *cdkscreen;
+static  CDKSCROLL *dowList;
+static  WINDOW *pvWin, *batteryWin, *loadWin, *ctlWin;
+static  CDK_PARAMS params;
 
 // -----------------------------------------------------------------------------
 void    showCurrentParameters ( int y, const int x)
@@ -222,7 +105,7 @@ void    addTextField (WINDOW *window, const int startY, const int startX, const 
     int valueLength = strlen( initialValue );
     int windowCols = window->_maxx;
     
-    Logger_LogDebug( "  Painting a field [%s].  Window's maxx: %d, string length %5\n", initialValue, windowCols, valueLength );
+    Logger_LogDebug( "  Painting a field [%s].  Window's maxx: %d, string length %d\n", initialValue, windowCols, valueLength );
     
     wmove( window, startY, startX );
     wattron( window,  COLOR_PAIR( TF_PAIR ) );
@@ -255,84 +138,11 @@ void    floatAddTextField (WINDOW *window, const int startY, const int startX, c
 
 
 
-// -----------------------------------------------------------------------------
-void    connectLocally ()
-{
-    char    *devicePort = "/dev/ttyXRUSB0";
-    
-    //
-    // Modbus - open the SCC port. We know it's 115.2K 8N1
-    Logger_LogInfo( "Opening %s, 115200 8N1\n", devicePort );
-    ctx = modbus_new_rtu( devicePort, 115200, 'N', 8, 1 );
-    if (ctx == NULL) {
-        Logger_LogFatal( "Unable to create the libmodbus context\n" );
-        return;
-    }
-    
-    
-    //
-    // I don't know if we need to set the SCC Slave ID or not
-    Logger_LogInfo( "Setting slave ID to %X\n", 1 );
-    modbus_set_slave( ctx, 1 );
-
-    if (modbus_connect( ctx ) == -1) {
-        Logger_LogFatal( "Connection failed: %s\n", modbus_strerror( errno ) );
-        modbus_free( ctx );
-        return;
-    }
-    
-    Logger_LogInfo( "Port to Solar Charge Controller is open.\n", devicePort );
-    
-    Logger_LogInfo( "Attempting to communicate w/ controller\n" );
-    deviceTemp =  getDeviceTemperature( ctx );
-    batteryTemp = getBatteryTemperature( ctx );
-    loadPower = getLoadPower( ctx );
-    loadCurrent = getLoadCurrent( ctx );
-    loadVoltage = getLoadVoltage( ctx );
-    pvInputPower =  getPVArrayInputPower( ctx );
-    pvInputCurrent = getPVArrayInputCurrent( ctx );
-    pvInputVoltage = getPVArrayInputVoltage( ctx );
-    isNight = isNightTime( ctx );
-    
-    Logger_LogInfo( "Load voltage: %.1f, current: %.2f, power: %.2f\n", loadVoltage, loadCurrent, loadPower );
-    Logger_LogInfo( "PV voltage: %.1f, current: %.2f, power: %.2f\n", pvInputVoltage, pvInputCurrent, pvInputPower );
-}
-
-
-static  char    *version = "0.1.a";
+static  char    *version = "0.1.b";
 
 // -----------------------------------------------------------------------------
-/* Prints typical menus that you might see in games */
-int main (int argc, char *argv[])
+void    firstPanel ()
 {
-    CDKSCREEN *cdkscreen;
-    CDKSCROLL *dowList;
-    WINDOW *pvWin, *batteryWin, *loadWin, *ctlWin;
-    CDK_PARAMS params;
-
-    CDKparseParams( argc, argv, &params, "s:" CDK_CLI_PARAMS );
-    (void) initCDKScreen (NULL);
-    curs_set( 0 );
-
-    Logger_Initialize( "/tmp/epsolarcommander.log", 5 );
-    Logger_LogWarning( "Version: %s\n", version  );
-    fprintf( stderr,  "Version: %s\n", version  );
-    sleep( 3 );
- 
-    connectLocally();
-    if (has_colors() == FALSE) {
-        Logger_LogWarning( "Your terminal does not support color\n"  );
-        fprintf( stderr, "Your terminal does not support color\n"  );
-    }
-
-    start_color();
-    init_pair( TF_PAIR, COLOR_WHITE, COLOR_BLACK );
-    init_pair( VALUE_PAIR, COLOR_WHITE, COLOR_BLUE );
-    init_pair( ERROR_PAIR, COLOR_WHITE, COLOR_RED );
-    init_pair( TOOHIGH_PAIR, COLOR_WHITE, COLOR_RED );
-    init_pair( TOOLOW_PAIR, COLOR_WHITE, COLOR_MAGENTA );
-    init_pair( OK_PAIR, COLOR_WHITE, COLOR_GREEN );
-   
     
     
    /* Create a basic window. */
@@ -376,70 +186,58 @@ int main (int argc, char *argv[])
     int     ctlCols = 15;
     ctlWin = grouping( &ctlWin, ctlY, ctlX, ctlRows, ctlCols, "Controller" );
     addTextField( ctlWin, 1, 1, "Temp", "76*F" );
-    addTextField( ctlWin, 3, 1, "Status", "Normal" );
+    addTextField( ctlWin, 3, 1, "Status", "Normal" );    
+}
 
+
+extern void *local_readSCCValues( void * );
+
+// -----------------------------------------------------------------------------
+/* Prints typical menus that you might see in games */
+int main (int argc, char *argv[])
+{
+
+    CDKparseParams( argc, argv, &params, "s:" CDK_CLI_PARAMS );
+    (void) initCDKScreen (NULL);
+    curs_set( 0 );
+
+    Logger_Initialize( "/tmp/epsolarcommander.log", 5 );
+    Logger_LogWarning( "Version: %s\n", version  );
+    fprintf( stderr,  "Version: %s\n", version  );
+    sleep( 3 );
+ 
+    if (has_colors() == FALSE) {
+        Logger_LogWarning( "Your terminal does not support color\n"  );
+        fprintf( stderr, "Your terminal does not support color\n"  );
+    }
+
+    start_color();
+    init_pair( TF_PAIR, COLOR_WHITE, COLOR_BLACK );
+    init_pair( VALUE_PAIR, COLOR_WHITE, COLOR_BLUE );
+    init_pair( ERROR_PAIR, COLOR_WHITE, COLOR_RED );
+    init_pair( TOOHIGH_PAIR, COLOR_WHITE, COLOR_RED );
+    init_pair( TOOLOW_PAIR, COLOR_WHITE, COLOR_MAGENTA );
+    init_pair( OK_PAIR, COLOR_WHITE, COLOR_GREEN );
+   
     
     
     /* Start Cdk. */
-   cdkscreen = initCDKScreen( pvWin );
-
-   /* Box our window. */
-   //box(subWindow, ACS_VLINE, ACS_HLINE );
-   //wrefresh( subWindow );
+    cdkscreen = initCDKScreen( pvWin );
 
 
-
-
-    int menu_ret = 1, menu_ret2 = 1;
+    pthread_t sccReaderThread;
     
-    
-/*
-    setlocale (LC_CTYPE, "");
-
-    initscr();                   Most of the below initialisers are 
-    noecho();                    not necessary for this example.    
-    keypad (stdscr, TRUE);       It's just a template for a         
-    meta (stdscr, TRUE);        hypothetical program that might    
-    nodelay (stdscr, FALSE);     need them.                         
-    notimeout (stdscr, TRUE);
-    raw();
-    curs_set (0);
-
-    do {
-        int topLeft_Y = 0;
-        int topLeft_X = 0;
-        int numMenuEntries = NUM_MENU_ITEMS;
-        int menuMinWidth = 15;
-        char *menuTitle = "EPSOLAR Solar Charge Controller";
-        int menuStartIndex = 1;
+    if (pthread_create( &sccReaderThread, NULL, local_readSCCValues, NULL ) ) {
+        fprintf(stderr, "Error creating thread\n");
         
+    }
 
-        showCurrentParameters( topLeft_Y + 4, topLeft_X + 30);
-        menu_ret = print_menu ( topLeft_Y, 
-                                topLeft_X, 
-                                numMenuEntries, 
-                                menuMinWidth,
-                                menuTitle, topMenu, menuStartIndex );
-
-   
-        if (menu_ret == 1) {
-            doBatteryMenu( topLeft_Y, topLeft_X, menuMinWidth );
-            
-        } else if (menu_ret == 2) {
-            doChargingMenu( topLeft_Y, topLeft_X, menuMinWidth );
-            
-        } else if (menu_ret == 3) {
-            doChargingBoundsMenu( topLeft_Y, topLeft_X, menuMinWidth );
-            
-        } else if (menu_ret == 4) {
-            doLoadMenu( topLeft_Y, topLeft_X, menuMinWidth );
-        }
-
-        //  erase();    
-    }               
-    while (menu_ret != NUM_MENU_ITEMS); 
- 
-    */
+    firstPanel();
+    
+    /* wait for the second thread to finish */
+    if (pthread_join(sccReaderThread, NULL)) {
+    }
+    
     sleep( 20 );
     endwin();
     return 0;
