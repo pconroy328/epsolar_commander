@@ -12,7 +12,7 @@
 #include <string.h>
 #include "ncurses-menu.h"
 #include <cdk/cdk.h>
-
+#include <unistd.h>
 #include <libmqttrv.h>
 //#include <modbus/modbus.h>
 #include <log4c.h>
@@ -180,12 +180,29 @@ void    intAddTextField (WINDOW *window, const int startY, const int startX, con
 }
 
 
-static  char    *version = "0.1.c";
+// ---------------------------------------------------------------------------------
+WINDOW *paintMenu ()
+{    
+    WINDOW  *win;
+    
+    win = newwin( 1, COLS, LINES - 1, 0  );
+    //box( *win, ACS_VLINE, ACS_HLINE );  
+    //wrefresh( *win );
+    
+    wmove( win, 0,0 );
+    waddch( win, 'P' );
+    
+    return win;
+}
+
+static  char    *version = "0.1.d";
 
 // -----------------------------------------------------------------------------
 void    firstPanel ()
 {
     
+    WINDOW  *menuWin = paintMenu();
+    sleep( 10 );
     
    /* Create a basic window. */
     int     pvY = 0, pvX = 0;
