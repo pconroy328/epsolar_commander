@@ -234,6 +234,18 @@ void    addTextField (WINDOW *window, const int startY, const int startX, const 
     wrefresh( window );
 }
 
+
+
+// -----------------------------------------------------------------------------
+void    floatAddTextField (WINDOW *window, const int startY, const int startX, const char *fieldName, const float fVal, const int precision)
+{
+    char    buffer[ 80 ];
+    snprintf( buffer, sizeof buffer, "%.*f", precision, fVal );
+    addTextField( window, startY, startX, fieldName, buffer );
+}
+
+
+
 // -----------------------------------------------------------------------------
 void    connectLocally ()
 {
@@ -320,9 +332,9 @@ int main (int argc, char *argv[])
     int     pvCols = 12;
     
     pvWin = grouping( &pvWin, pvY, pvX, pvRows, pvCols, "PV" );
-    addTextField( pvWin, 1, 1, "Voltage", "21.1V" );
-    addTextField( pvWin, 3, 1, "Current", "5.2A" );
-    addTextField( pvWin, 5, 1, "Power", "110W" );
+    floatAddTextField( pvWin, 1, 1, "Voltage", pvInputVoltage, 1 );
+    floatAddTextField( pvWin, 3, 1, "Current", pvInputCurrent, 2 );
+    floatAddTextField( pvWin, 5, 1, "Power", pvInputPower, 2 );
     addTextField( pvWin, 7, 1, "Status", "Cut Out" );
    
     int     battY = pvY;
@@ -330,12 +342,12 @@ int main (int argc, char *argv[])
     int     battRows = pvRows;
     int     battCols = 25;
     batteryWin = grouping( &batteryWin, battY, battX, battRows, battCols, "Battery" );
-    addTextField( batteryWin, 1, 1, "Voltage", "13.2V" );
-    addTextField( batteryWin, 1, 14, "Current", "8.2A" );
-    addTextField( batteryWin, 3, 1, "Min", "12.5V" );
-    addTextField( batteryWin, 3, 14, "Max", "14.4V" );
-    addTextField( batteryWin, 5, 1, "Temp", "104*F" );
-    addTextField( batteryWin, 5, 14, "SoC", "93%" );
+    floatAddTextField( batteryWin, 1, 1, "Voltage", 13.2, 1 );
+    floatAddTextField( batteryWin, 1, 14, "Current", 8.2, 2 );
+    floatAddTextField( batteryWin, 3, 1, "Min", 11.4, 1 );
+    floatAddTextField( batteryWin, 3, 14, "Max", 14.4, 1 );
+    floatAddTextField( batteryWin, 5, 1, "Temp", 72.1, 0 );
+    floatAddTextField( batteryWin, 5, 14, "SoC", 93, 0 );
     addTextField( batteryWin, 7, 1, "Charging", "Equalizing" );
     addTextField( batteryWin, 7, 14, "Status", "Normal" );
 
@@ -344,9 +356,9 @@ int main (int argc, char *argv[])
     int     loadRows = pvRows;
     int     loadCols = 15;
     loadWin = grouping( &loadWin, loadY, loadX, loadRows, loadCols, "Load" );
-    addTextField( loadWin, 1, 1, "Voltage", "13.1VV" );
-    addTextField( loadWin, 3, 1, "Current", "0.25A" );
-    addTextField( loadWin, 5, 1, "Power", "4W" );
+    floatAddTextField( loadWin, 1, 1, "Voltage", loadVoltage, 1 );
+    floatAddTextField( loadWin, 3, 1, "Current", loadCurrent, 2 );
+    floatAddTextField( loadWin, 5, 1, "Power", loadPower, 2 );
     addTextField( loadWin, 7, 1, "Status", "On" );
    
     int     ctlY = pvY;
