@@ -262,7 +262,7 @@ void    connectLocally ()
     
     Logger_LogInfo( "Port to Solar Charge Controller is open.\n", devicePort );
     
-    Logger_LogInfo( "Attempting to communicate w/ controller" );
+    Logger_LogInfo( "Attempting to communicate w/ controller\n" );
     deviceTemp =  getDeviceTemperature( ctx );
     batteryTemp = getBatteryTemperature( ctx );
     loadPower = getLoadPower( ctx );
@@ -272,6 +272,9 @@ void    connectLocally ()
     pvInputCurrent = getPVArrayInputCurrent( ctx );
     pvInputVoltage = getPVArrayInputVoltage( ctx );
     isNight = isNightTime( ctx );
+    
+    Logger_LogInfo( "Load voltage: %.1f, current: %.2f, power: %.2f\n", loadVoltage, loadCurrent, loadPower );
+    Logger_LogInfo( "PV voltage: %.1f, current: %.2f, power: %.2f\n", pvInputVoltage, pvInputCurrent, pvInputPower );
 }
 
 
@@ -416,6 +419,7 @@ int main (int argc, char *argv[])
     while (menu_ret != NUM_MENU_ITEMS); 
  
     */
+    sleep( 20 );
     endwin();
     return 0;
 }
