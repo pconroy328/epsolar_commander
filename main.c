@@ -138,7 +138,7 @@ void    floatAddTextField (WINDOW *window, const int startY, const int startX, c
 
 
 
-static  char    *version = "0.1.b";
+static  char    *version = "0.1.c";
 
 // -----------------------------------------------------------------------------
 void    firstPanel ()
@@ -204,7 +204,6 @@ int main (int argc, char *argv[])
     Logger_Initialize( "/tmp/epsolarcommander.log", 5 );
     Logger_LogWarning( "Version: %s\n", version  );
     fprintf( stderr,  "Version: %s\n", version  );
-    sleep( 3 );
  
     if (has_colors() == FALSE) {
         Logger_LogWarning( "Your terminal does not support color\n"  );
@@ -232,8 +231,12 @@ int main (int argc, char *argv[])
         
     }
 
-    firstPanel();
+    while (TRUE) {
+        firstPanel(); 
+        
+        sleep( 1 );
     
+    }
     /* wait for the second thread to finish */
     if (pthread_join(sccReaderThread, NULL)) {
     }

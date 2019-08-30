@@ -72,6 +72,8 @@ void *local_readSCCValues ( void *x_void_ptr)
 
     connectLocally();
     while (TRUE) {
+        Logger_LogInfo( "Reading values (locally) from SCC\n" );
+        
         deviceTemp =  getDeviceTemperature( ctx );
         batteryTemp = getBatteryTemperature( ctx );
         loadPower = getLoadPower( ctx );
