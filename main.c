@@ -186,11 +186,11 @@ WINDOW *paintMenu ()
     WINDOW  *win;
     
     win = newwin( 1, COLS, LINES - 1, 0  );
-    //box( *win, ACS_VLINE, ACS_HLINE );  
-    //wrefresh( *win );
+    box( win, ACS_VLINE, ACS_HLINE );  
     
     wmove( win, 0,0 );
     waddch( win, 'P' );
+    wrefresh( win );
     
     return win;
 }
