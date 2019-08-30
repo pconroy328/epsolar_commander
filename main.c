@@ -3,6 +3,7 @@
  * Author: pconroy
  *
  * Created on June 12, 2019, 1:12 PM
+ * sudo apt-get install libcdk5-dev avahi-client-dev
  */
 
 #include <stdlib.h>
@@ -13,12 +14,29 @@
 #include <cdk/cdk.h>
 
 #include <libmqttrv.h>
-
+#include <modbus/modbus.h>
+#include <log4c.h>
+#include <libepsolar.h>
 
 extern  int doBatteryMenu (int topLeft_Y, int topLeft_X, int menuMinWidth);
 extern  int doChargingMenu (int topLeft_Y, int topLeft_X, int menuMinWidth);
 extern  int doChargingBoundsMenu (int topLeft_Y, int topLeft_X, int menuMinWidth);
 extern  int doLoadMenu (int topLeft_Y, int topLeft_X, int menuMinWidth);
+
+
+
+static  modbus_t    *ctx = NULL;
+float   deviceTemp = -999.99;
+float   batteryTemp = -999.99;
+float   loadPower = -999.99;
+float   loadCurrent = -999.99;
+float   loadVoltage = -999.99;
+float   pvInputPower =  -999.99;
+float   pvInputCurrent = -999.99;
+float   pvInputVoltage = -999.99;
+int     isNight = -1;
+
+
 
 // ----------------------------------------------------------------------------
 void    showErrorMessage (const int y, const int x, const char *errorMessage, const char *inputStr)
@@ -157,8 +175,13 @@ void    showCurrentParameters ( int y, const int x)
     refresh();
 }
 
-#define MAX(a,b) ((a) > (b) ? (a) : (b))
-#define MIN(a,b) ((a) < (b) ? (a) : (b))
+#ifndef MAX
+ #define MAX(a,b) ((a) > (b) ? (a) : (b))
+#endif
+#ifndef MIN
+ #define MIN(a,b) ((a) < (b) ? (a) : (b))
+#endif 
+
 #define TF_PAIR         1
 #define VALUE_PAIR      2
 #define ERROR_PAIR      3
@@ -211,11 +234,52 @@ void    addTextField (WINDOW *window, const int startY, const int startX, const 
     wrefresh( window );
 }
 
+// -----------------------------------------------------------------------------
+void    connectLocally ()
+{
+    char    *devicePort = "/dev/ttyXRUSB0";
+    
+    //
+    // Modbus - open the SCC port. We know it's 115.2K 8N1
+    Logger_LogInfo( "Opening %s, 115200 8N1\n", devicePort );
+    ctx = modbus_new_rtu( devicePort, 115200, 'N', 8, 1 );
+    if (ctx == NULL) {
+        Logger_LogFatal( "Unable to create the libmodbus context\n" );
+        return;
+    }
+    
+    
+    //
+    // I don't know if we need to set the SCC Slave ID or not
+    Logger_LogInfo( "Setting slave ID to %X\n", 1 );
+    modbus_set_slave( ctx, 1 );
+
+    if (modbus_connect( ctx ) == -1) {
+        Logger_LogFatal( "Connection failed: %s\n", modbus_strerror( errno ) );
+        modbus_free( ctx );
+        return;
+    }
+    
+    Logger_LogInfo( "Port to Solar Charge Controller is open.\n", devicePort );
+    
+    Logger_LogInfo( "Attempting to communicate w/ controller" );
+    deviceTemp =  getDeviceTemperature( ctx );
+    batteryTemp = getBatteryTemperature( ctx );
+    loadPower = getLoadPower( ctx );
+    loadCurrent = getLoadCurrent( ctx );
+    loadVoltage = getLoadVoltage( ctx );
+    pvInputPower =  getPVArrayInputPower( ctx );
+    pvInputCurrent = getPVArrayInputCurrent( ctx );
+    pvInputVoltage = getPVArrayInputVoltage( ctx );
+    isNight = isNightTime( ctx );
+}
+
+
+static  char    *version = "0.1.a";
 
 // -----------------------------------------------------------------------------
 /* Prints typical menus that you might see in games */
-int
-main (int argc, char *argv[])
+int main (int argc, char *argv[])
 {
     CDKSCREEN *cdkscreen;
     CDKSCROLL *dowList;
@@ -226,9 +290,15 @@ main (int argc, char *argv[])
     (void) initCDKScreen (NULL);
     curs_set( 0 );
 
+    Logger_Initialize( "/tmp/epsolarcommander.log", 5 );
+    Logger_LogWarning( "Version: %s\n", version  );
+    fprintf( stderr,  "Version: %s\n", version  );
+    sleep( 3 );
  
+    connectLocally();
     if (has_colors() == FALSE) {
-        fprintf(stderr, "Your terminal does not support color\n" );
+        Logger_LogWarning( "Your terminal does not support color\n"  );
+        fprintf( stderr, "Your terminal does not support color\n"  );
     }
 
     start_color();
@@ -344,9 +414,9 @@ main (int argc, char *argv[])
         //  erase();    
     }               
     while (menu_ret != NUM_MENU_ITEMS); 
-
-    endwin();
+ 
     */
+    endwin();
     return 0;
 }
 

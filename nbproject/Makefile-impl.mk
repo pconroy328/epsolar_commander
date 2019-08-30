@@ -24,7 +24,7 @@ CLEAN_SUBPROJECTS=${CLEAN_SUBPROJECTS_${SUBPROJECTS}}
 
 
 # Project Name
-PROJECTNAME=EPSolar_Commander
+PROJECTNAME=epsolar_commander
 
 # Active Configuration
 DEFAULTCONF=Debug
