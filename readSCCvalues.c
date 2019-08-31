@@ -35,10 +35,10 @@ uint16_t    dischargingStatusBits = 0xFFFF;
 char    *dischargeRunning = "???";
 
 uint16_t    batteryStatusBits = 0xFFFF;
-char    *batteryStatusVoltage;
-char    *batteryStatusID;
-char    *battweryStatusInnerResistance;
-char    *batteryStatusTemperature;
+char    *batteryStatusVoltage = "???";
+char    *batteryStatusID = "???";
+char    *battweryStatusInnerResistance = "???";
+char    *batteryStatusTemperature = "???";
 
 // -----------------------------------------------------------------------------
 void    connectLocally ()
@@ -112,16 +112,17 @@ void *local_readSCCValues ( void *x_void_ptr)
         chargingStatusBits = getChargingEquipmentStatusBits( ctx );
         chargingStatus = getChargingStatus( chargingStatusBits );
         pvInputStatus = getChargingEquipmentStatusInputVoltageStatus( chargingStatusBits );
-
-        
-        dischargingStatusBits = getdisChargingEquipmentStatusBits( ctx );
-        dischargeRunning = (isdischargeStatusRunnning( dischargingStatusBits ) ? "On" : "Off" );
         
         batteryStatusBits = getBatteryStatusBits( ctx );
         batteryStatusVoltage = getBatteryStatusVoltage( batteryStatusBits );
         batteryStatusID = getBatteryStatusIdentification( batteryStatusBits );
         battweryStatusInnerResistance = getBatteryStatusInnerResistance( batteryStatusBits );
         batteryStatusTemperature = getBatteryStatusTemperature( batteryStatusBits );
+
+        
+        dischargingStatusBits = getdisChargingEquipmentStatusBits( ctx );
+        dischargeRunning = (isdischargeStatusRunnning( dischargingStatusBits ) ? "On" : "Off" );
+        
     
         sleep( 10 );
     }

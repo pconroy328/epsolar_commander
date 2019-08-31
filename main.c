@@ -123,6 +123,9 @@ void    addTextField (WINDOW *window, const int startY, const int startX, const 
     int valueLength = strlen( initialValue );
     int windowCols = window->_maxx;
     
+    assert( initialValue != NULL );
+    assert( fieldName != NULL );
+    
     Logger_LogDebug( "  Painting a field [%s].  Window's maxx: %d, string length %d\n", initialValue, windowCols, valueLength );
     
     wmove( window, startY, startX );
