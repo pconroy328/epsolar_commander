@@ -231,22 +231,22 @@ void    firstPanel ()
     int egY = pvY + pvRows;
     int egX = pvX;
     int egRows = 10;
-    int egCols = 20;
-    WINDOW  *egWin = grouping( &egWin, egY, egX, egRows, egCols, "Energy Generated" );
-    floatAddTextField( egWin, 1, 1, "Daily", energyGeneratedToday, 2, 4 );
-    floatAddTextField( egWin, 3, 1, "Monthly", energyGeneratedMonth, 2, 4 );
-    floatAddTextField( egWin, 5, 1, "Annual", energyGeneratedYear, 1, 4 );
-    floatAddTextField( egWin, 7, 1, "Total", energyGeneratedTotal, 1, 4 );
+    int egCols = 15;
+    WINDOW  *egWin = grouping( &egWin, egY, egX, egRows, egCols, "Generated" );
+    floatAddTextField( egWin, 1, 2, "Daily", energyGeneratedToday, 2, 4 );
+    floatAddTextField( egWin, 3, 2, "Monthly", energyGeneratedMonth, 2, 4 );
+    floatAddTextField( egWin, 5, 2, "Annual", energyGeneratedYear, 1, 4 );
+    floatAddTextField( egWin, 7, 2, "Total", energyGeneratedTotal, 1, 4 );
 
     int ecY = egY + egRows;
     int ecX = pvX;
     int ecRows = 10;
-    int ecCols = 20;
-    WINDOW  *ecWin = grouping( &ecWin, ecY, ecX, ecRows, ecCols, "Energy Consumed" );
-    floatAddTextField( ecWin, 1, 1, "Daily", energyConsumedToday, 2, 4 );
-    floatAddTextField( ecWin, 3, 1, "Monthly", energyConsumedMonth, 2, 4 );
-    floatAddTextField( ecWin, 5, 1, "Annual", energyConsumedYear, 1, 4 );
-    floatAddTextField( ecWin, 7, 1, "Total", energyConsumedTotal, 1, 4 );
+    int ecCols = 15;
+    WINDOW  *ecWin = grouping( &ecWin, ecY, ecX, ecRows, ecCols, "Consumed" );
+    floatAddTextField( ecWin, 1, 2, "Daily", energyConsumedToday, 2, 4 );
+    floatAddTextField( ecWin, 3, 2, "Monthly", energyConsumedMonth, 2, 4 );
+    floatAddTextField( ecWin, 5, 2, "Annual", energyConsumedYear, 1, 4 );
+    floatAddTextField( ecWin, 7, 2, "Total", energyConsumedTotal, 1, 4 );
 }
 
 
