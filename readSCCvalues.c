@@ -40,6 +40,16 @@ char    *batteryStatusID = "???";
 char    *battweryStatusInnerResistance = "???";
 char    *batteryStatusTemperature = "???";
 
+float   energyGeneratedToday = -99.9;
+float   energyGeneratedMonth = -99.9;
+float   energyGeneratedYear = -99.9;
+float   energyGeneratedTotal = -99.9;
+
+float   energyConsumedToday = -99.9;
+float   energyConsumedMonth = -99.9;
+float   energyConsumedYear = -99.9;
+float   energyConsumedTotal = -99.9;
+
 // -----------------------------------------------------------------------------
 void    connectLocally ()
 {
@@ -123,6 +133,15 @@ void *local_readSCCValues ( void *x_void_ptr)
         dischargingStatusBits = getdisChargingEquipmentStatusBits( ctx );
         dischargeRunning = (isdischargeStatusRunnning( dischargingStatusBits ) ? "On" : "Off" );
         
+        energyConsumedToday = getConsumedEnergyToday( ctx );
+        energyConsumedMonth = getConsumedEnergyMonth( ctx );
+        energyConsumedYear = getConsumedEnergyYear (ctx)  ;
+        energyConsumedTotal =  getConsumedEnergyTotal( ctx );
+        energyGeneratedToday = getGeneratedEnergyToday( ctx );
+        energyGeneratedMonth = getGeneratedEnergyMonth( ctx );
+        energyGeneratedYear = getGeneratedEnergyYear (ctx)  ;
+        energyGeneratedTotal = getGeneratedEnergyTotal( ctx );
+
     
         sleep( 10 );
     }
