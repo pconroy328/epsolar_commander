@@ -26,6 +26,20 @@ float   batteryPower = -99.99;
 float   minBatteryVoltage = -99.99;
 float   maxBatteryVoltage = -99.99;
 
+
+uint16_t    chargingStatusBits = 0xFFFF;
+char    *chargingStatus = "???";
+char    *pvInputStatus = "???";
+
+uint16_t    dischargingStatusBits = 0xFFFF;
+char    *dischargeRunning = "???";
+
+uint16_t    batteryStatusBits = 0xFFFF;
+char    *batteryStatusVoltage;
+char    *batteryStatusID;
+char    *battweryStatusInnerResistance;
+char    *batteryStatusTemperature;
+
 // -----------------------------------------------------------------------------
 void    connectLocally ()
 {
@@ -55,21 +69,12 @@ void    connectLocally ()
     Logger_LogInfo( "Port to Solar Charge Controller is open.\n", devicePort );
     
     Logger_LogInfo( "Attempting to communicate w/ controller\n" );
-    deviceTemp =  getDeviceTemperature( ctx );
-    batteryTemp = getBatteryTemperature( ctx );
     loadPower = getLoadPower( ctx );
     loadCurrent = getLoadCurrent( ctx );
     loadVoltage = getLoadVoltage( ctx );
     pvInputPower =  getPVArrayInputPower( ctx );
     pvInputCurrent = getPVArrayInputCurrent( ctx );
     pvInputVoltage = getPVArrayInputVoltage( ctx );
-    isNight = isNightTime( ctx );
-    batterySoC = getBatteryStateOfCharge( ctx );
-    batteryVoltage = getBatteryVoltage( ctx );
-    batteryCurrent = getBatteryCurrent( ctx );
-    batteryPower = (batteryVoltage * batteryCurrent);
-    minBatteryVoltage = getMinimumBatteryVoltageToday( ctx );
-    maxBatteryVoltage = getMaximumBatteryVoltageToday( ctx );
 
     Logger_LogInfo( "Load voltage: %.1f, current: %.2f, power: %.2f\n", loadVoltage, loadCurrent, loadPower );
     Logger_LogInfo( "PV voltage: %.1f, current: %.2f, power: %.2f\n", pvInputVoltage, pvInputCurrent, pvInputPower );
@@ -97,6 +102,27 @@ void *local_readSCCValues ( void *x_void_ptr)
         pvInputVoltage = getPVArrayInputVoltage( ctx );
         isNight = isNightTime( ctx );
         
+        batterySoC = getBatteryStateOfCharge( ctx );
+        batteryVoltage = getBatteryVoltage( ctx );
+        batteryCurrent = getBatteryCurrent( ctx );
+        batteryPower = (batteryVoltage * batteryCurrent);
+        minBatteryVoltage = getMinimumBatteryVoltageToday( ctx );
+        maxBatteryVoltage = getMaximumBatteryVoltageToday( ctx );
+        
+        chargingStatusBits = getChargingEquipmentStatusBits( ctx );
+        chargingStatus = getChargingStatus( chargingStatusBits );
+        pvInputStatus = getChargingEquipmentStatusInputVoltageStatus( chargingStatusBits );
+
+        
+        dischargingStatusBits = getdisChargingEquipmentStatusBits( ctx );
+        dischargeRunning = (isdischargeStatusRunnning( dischargingStatusBits ) ? "On" : "Off" );
+        
+        batteryStatusBits = getBatteryStatusBits( ctx );
+        batteryStatusVoltage = getBatteryStatusVoltage( batteryStatusBits );
+        batteryStatusID = getBatteryStatusIdentification( batteryStatusBits );
+        battweryStatusInnerResistance = getBatteryStatusInnerResistance( batteryStatusBits );
+        batteryStatusTemperature = getBatteryStatusTemperature( batteryStatusBits );
+    
         sleep( 10 );
     }
 

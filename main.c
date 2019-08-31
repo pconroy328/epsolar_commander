@@ -50,7 +50,14 @@ extern  float   batteryCurrent;
 extern  float   batteryPower;
 extern  float   minBatteryVoltage;
 extern  float   maxBatteryVoltage;
+extern  char    *batteryStatusVoltage;
+extern  char    *batteryStatusID;
+extern  char    *battweryStatusInnerResistance;
+extern  char    *batteryStatusTemperature;
 
+extern  char    *chargingStatus;
+extern  char    *pvInputStatus;
+extern  char    *dischargeRunning;
 
 
 static  CDKSCREEN *cdkscreen;
@@ -174,7 +181,7 @@ void    firstPanel ()
     floatAddTextField( pvWin, 1, 1, "Voltage", pvInputVoltage, 1, 4 );
     floatAddTextField( pvWin, 3, 1, "Current", pvInputCurrent, 2, 4 );
     floatAddTextField( pvWin, 5, 1, "Power", pvInputPower, 2, 4 );
-    addTextField( pvWin, 7, 1, "Status", "Cut Out" );
+    addTextField( pvWin, 7, 1, "Status",  pvInputStatus );
    
     int     battY = pvY;
     int     battX = pvCols + 1;
@@ -187,8 +194,8 @@ void    firstPanel ()
     floatAddTextField( batteryWin, 3, 14, "Max", maxBatteryVoltage, 1, 4 );
     floatAddTextField( batteryWin, 5, 1, "Temp", batteryTemp,  0, 3 );
     floatAddTextField( batteryWin, 5, 14, "SoC", batterySoC,  0, 3 );
-    addTextField( batteryWin, 7, 1, "Charging", "Equalizing" );
-    addTextField( batteryWin, 7, 14, "Status", "Normal" );
+    addTextField( batteryWin, 7, 1, "Charging", chargingStatus );
+    addTextField( batteryWin, 7, 14, "Status", batteryStatusVoltage );
 
     int     loadY = pvY;
     int     loadX = pvCols + battCols + 2;
@@ -198,7 +205,7 @@ void    firstPanel ()
     floatAddTextField( loadWin, 1, 1, "Voltage", loadVoltage, 1, 4 );
     floatAddTextField( loadWin, 3, 1, "Current", loadCurrent, 2, 4 );
     floatAddTextField( loadWin, 5, 1, "Power", loadPower, 2, 4 );
-    addTextField( loadWin, 7, 1, "Status", "On" );
+    addTextField( loadWin, 7, 1, "Status", dischargeRunning );
    
     int     ctlY = pvY;
     int     ctlX = pvCols + battCols + + loadCols + 3;
