@@ -217,6 +217,18 @@ void    firstPanel ()
     ctlWin = grouping( &ctlWin, ctlY, ctlX, ctlRows, ctlCols, "Controller" );
     floatAddTextField( ctlWin, 1, 1, "Temp", deviceTemp, 1, 5 );
     addTextField( ctlWin, 3, 1, "Status", "Normal" );    
+    
+    int egY = pvY + pvRows + 2;
+    int egX = pvX;
+    int egRows = 15;
+    int egCols = 15;
+    WINDOW  *egWin = grouping( &egWin, egY, egX, egRows, egCols, "Energy Generated" );
+
+    int ecY = egY + egRows + 2;
+    int ecX = pvX;
+    int ecRows = 15;
+    int ecCols = 15;
+    WINDOW  *ecWin = grouping( &ecWin, ecY, ecX, ecRows, ecCols, "Energy Consumed" );
 }
 
 
