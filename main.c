@@ -188,7 +188,7 @@ void    firstPanel ()
    /* Create a basic window. */
     int     pvY = 0, pvX = 0;
     int     pvRows = 10;
-    int     pvCols = 12;
+    int     pvCols = 16;
     
     pvWin = grouping( &pvWin, pvY, pvX, pvRows, pvCols, "PV" );
     floatAddTextField( pvWin, 1, 1, "Voltage", pvInputVoltage, 1, 4 );
@@ -213,7 +213,7 @@ void    firstPanel ()
     int     loadY = pvY;
     int     loadX = pvCols + battCols + 2;
     int     loadRows = pvRows;
-    int     loadCols = 15;
+    int     loadCols = 16;
     loadWin = grouping( &loadWin, loadY, loadX, loadRows, loadCols, "Load" );
     floatAddTextField( loadWin, 1, 1, "Voltage", loadVoltage, 1, 4 );
     floatAddTextField( loadWin, 3, 1, "Current", loadCurrent, 2, 4 );
@@ -238,8 +238,8 @@ void    firstPanel ()
     floatAddTextField( egWin, 5, 2, "Annual", energyGeneratedYear, 1, 4 );
     floatAddTextField( egWin, 7, 2, "Total", energyGeneratedTotal, 1, 4 );
 
-    int ecY = egY + egRows;
-    int ecX = pvX;
+    int ecY = egY ;  // + egRows;
+    int ecX = pvX + egCols;
     int ecRows = 10;
     int ecCols = 15;
     WINDOW  *ecWin = grouping( &ecWin, ecY, ecX, ecRows, ecCols, "Consumed" );
