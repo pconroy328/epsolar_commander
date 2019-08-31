@@ -223,12 +223,17 @@ void    firstPanel ()
     int egRows = 15;
     int egCols = 20;
     WINDOW  *egWin = grouping( &egWin, egY, egX, egRows, egCols, "Energy Generated" );
+    floatAddTextField( egWin, 1, 1, "Daily", loadVoltage, 1, 4 );
+    floatAddTextField( egWin, 3, 1, "Monthly", loadVoltage, 1, 4 );
+    floatAddTextField( egWin, 5, 1, "Annual", loadVoltage, 1, 4 );
+    floatAddTextField( egWin, 7, 1, "Total", loadVoltage, 1, 4 );
 
     int ecY = egY + egRows;
     int ecX = pvX;
     int ecRows = 15;
     int ecCols = 20;
     WINDOW  *ecWin = grouping( &ecWin, ecY, ecX, ecRows, ecCols, "Energy Consumed" );
+    floatAddTextField( loadWin, 1, 1, "Voltage", loadVoltage, 1, 4 );
 }
 
 
