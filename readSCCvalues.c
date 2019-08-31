@@ -131,8 +131,7 @@ void *local_readSCCValues ( void *x_void_ptr)
 
         
         dischargingStatusBits = getdisChargingEquipmentStatusBits( ctx );
-        dischargeRunning = (isdischargeStatusRunnning( dischargingStatusBits ) ? "On" : "Off" );
-        
+        dischargeRunning = (isdischargeStatusRunning( dischargingStatusBits ) ? "On" : "Off" );
         energyConsumedToday = getConsumedEnergyToday( ctx );
         energyConsumedMonth = getConsumedEnergyMonth( ctx );
         energyConsumedYear = getConsumedEnergyYear (ctx)  ;
