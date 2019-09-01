@@ -224,12 +224,12 @@ void    firstPanel ()
    
     int     ctlY = pvY;
     int     ctlX = pvCols + battCols + + loadCols + 3;
-    int     ctlRows = pvRows - 4;
-    int     ctlCols = 15;
+    int     ctlRows = pvRows;
+    int     ctlCols = 17;
     ctlWin = grouping( &ctlWin, ctlY, ctlX, ctlRows, ctlCols, "Controller" );
     floatAddTextField( ctlWin, 1, 1, "Temp", deviceTemp, 1, 5 );
     addTextField( ctlWin, 3, 1, "Status", "Normal" );    
-    addTextField( ctlWin, 5, 1, "", controllerClock );    
+    addTextField( ctlWin, 5, 1, " ", controllerClock );    
     
     int egY = pvY + pvRows;
     int egX = pvX;
