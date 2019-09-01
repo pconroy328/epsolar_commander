@@ -190,7 +190,7 @@ void    firstPanel ()
    /* Create a basic window. */
     int     pvY = 0, pvX = 0;
     int     pvRows = 10;
-    int     pvCols = 16;
+    int     pvCols = 17;
     
     pvWin = grouping( &pvWin, pvY, pvX, pvRows, pvCols, "PV" );
     floatAddTextField( pvWin, 1, 1, "Voltage", pvInputVoltage, 1, 4 );
@@ -213,7 +213,7 @@ void    firstPanel ()
     addTextField( batteryWin, 7, 14, "Status", batteryStatusVoltage );
 
     int     loadY = pvY;
-    int     loadX = pvCols + battCols + 1;
+    int     loadX = pvCols + battCols;
     int     loadRows = pvRows;
     int     loadCols = 16;
     loadWin = grouping( &loadWin, loadY, loadX, loadRows, loadCols, "Load" );
@@ -223,13 +223,13 @@ void    firstPanel ()
     addTextField( loadWin, 7, 1, "Status", dischargeRunning );
    
     int     ctlY = pvY;
-    int     ctlX = pvCols + battCols + + loadCols + 2;
+    int     ctlX = pvCols + battCols + + loadCols;
     int     ctlRows = pvRows;
     int     ctlCols = 20;
     ctlWin = grouping( &ctlWin, ctlY, ctlX, ctlRows, ctlCols, "Controller" );
     floatAddTextField( ctlWin, 1, 1, "Temp", deviceTemp, 1, 5 );
     addTextField( ctlWin, 3, 1, "Status", "Normal" );    
-    addTextField( ctlWin, 5, 1, " ", controllerClock );    
+    addTextField( ctlWin, 5, 1, "Date/Time", controllerClock );    
     
     int egY = pvY + pvRows;
     int egX = pvX;
