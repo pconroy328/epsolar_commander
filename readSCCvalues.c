@@ -50,6 +50,8 @@ float   energyConsumedMonth = -99.9;
 float   energyConsumedYear = -99.9;
 float   energyConsumedTotal = -99.9;
 
+char    controllerClock[ 64 ];
+
 // -----------------------------------------------------------------------------
 void    connectLocally ()
 {
@@ -141,6 +143,7 @@ void *local_readSCCValues ( void *x_void_ptr)
         energyGeneratedYear = getGeneratedEnergyYear (ctx)  ;
         energyGeneratedTotal = getGeneratedEnergyTotal( ctx );
 
+        getRealtimeClockStr( ctx, &controllerClock[ 0 ], sizeof( controllerClock ) );
     
         sleep( 10 );
     }

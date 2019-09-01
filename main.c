@@ -69,6 +69,8 @@ extern  float   energyConsumedMonth;
 extern  float   energyConsumedYear;
 extern  float   energyConsumedTotal;
 
+extern  char    controllerClock[];
+
 
 static  CDKSCREEN *cdkscreen;
 static  CDKSCROLL *dowList;
@@ -227,6 +229,7 @@ void    firstPanel ()
     ctlWin = grouping( &ctlWin, ctlY, ctlX, ctlRows, ctlCols, "Controller" );
     floatAddTextField( ctlWin, 1, 1, "Temp", deviceTemp, 1, 5 );
     addTextField( ctlWin, 3, 1, "Status", "Normal" );    
+    addTextField( ctlWin, 5, 1, "", controllerClock );    
     
     int egY = pvY + pvRows;
     int egX = pvX;
