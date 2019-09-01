@@ -199,7 +199,7 @@ void    firstPanel ()
     addTextField( pvWin, 7, 1, "Status",  pvInputStatus );
    
     int     battY = pvY;
-    int     battX = pvCols + 1;
+    int     battX = pvCols;
     int     battRows = pvRows;
     int     battCols = 25;
     batteryWin = grouping( &batteryWin, battY, battX, battRows, battCols, "Battery" );
@@ -213,7 +213,7 @@ void    firstPanel ()
     addTextField( batteryWin, 7, 14, "Status", batteryStatusVoltage );
 
     int     loadY = pvY;
-    int     loadX = pvCols + battCols + 2;
+    int     loadX = pvCols + battCols + 1;
     int     loadRows = pvRows;
     int     loadCols = 16;
     loadWin = grouping( &loadWin, loadY, loadX, loadRows, loadCols, "Load" );
@@ -223,9 +223,9 @@ void    firstPanel ()
     addTextField( loadWin, 7, 1, "Status", dischargeRunning );
    
     int     ctlY = pvY;
-    int     ctlX = pvCols + battCols + + loadCols + 3;
+    int     ctlX = pvCols + battCols + + loadCols + 2;
     int     ctlRows = pvRows;
-    int     ctlCols = 17;
+    int     ctlCols = 20;
     ctlWin = grouping( &ctlWin, ctlY, ctlX, ctlRows, ctlCols, "Controller" );
     floatAddTextField( ctlWin, 1, 1, "Temp", deviceTemp, 1, 5 );
     addTextField( ctlWin, 3, 1, "Status", "Normal" );    
