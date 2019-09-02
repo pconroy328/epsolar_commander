@@ -5,6 +5,7 @@
 #include <log4c.h>
 #include <modbus/modbus.h>
 #include <libepsolar.h>
+#include <epsolar/tracerseries.h>
 #include <errno.h>
 #include <unistd.h>
 
@@ -53,6 +54,11 @@ float   energyConsumedTotal = -99.9;
 
 char    controllerClock[ 64 ];
 
+int     batteryRatedVoltage;
+float   batteryRatedLoadCurrent;
+float   batteryRatedChargingCurrent;
+
+
 // -----------------------------------------------------------------------------
 void    connectLocally ()
 {
@@ -82,12 +88,9 @@ void    connectLocally ()
     Logger_LogInfo( "Port to Solar Charge Controller is open.\n", devicePort );
     
     Logger_LogInfo( "Attempting to communicate w/ controller\n" );
-    loadPower = getLoadPower( ctx );
-    loadCurrent = getLoadCurrent( ctx );
-    loadVoltage = getLoadVoltage( ctx );
-    pvInputPower =  getPVArrayInputPower( ctx );
-    pvInputCurrent = getPVArrayInputCurrent( ctx );
-    pvInputVoltage = getPVArrayInputVoltage( ctx );
+    batteryRatedVoltage = getBatteryRealRatedVoltage( ctx );
+    batteryRatedLoadCurrent =  getRatedLoadCurrent( ctx );
+    batteryRatedChargingCurrent = getRatedChargingCurrent( ctx );
 
     Logger_LogInfo( "Load voltage: %.1f, current: %.2f, power: %.2f\n", loadVoltage, loadCurrent, loadPower );
     Logger_LogInfo( "PV voltage: %.1f, current: %.2f, power: %.2f\n", pvInputVoltage, pvInputCurrent, pvInputPower );
@@ -108,7 +111,6 @@ extern  void    paintFirstPanelData();
 // -----------------------------------------------------------------------------
 void *local_readSCCValues ( void *x_void_ptr)
 {
-
     connectLocally();
     while (TRUE) {
         Logger_LogInfo( "Reading values (locally) from SCC\n" );

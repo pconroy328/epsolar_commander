@@ -11,11 +11,8 @@
 #include <ncurses.h>
 #include <locale.h>
 #include <string.h>
-//#include "ncurses-menu.h"
-//#include <cdk/cdk.h>
 #include <unistd.h>
 #include <libmqttrv.h>
-//#include <modbus/modbus.h>
 #include <log4c.h>
 #include <libepsolar.h>
 #include <pthread.h>
@@ -72,13 +69,27 @@ extern  float   energyConsumedTotal;
 
 extern  char    controllerClock[];
 
+extern  int     batteryRatedVoltage;        // will be 12, 24,36, 48...
+extern  float   batteryRatedLoadCurrent;
+extern  float   batteryRatedChargingCurrent;
 
 static  WINDOW *pvWin, *batteryWin, *loadWin, *ctlWin, *egWin, *ecWin;
-// static  CDK_PARAMS params;
 static  int     maxRows;
 static  int     maxCols;
 
+float       VoltageUpperBound = 17.0;
+float       VoltageLowerBound = 9.0;
 
+
+// -----------------------------------------------------------------------------
+void    setVoltageUpperLowerBounds()
+{
+    //
+    // for the Tracer series, most/all of the voltage settings should be between
+    //  9V and 17V for a 12V system, double that for a 24V
+    VoltageUpperBound = (batteryRatedVoltage / 12) * 17.0;
+    VoltageLowerBound = (batteryRatedVoltage / 12) * 9.0;
+}
 
 // -----------------------------------------------------------------------------
 WINDOW *grouping (WINDOW **window, const int startY, const int startX, const int rows, const int cols, const char *title)
@@ -143,7 +154,6 @@ void    floatAddTextField (WINDOW *window, const int startY, const int startX, c
     char    buffer[ 80 ];
     
     snprintf( buffer, sizeof buffer, "%-*.*f", width, precision, fVal );
-    
     addTextField( window, startY, startX, fieldName, buffer );
 }
 
@@ -153,7 +163,6 @@ void    intAddTextField (WINDOW *window, const int startY, const int startX, con
     char    buffer[ 80 ];
     
     snprintf( buffer, sizeof buffer, "%-*.*d", width, precision, iVal );
-    
     addTextField( window, startY, startX, fieldName, buffer );
 }
 
@@ -224,7 +233,8 @@ void    paintDeviceGroupData()
 {
     floatAddTextField( ctlWin, 1, 1, "Temp", deviceTemp, 1, 5 );
     addTextField( ctlWin, 3, 1, "Status", "Normal" );    
-    addTextField( ctlWin, 5, 1, "Date/Time", controllerClock );        
+    addTextField( ctlWin, 5, 1, "Date/Time", controllerClock );
+    addTextField( ctlWin, 7, 1, "Night Time", (isNight? "Yes" : "No" ) );
 }
 
 // -----------------------------------------------------------------------------
@@ -348,7 +358,7 @@ int main (int argc, char *argv[])
     while (TRUE) {
         firstPanel();
         menuWin = paintMenu();
-        sleep( 10 );
+        
         char    ch = toupper( wgetch( menuWin ) );
         //     wprintw( win, "(R)efresh   (B)attery    (L)oad    (D)evice   (S)ettings   (Q)uit");
 
