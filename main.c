@@ -298,10 +298,13 @@ int main (int argc, char *argv[])
         
     }
 
-    WINDOW  *menuWin = paintMenu();
+    sleep( 2 );
+    WINDOW  *menuWin;
     while (TRUE) {
-        firstPanel(); 
-        char    ch = toupper( wgetch( stdscr ) );
+        firstPanel();
+        menuWin = paintMenu();
+        sleep( 10 );
+        char    ch = toupper( wgetch( menuWin ) );
         //     wprintw( win, "(R)efresh   (B)attery    (L)oad    (D)evice   (S)ettings   (Q)uit");
 
         if (ch == 'R') {
