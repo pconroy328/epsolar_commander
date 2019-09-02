@@ -101,7 +101,11 @@ void    connectLocally ()
 static  int     whichPanelActive = 0;
 void    setPanelActive (const int panelNum)
 {
-    whichPanelActive = 1;
+    whichPanelActive = panelNum;
+}
+int getPanelActive ()
+{
+    return whichPanelActive;
 }
 
 // -----------------------------------------------------------------------------
@@ -156,7 +160,7 @@ void *local_readSCCValues ( void *x_void_ptr)
 
         getRealtimeClockStr( ctx, &controllerClock[ 0 ], sizeof( controllerClock ) );
     
-        if (whichPanelActive == 1)
+        if (whichPanelActive == FIRST_PANEL)
             paintFirstPanelData();
         
         sleep( 10 );

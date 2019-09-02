@@ -17,61 +17,9 @@
 #include <libepsolar.h>
 #include <pthread.h>
 
-
-#ifndef MAX
- #define MAX(a,b) ((a) > (b) ? (a) : (b))
-#endif
-#ifndef MIN
- #define MIN(a,b) ((a) < (b) ? (a) : (b))
-#endif 
-
-#define TF_PAIR         1
-#define VALUE_PAIR      2
-#define ERROR_PAIR      3
-#define TOOHIGH_PAIR    4
-#define TOOLOW_PAIR     5
-#define OK_PAIR         6
+#include "epsolar_commander.h"
 
 
-extern  float   deviceTemp;
-extern  float   batteryTemp;
-extern  float   loadPower;
-extern  float   loadCurrent;
-extern  float   loadVoltage;
-extern  float   pvInputPower;
-extern  float   pvInputCurrent;
-extern  float   pvInputVoltage;
-extern  int     isNight;
-extern  int     batterySoC;
-extern  float   batteryVoltage;
-extern  float   batteryCurrent;
-extern  float   batteryPower;
-extern  float   minBatteryVoltage;
-extern  float   maxBatteryVoltage;
-extern  char    *batteryStatusVoltage;
-extern  char    *batteryStatusID;
-extern  char    *battweryStatusInnerResistance;
-extern  char    *batteryStatusTemperature;
-
-extern  char    *chargingStatus;
-extern  char    *pvInputStatus;
-extern  char    *dischargeRunning;
-
-extern  float   energyGeneratedToday;
-extern float    energyGeneratedMonth;
-extern  float   energyGeneratedYear;
-extern  float   energyGeneratedTotal;
-
-extern  float   energyConsumedToday;
-extern  float   energyConsumedMonth;
-extern  float   energyConsumedYear;
-extern  float   energyConsumedTotal;
-
-extern  char    controllerClock[];
-
-extern  int     batteryRatedVoltage;        // will be 12, 24,36, 48...
-extern  float   batteryRatedLoadCurrent;
-extern  float   batteryRatedChargingCurrent;
 
 static  WINDOW *pvWin, *batteryWin, *loadWin, *ctlWin, *egWin, *ecWin;
 
@@ -356,10 +304,12 @@ int main (int argc, char *argv[])
         
     }
 
-    setPanelActive( 1 );
+    setPanelActive( FIRST_PANEL );
     WINDOW  *menuWin;
     while (TRUE) {
-        firstPanel();
+        if (getPanelActive == FIRST_PANEL)
+            firstPanel();
+        
         menuWin = paintMenu();
         
         char    ch = toupper( wgetch( menuWin ) );
