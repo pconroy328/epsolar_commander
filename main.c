@@ -199,10 +199,11 @@ WINDOW *paintMenu ()
     int beginX = 0;
     
     win = newwin( numLines, numCols, beginY, beginX );    
+    
     wmove( win, 0,0 );
-    waddch( win, 'P' );
-    wmove( win, 1,1 );
-    waddch( win, 'A' );
+    wattron( win, A_REVERSE );
+    wprintw( win, "(R)efresh   (B)attery    (L)oad    (D)evice   (S)ettings   (Q)uit");
+    wattroff( win, A_REVERSE );
     wrefresh( win );
     
     return win;
