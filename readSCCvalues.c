@@ -8,6 +8,8 @@
 #include <epsolar/tracerseries.h>
 #include <errno.h>
 #include <unistd.h>
+#include "epsolar_commander.h"
+
 
 static  modbus_t    *ctx = NULL;
 
@@ -99,11 +101,11 @@ void    connectLocally ()
 
 // -----------------------------------------------------------------------------
 static  int     whichPanelActive = 0;
-void    setPanelActive (const int panelNum)
+void    setActivePanel (const int panelNum)
 {
     whichPanelActive = panelNum;
 }
-int getPanelActive ()
+int getActivePanel ()
 {
     return whichPanelActive;
 }

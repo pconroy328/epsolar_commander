@@ -304,10 +304,10 @@ int main (int argc, char *argv[])
         
     }
 
-    setPanelActive( FIRST_PANEL );
+    setActivePanel( FIRST_PANEL );
     WINDOW  *menuWin;
     while (TRUE) {
-        if (getPanelActive() == FIRST_PANEL)
+        if (getActivePanel() == FIRST_PANEL)
             firstPanel();
         
         menuWin = paintMenu();
@@ -325,7 +325,7 @@ int main (int argc, char *argv[])
             werase( ctlWin ); delwin( ctlWin );
             werase( egWin ); delwin( egWin );
             werase( ecWin ); delwin( ecWin );
-            setPanelActive( 2 );
+            setActivePanel( BATTERY_PANEL );
             handOffToBatteryPanel();
         } else if (ch == 'L') {
             wprintw( menuWin, "  Load" );

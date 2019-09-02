@@ -81,6 +81,9 @@ extern  float   batteryRatedLoadCurrent;
 extern  float   batteryRatedChargingCurrent;
 
 
+extern  int     getActivePanel();
+extern  void    setActivePanel( const int panelNum );
+
 #ifdef __cplusplus
 }
 #endif
