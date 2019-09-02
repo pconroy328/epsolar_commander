@@ -307,7 +307,7 @@ int main (int argc, char *argv[])
     setPanelActive( FIRST_PANEL );
     WINDOW  *menuWin;
     while (TRUE) {
-        if (getPanelActive == FIRST_PANEL)
+        if (getPanelActive() == FIRST_PANEL)
             firstPanel();
         
         menuWin = paintMenu();
