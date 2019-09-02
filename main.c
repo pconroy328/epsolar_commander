@@ -184,12 +184,25 @@ void    intAddTextField (WINDOW *window, const int startY, const int startX, con
 WINDOW *paintMenu ()
 {    
     WINDOW  *win;
+    //
+    // WINDOW *newwin(int nlines, int ncols, int begin_y, int begin_x);
+    //
+    //  Calling newwin creates and returns a pointer to a new window with the given 
+    //  number of lines and columns. The upper left-hand corner of the window is 
+    //  at line begin_y, column begin_x. If either nlines or ncols is zero, 
+    //  they default to LINES - begin_y and COLS - begin_x. 
+    //  A new full-screen window is created by calling newwin(0,0,0,0). 
     
-    win = newwin( 1, COLS, LINES - 1, 0  );
-    box( win, ACS_VLINE, ACS_HLINE );  
+    int numLines = 1;
+    int numCols = COLS;
+    int beginY = LINES - 1;
+    int beginX = 0;
     
+    win = newwin( numLines, numCols, beginY, beginX );    
     wmove( win, 0,0 );
     waddch( win, 'P' );
+    wmove( win, 1,1 );
+    waddch( win, 'A' );
     wrefresh( win );
     
     return win;
