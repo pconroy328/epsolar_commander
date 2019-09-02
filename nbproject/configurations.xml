@@ -13,6 +13,7 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <itemPath>batteryPanel.c</itemPath>
       <itemPath>main.c</itemPath>
       <itemPath>ncurses-menu.c</itemPath>
       <itemPath>readSCCvalues.c</itemPath>
@@ -121,8 +122,16 @@
                             perm="755"
                             owner="root"
                             group="bin"/>
+          <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}bin/${OUTPUT_BASENAME}"
+                            from="${OUTPUT_PATH}"
+                            perm="755"
+                            owner="root"
+                            group="bin"/>
         </packFileList>
       </packaging>
+      <item path="batteryPanel.c" ex="false" tool="0" flavor2="0">
+      </item>
       <item path="main.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="ncurses-menu.c" ex="false" tool="0" flavor2="0">
@@ -155,6 +164,8 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
+      <item path="batteryPanel.c" ex="false" tool="0" flavor2="0">
+      </item>
       <item path="main.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="ncurses-menu.c" ex="false" tool="0" flavor2="0">

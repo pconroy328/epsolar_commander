@@ -35,6 +35,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/batteryPanel.o \
 	${OBJECTDIR}/main.o \
 	${OBJECTDIR}/ncurses-menu.o \
 	${OBJECTDIR}/readSCCvalues.o \
@@ -64,6 +65,11 @@ LDLIBSOPTIONS=-lcurses -lmenu -lpthread
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/epsolar_commander: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.c} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/epsolar_commander ${OBJECTFILES} ${LDLIBSOPTIONS} -lcdk -llog4c -lmodbus -lepsolar
+
+${OBJECTDIR}/batteryPanel.o: batteryPanel.c
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.c) -g -std=c99 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/batteryPanel.o batteryPanel.c
 
 ${OBJECTDIR}/main.o: main.c
 	${MKDIR} -p ${OBJECTDIR}

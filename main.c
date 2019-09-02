@@ -74,8 +74,9 @@ extern  float   batteryRatedLoadCurrent;
 extern  float   batteryRatedChargingCurrent;
 
 static  WINDOW *pvWin, *batteryWin, *loadWin, *ctlWin, *egWin, *ecWin;
-static  int     maxRows;
-static  int     maxCols;
+
+int             MaxRows;
+int             MaxCols;
 
 float       VoltageUpperBound = 17.0;
 float       VoltageLowerBound = 9.0;
@@ -315,6 +316,8 @@ void    firstPanel ()
 
 extern void *local_readSCCValues( void * );
 extern void setPanelActive( const int panelNum );
+extern  void    handOffToBatteryPanel();
+
 
 
 // -----------------------------------------------------------------------------
@@ -331,7 +334,7 @@ int main (int argc, char *argv[])
     fprintf( stderr,  "Version: %s\n", version  );
     
     initscr();                                  /* Start curses mode */
-    getmaxyx( stdscr, maxRows, maxCols );      /* find the boundaries of the screen */
+    getmaxyx( stdscr, MaxRows, MaxCols );      /* find the boundaries of the screen */
   
     if (has_colors() == FALSE) {
         Logger_LogWarning( "Your terminal does not support color\n"  );
@@ -366,6 +369,14 @@ int main (int argc, char *argv[])
             wprintw( menuWin, "  Refresh" );
         } else if (ch == 'B') {
             wprintw( menuWin, "  Battery" );
+            delwin( pvWin );
+            delwin( batteryWin );
+            delwin( loadWin );
+            delwin( ctlWin );
+            delwin( egWin );
+            delwin( ecWin );
+            setPanelActive( 2 );
+            handOffToBatteryPanel();
         } else if (ch == 'L') {
             wprintw( menuWin, "  Load" );
         } else if (ch == 'D') {
