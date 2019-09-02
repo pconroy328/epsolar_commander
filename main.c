@@ -369,12 +369,12 @@ int main (int argc, char *argv[])
             wprintw( menuWin, "  Refresh" );
         } else if (ch == 'B') {
             wprintw( menuWin, "  Battery" );
-            delwin( pvWin );
-            delwin( batteryWin );
-            delwin( loadWin );
-            delwin( ctlWin );
-            delwin( egWin );
-            delwin( ecWin );
+            werase( pvWin ); delwin( pvWin );
+            werase( batteryWin ); delwin( batteryWin );
+            werase( loadWin ); delwin( loadWin );
+            werase( ctlWin ); delwin( ctlWin );
+            werase( egWin ); delwin( egWin );
+            werase( ecWin ); delwin( ecWin );
             setPanelActive( 2 );
             handOffToBatteryPanel();
         } else if (ch == 'L') {
