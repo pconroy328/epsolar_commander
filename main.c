@@ -7,11 +7,12 @@
  */
 
 #include <stdlib.h>
+#include <ctype.h>
 #include <ncurses.h>
 #include <locale.h>
 #include <string.h>
-#include "ncurses-menu.h"
-#include <cdk/cdk.h>
+//#include "ncurses-menu.h"
+//#include <cdk/cdk.h>
 #include <unistd.h>
 #include <libmqttrv.h>
 //#include <modbus/modbus.h>
@@ -60,7 +61,7 @@ extern  char    *pvInputStatus;
 extern  char    *dischargeRunning;
 
 extern  float   energyGeneratedToday;
-extern float   energyGeneratedMonth;
+extern float    energyGeneratedMonth;
 extern  float   energyGeneratedYear;
 extern  float   energyGeneratedTotal;
 
@@ -72,34 +73,11 @@ extern  float   energyConsumedTotal;
 extern  char    controllerClock[];
 
 
-static  CDKSCREEN *cdkscreen;
-static  CDKSCROLL *dowList;
 static  WINDOW *pvWin, *batteryWin, *loadWin, *ctlWin;
-static  CDK_PARAMS params;
+// static  CDK_PARAMS params;
+static  int     maxRows;
+static  int     maxCols;
 
-/*
-// -----------------------------------------------------------------------------
-void    showCurrentParameters ( int y, const int x)
-{
-    mvprintw( y, x, "Quick Glance" );  y += 1;
-    mvprintw( y, x, " 08/20/19 16:24:36   Night: True" );  y += 1;
-    mvprintw( y, x, " Battery SoC: 87%    Floating" );  y += 1;
-    mvprintw( y, x, " PV: 14.79V, 0.26A" );  y += 1;
-    mvprintw( y, x, " Load: 13.49V, 0.17A" );  y += 1;
-    mvprintw( y, x, " Battery: 13.2V 0.1A" );  y += 1;
-    mvprintw( y, x, " Charging: Yes" );  y += 1;
-    mvprintw( y, x, " Discharging: Light Load" );  y += 1;
-
-    mvprintw( y, x, "Load Control" );  y += 1;
-    mvprintw( y, x, " Mode: Manual (1)" );  y += 1;
-    mvprintw( y, x, " Turn On 1  - 05:30:00" );  y += 1;
-    mvprintw( y, x, " Turn Off 1 - 21:00:00" );  y += 1;
-    mvprintw( y, x, " Turn On 2  - 08:00:00" );  y += 1;
-    mvprintw( y, x, " Turn Off 2 - 22:30:00" ); 
-    
-    refresh();
-}
-*/
 
 
 // -----------------------------------------------------------------------------
@@ -215,8 +193,6 @@ static  char    *version = "0.1.d";
 void    firstPanel ()
 {
     
-    WINDOW  *menuWin = paintMenu();
-    sleep( 10 );
     
    /* Create a basic window. */
     int     pvY = 0, pvX = 0;
@@ -291,14 +267,17 @@ extern void *local_readSCCValues( void * );
 int main (int argc, char *argv[])
 {
 
-    CDKparseParams( argc, argv, &params, "s:" CDK_CLI_PARAMS );
-    (void) initCDKScreen (NULL);
-    curs_set( 0 );
+    //CDKparseParams( argc, argv, &params, "s:" CDK_CLI_PARAMS );
+    //(void) initCDKScreen (NULL);
+    //curs_set( 0 );
 
     Logger_Initialize( "/tmp/epsolarcommander.log", 5 );
     Logger_LogWarning( "Version: %s\n", version  );
     fprintf( stderr,  "Version: %s\n", version  );
- 
+    
+    initscr();                                  /* Start curses mode */
+    getmaxyx( stdscr, maxRows, maxCols );      /* find the boundaries of the screen */
+  
     if (has_colors() == FALSE) {
         Logger_LogWarning( "Your terminal does not support color\n"  );
         fprintf( stderr, "Your terminal does not support color\n"  );
@@ -312,31 +291,44 @@ int main (int argc, char *argv[])
     init_pair( TOOLOW_PAIR, COLOR_WHITE, COLOR_MAGENTA );
     init_pair( OK_PAIR, COLOR_WHITE, COLOR_GREEN );
    
-    
-    
-    /* Start Cdk. */
-    cdkscreen = initCDKScreen( pvWin );
-
-
     pthread_t sccReaderThread;
-    
+   
     if (pthread_create( &sccReaderThread, NULL, local_readSCCValues, NULL ) ) {
         fprintf(stderr, "Error creating thread\n");
         
     }
 
+    WINDOW  *menuWin = paintMenu();
     while (TRUE) {
         firstPanel(); 
-        
-        sleep( 1 );
-    
+        char    ch = toupper( wgetch( stdscr ) );
+        //     wprintw( win, "(R)efresh   (B)attery    (L)oad    (D)evice   (S)ettings   (Q)uit");
+
+        if (ch == 'R') {
+            fprintf( stderr, "Refresh\n" );
+        } else if (ch == 'B') {
+            fprintf( stderr, "Battery\n" );
+        } else if (ch == 'L') {
+            fprintf( stderr, "Load\n" );
+        } else if (ch == 'D') {
+            fprintf( stderr, "Device\n" );
+        } else if (ch == 'S') {
+            fprintf( stderr, "Settings\n" );
+        } else if (ch == 'Q') {
+            fprintf( stderr, "Quit\n" );
+             break;
+        }
     }
-    /* wait for the second thread to finish */
-    if (pthread_join(sccReaderThread, NULL)) {
-    }
-    
-    sleep( 20 );
     endwin();
+    
+    fprintf( stderr, "waiting for second thread to end...\n" );
+    pthread_cancel( sccReaderThread );
+    
+    /* wait for the second thread to finish */
+    if (pthread_join( sccReaderThread, NULL )) {
+    }
+    
+    fprintf( stderr, "Goodbye!\n" );
     return 0;
 }
 
