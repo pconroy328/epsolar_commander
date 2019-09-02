@@ -6,6 +6,7 @@
 #include <modbus/modbus.h>
 #include <libepsolar.h>
 #include <errno.h>
+#include <unistd.h>
 
 static  modbus_t    *ctx = NULL;
 
@@ -94,7 +95,15 @@ void    connectLocally ()
 
 
 // -----------------------------------------------------------------------------
+static  int     whichPanelActive = 0;
+void    setPanelActive (const int panelNum)
+{
+    whichPanelActive = 1;
+}
+
 // -----------------------------------------------------------------------------
+extern  void    paintFirstPanelData();
+
 
 // -----------------------------------------------------------------------------
 void *local_readSCCValues ( void *x_void_ptr)
@@ -145,6 +154,9 @@ void *local_readSCCValues ( void *x_void_ptr)
 
         getRealtimeClockStr( ctx, &controllerClock[ 0 ], sizeof( controllerClock ) );
     
+        if (whichPanelActive == 1)
+            paintFirstPanelData();
+        
         sleep( 10 );
     }
 
