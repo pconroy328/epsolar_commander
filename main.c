@@ -328,6 +328,7 @@ int main (int argc, char *argv[])
 
         if (ch == 'H') {
             wprintw( menuWin, "  Refresh" );
+            cleanupBatteryPanel();
             setActivePanel( FIRST_PANEL );
             firstPanel();
         } else if (ch == 'B') {
