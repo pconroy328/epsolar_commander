@@ -13,6 +13,7 @@
 #include <log4c.h>
 #include <libepsolar.h>
 #include <pthread.h>
+#include "epsolar_commander.h"
 
 extern  int     MaxRows;
 extern  int     MaxCols;
@@ -34,6 +35,7 @@ void    showBatteryPanel()
     int     battRows2 = 18;
     int     battCols2 = MaxCols;
     batteryPanel2 = grouping( &batteryPanel2, battY2, battX2, battRows2, battCols2, "Battery Settings" );
+    refresh();
 }
 
 // -----------------------------------------------------------------------------
@@ -43,5 +45,6 @@ void    cleanupBatteryPanel()
     werase( batteryPanel2 );
     delwin( batteryPanel );
     delwin( batteryPanel2 );
-    werase( stdscr );    
+    werase( stdscr );
+    refresh();
 }

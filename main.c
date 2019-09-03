@@ -211,6 +211,7 @@ void    paintFirstPanelData()
     paintDeviceGroupData();
     paintGeneratedGroupData();
     paintConsumedGroupData();
+    refresh();
 }
 
 
@@ -270,6 +271,7 @@ void    cleanupHomePanel ()
     werase( egWin ); delwin( egWin );
     werase( ecWin ); delwin( ecWin );
     werase( stdscr );
+    refresh();
 }
 
 
@@ -328,7 +330,7 @@ int main (int argc, char *argv[])
         //     wprintw( win, "(R)efresh   (B)attery    (L)oad    (D)evice   (S)ettings   (Q)uit");
 
         if (ch == 'H') {
-            wprintw( menuWin, "  Refresh" );
+            wprintw( menuWin, "  Home" );
             cleanupBatteryPanel();
             setActivePanel( FIRST_PANEL );
             firstPanel();
