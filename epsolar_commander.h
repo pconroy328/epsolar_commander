@@ -18,6 +18,8 @@
 extern "C" {
 #endif
 
+#include <ncurses.h>
+
 #define FIRST_PANEL     0
 #define BATTERY_PANEL   1
 #define SETTINGS_PANEL  3
@@ -80,9 +82,15 @@ extern  int     batteryRatedVoltage;        // will be 12, 24,36, 48...
 extern  float   batteryRatedLoadCurrent;
 extern  float   batteryRatedChargingCurrent;
 
+extern void     *local_readSCCValues( void * );
+
+extern  WINDOW *grouping (WINDOW **window, const int startY, const int startX, const int rows, const int cols, const char *title);
+
 
 extern  int     getActivePanel();
 extern  void    setActivePanel( const int panelNum );
+extern  void    showBatteryPanel();
+extern  void    cleanupBatteryPanel();
 
 #ifdef __cplusplus
 }

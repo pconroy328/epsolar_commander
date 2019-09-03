@@ -20,7 +20,7 @@ static  WINDOW  *batteryPanel;
 static  WINDOW  *batteryPanel2;
 
 // -----------------------------------------------------------------------------
-void    handOffToBatteryPanel()
+void    showBatteryPanel()
 {
     int     battY = 0;
     int     battX = 0;
@@ -34,4 +34,13 @@ void    handOffToBatteryPanel()
     int     battRows2 = 18;
     int     battCols2 = MaxCols;
     batteryPanel2 = grouping( &batteryPanel2, battY2, battX2, battRows2, battCols2, "Battery Settings" );
+}
+
+// -----------------------------------------------------------------------------
+void    cleanupBatteryPanel()
+{
+    werase( batteryPanel );
+    werase( batteryPanel2 );
+    delwin( batteryPanel );
+    delwin( batteryPanel2 );
 }

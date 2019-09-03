@@ -8,7 +8,6 @@
 
 #include <stdlib.h>
 #include <ctype.h>
-#include <ncurses.h>
 #include <locale.h>
 #include <string.h>
 #include <unistd.h>
@@ -138,7 +137,7 @@ WINDOW *paintMenu ()
     
     wmove( win, 0,0 );
     wattron( win, A_REVERSE );
-    wprintw( win, "(R)efresh   (B)attery    (L)oad    (D)evice   (S)ettings   (Q)uit");
+    wprintw( win, "(H)ome   (B)attery    (L)oad    (D)evice   (S)ettings   (Q)uit");
     wattroff( win, A_REVERSE );
     wrefresh( win );
     
@@ -261,10 +260,18 @@ void    firstPanel ()
     paintConsumedGroupData();
 }
 
+// -----------------------------------------------------------------------------
+void    cleanupHomePanel ()
+{
+    werase( pvWin ); delwin( pvWin );
+    werase( batteryWin ); delwin( batteryWin );
+    werase( loadWin ); delwin( loadWin );
+    werase( ctlWin ); delwin( ctlWin );
+    werase( egWin ); delwin( egWin );
+    werase( ecWin ); delwin( ecWin );
+}
 
-extern void *local_readSCCValues( void * );
-extern void setPanelActive( const int panelNum );
-extern  void    handOffToBatteryPanel();
+
 
 
 
@@ -319,18 +326,15 @@ int main (int argc, char *argv[])
         char    ch = toupper( wgetch( menuWin ) );
         //     wprintw( win, "(R)efresh   (B)attery    (L)oad    (D)evice   (S)ettings   (Q)uit");
 
-        if (ch == 'R') {
+        if (ch == 'H') {
             wprintw( menuWin, "  Refresh" );
+            setActivePanel( FIRST_PANEL );
+            firstPanel();
         } else if (ch == 'B') {
             wprintw( menuWin, "  Battery" );
-            werase( pvWin ); delwin( pvWin );
-            werase( batteryWin ); delwin( batteryWin );
-            werase( loadWin ); delwin( loadWin );
-            werase( ctlWin ); delwin( ctlWin );
-            werase( egWin ); delwin( egWin );
-            werase( ecWin ); delwin( ecWin );
+            cleanupHomePanel();
             setActivePanel( BATTERY_PANEL );
-            handOffToBatteryPanel();
+            showBatteryPanel();
         } else if (ch == 'L') {
             wprintw( menuWin, "  Load" );
         } else if (ch == 'D') {
