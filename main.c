@@ -281,7 +281,11 @@ int main (int argc, char *argv[])
     Logger_LogWarning( "Version: %s\n", version  );
     fprintf( stderr,  "Version: %s\n", version  );
     
-    initscr();                                  /* Start curses mode */
+    initscr();
+    cbreak();
+    noecho();
+    keypad( stdscr, TRUE );
+    curs_set(0);
     getmaxyx( stdscr, MaxRows, MaxCols );      /* find the boundaries of the screen */
   
     if (has_colors() == FALSE) {
