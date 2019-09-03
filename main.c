@@ -269,6 +269,7 @@ void    cleanupHomePanel ()
     werase( ctlWin ); delwin( ctlWin );
     werase( egWin ); delwin( egWin );
     werase( ecWin ); delwin( ecWin );
+    werase( stdscr );
 }
 
 

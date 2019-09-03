@@ -43,4 +43,5 @@ void    cleanupBatteryPanel()
     werase( batteryPanel2 );
     delwin( batteryPanel );
     delwin( batteryPanel2 );
+    werase( stdscr );    
 }
