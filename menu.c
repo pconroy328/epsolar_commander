@@ -37,15 +37,24 @@ void    showMenu ()
     //  they default to LINES - begin_y and COLS - begin_x. 
     //  A new full-screen window is created by calling newwin(0,0,0,0).
     int numCols = COLS;
-    int numLINES = 2;
-    int beginY = LINES - 2;
+    int numLINES = 3;
+    int beginY = LINES - 3;
     int beginX = 0;
     
     menuWin = newwin( numLINES, numCols, beginY, beginX );
     box( menuWin, ACS_VLINE, ACS_HLINE );  
     wrefresh( menuWin );
     
-    wmove( menuWin, 0,0 );
+    beginY = 0;
+    beginX = 0;
+    wmove( menuWin, beginY, beginX );
+    wprintw( menuWin "Test 0,0" );
+    wrefresh( menuWin );
+    wmove( menuWin, beginY + 1, beginX + 1 );
+    wprintw( menuWin "Test 1,1" );
+    wrefresh( menuWin );
+    
+    wmove( menuWin, beginY, beginX );
     wattron( menuWin, A_REVERSE );
     wprintw( menuWin, "(H)ome    (B)attery    (L)oad    (D)evice   (S)ettings   (Q)uit");
     wattroff( menuWin, A_REVERSE );
