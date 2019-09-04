@@ -48,10 +48,10 @@ void    showMenu ()
     beginY = 0;
     beginX = 0;
     wmove( menuWin, beginY, beginX );
-    wprintw( menuWin "Test 0,0" );
+    wprintw( menuWin, "Test 0,0" );
     wrefresh( menuWin );
     wmove( menuWin, beginY + 1, beginX + 1 );
-    wprintw( menuWin "Test 1,1" );
+    wprintw( menuWin, "Test 1,1" );
     wrefresh( menuWin );
     
     wmove( menuWin, beginY, beginX );
