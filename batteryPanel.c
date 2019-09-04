@@ -26,7 +26,7 @@ void    showBatteryPanel()
     setActivePanel( BATTERY_PANEL );
     int     battY = 0;
     int     battX = 0;
-    int     battRows = 5;
+    int     battRows = 4;
     int     battCols = MaxCols;
     ratedPanel = grouping( &ratedPanel, battY, battX, battRows, battCols, "Battery Rated Data" );
     
@@ -50,21 +50,24 @@ void    paintRatedData ()
     getmaxyx( ratedPanel, maxRows, maxCols ); 
     
     int beginCol = 2;
-    HintAddTextField( ratedPanel, 1, beginCol, "Voltage", batteryRatedVoltage, 1, 4 );
+    HintAddTextField( ratedPanel, 2, beginCol, "Voltage", batteryRatedVoltage, 2, 4 );
     
     beginCol = (maxCols / 2);
-    beginCol -= 8;
-    HfloatAddTextField( ratedPanel, 1, beginCol, "Load Current", batteryRatedLoadCurrent, 2, 4 );
+    beginCol -= 12;
+    HfloatAddTextField( ratedPanel, 2, beginCol, "Load Current", batteryRatedLoadCurrent, 2, 4 );
     
     beginCol = maxCols;
-    beginCol -= 19;
-    HfloatAddTextField( ratedPanel, 1, beginCol, "Charge Current", batteryRatedChargingCurrent, 2, 4 );    
+    beginCol -= 22;
+    HfloatAddTextField( ratedPanel, 2, beginCol, "Charge Current", batteryRatedChargingCurrent, 2, 4 ); 
+    
+    wrefresh( ratedPanel );
 }
 
 // -----------------------------------------------------------------------------
 static
 void    paintSettingsData()
 {
+    wrefresh( settingsPanel );
     
 }
 
