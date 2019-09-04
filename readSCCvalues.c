@@ -64,6 +64,12 @@ char    *batteryChargingMode = "?";
 int     batteryCapacity = -9;
 float   tempertureCompensationCoefficient = -9.9;
 float   overVDisconnectV = -9.9;
+float   overVReconnectV;
+float   equalizationVoltage;
+float   boostVoltage;
+float   floatVoltage;
+float   boostReconnectVoltage;
+
 
 
 // -----------------------------------------------------------------------------
@@ -170,6 +176,11 @@ void *local_readSCCValues ( void *x_void_ptr)
         batteryCapacity = getBatteryCapacity( ctx );
         tempertureCompensationCoefficient = getTempertureCompensationCoefficient( ctx );
         overVDisconnectV = getHighVoltageDisconnect( ctx );
+        overVReconnectV = getOverVoltageReconnect( ctx );
+        equalizationVoltage = getEqualizationVoltage( ctx );
+        boostVoltage = getBoostingVoltage( ctx );
+        floatVoltage = getFloatingVoltage( ctx );
+        boostReconnectVoltage = getBoostReconnectVoltage( ctx );
         
         if (getActivePanel() == HOME_PANEL)
             paintHomePanelData();

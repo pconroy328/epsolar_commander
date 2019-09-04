@@ -51,13 +51,21 @@ void    paintSettingsData()
 {
     int beginCol = 2;
     int beginRow = 2;
-    HaddTextField( settingsPanel, beginRow++, beginCol, "Battery Type", batteryType );
+    HaddTextField( settingsPanel, beginRow++, beginCol,     "Battery Type       ", batteryType );
 
-    HaddTextField( settingsPanel, beginRow++, beginCol, "Charging Mode", "0x9070" );
-    HintAddTextField( settingsPanel, beginRow++, beginCol, "Capacity", batteryCapacity, 0, 4 );
-    HfloatAddTextField( settingsPanel, beginRow++, beginCol, "Temp C. Coeff", tempertureCompensationCoefficient, 1, 4 );
+    HaddTextField( settingsPanel, beginRow++, beginCol,     "Charging Mode      ", "0x9070" );
+    HintAddTextField( settingsPanel, beginRow++, beginCol,  "Capacity (AH)      ", batteryCapacity, 0, 4 );
+    HfloatAddTextField( settingsPanel, beginRow++,beginCol, "Temp Comp Coeff    ", tempertureCompensationCoefficient, 1, 4 );
 
-    HfloatAddTextField( settingsPanel, beginRow++, beginCol, "Over V Disconnect V", tempertureCompensationCoefficient, 1, 4 );
+    HfloatAddTextField( settingsPanel, beginRow++,beginCol, "Over V Disconnect V", overVDisconnectV, 1, 4 );
+    HfloatAddTextField( settingsPanel, beginRow++,beginCol, "Over V Reconnect V ", overVReconnectV, 1, 4 );
+
+    HfloatAddTextField( settingsPanel, beginRow++,beginCol, "Equalization Volts ", equalizationVoltage, 1, 4 );
+    HfloatAddTextField( settingsPanel, beginRow++,beginCol, "Boost Voltage      ", boostVoltage, 1, 4 );
+    HfloatAddTextField( settingsPanel, beginRow++,beginCol, "Float Voltage      ", floatVoltage, 1, 4 );
+    HfloatAddTextField( settingsPanel, beginRow++,beginCol, "Boost Recon Chrg V ", boostReconnectVoltage, 1, 4 );
+    
+    HintAddTextField( settingsPanel, beginRow++, beginCol,  "State of Charge    ", batterySoC, 1, 4 );
     wrefresh( settingsPanel );
 }
 

@@ -89,6 +89,12 @@ extern  char    *batteryChargingMode;
 extern  int     batteryCapacity;
 extern  float   tempertureCompensationCoefficient;
 extern  float   overVDisconnectV;
+extern  float   overVReconnectV;
+extern  float   equalizationVoltage;
+extern  float   boostVoltage;
+extern  float   floatVoltage;
+extern  float   boostReconnectVoltage;
+
 
 
 
