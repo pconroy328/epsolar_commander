@@ -56,7 +56,7 @@ float   energyConsumedTotal = -9.9;
 
 char    controllerClock[ 64 ];
 
-int     batteryRatedVoltage = -9;
+float   batteryRatedVoltage = -9.9;
 float   batteryRatedLoadCurrent = -9.9;
 float   batteryRatedChargingCurrent = -9.9;
 

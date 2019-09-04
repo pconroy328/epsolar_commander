@@ -50,7 +50,7 @@ void    paintRatedData ()
     getmaxyx( ratedPanel, maxRows, maxCols ); 
     
     int beginCol = 2;
-    HintAddTextField( ratedPanel, 2, beginCol, "Voltage", batteryRatedVoltage, 2, 4 );
+    HfloatAddTextField( ratedPanel, 2, beginCol, "Voltage", batteryRatedVoltage, 2, 4 );
     
     beginCol = (maxCols / 2);
     beginCol -= 12;
