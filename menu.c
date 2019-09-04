@@ -38,7 +38,7 @@ void    showMenu ()
     //  A new full-screen window is created by calling newwin(0,0,0,0).
     int numCols = COLS;
     int numLINES = 2;
-    int beginY = numLINES - 2;
+    int beginY = LINES - 2;
     int beginX = 0;
     
     menuWin = newwin( numLINES, numCols, beginY, beginX );

@@ -87,7 +87,7 @@ void    paintHomePanelData()
     paintDeviceGroupData();
     paintGeneratedGroupData();
     paintConsumedGroupData();
-    refresh();
+    // refresh();
 }
 
 
@@ -138,7 +138,7 @@ void    showHomePanel ()
     ecWin = grouping( &ecWin, ecY, ecX, ecRows, ecCols, "Consumed" );
     paintConsumedGroupData();
     
-    refresh();
+    //refresh();
 }
 
 // -----------------------------------------------------------------------------
