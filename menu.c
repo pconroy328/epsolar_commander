@@ -39,19 +39,20 @@ void    showMenu ()
     //  they default to LINES - begin_y and COLS - begin_x. 
     //  A new full-screen window is created by calling newwin(0,0,0,0).
     int numCols = COLS;
-    int numLINES = 3;
-    int beginY = LINES - 3;
+    int numLines = 1;
+    int beginY = LINES - numLines;
     int beginX = 0;
     
-    menuWin = newwin( numLINES, numCols, beginY, beginX );
-    box( menuWin, ACS_VLINE, ACS_HLINE );  
-    wrefresh( menuWin );
+    menuWin = newwin( numLines, numCols, beginY, beginX );
+    // box( menuWin, ACS_VLINE, ACS_HLINE );  
+    //wrefresh( menuWin );
     
-    beginY = 1;
-    beginX = 1;    
+    beginY = 0;
+    beginX = 0;    
     wmove( menuWin, beginY, beginX );
     wattron( menuWin, A_REVERSE );
     wprintw( menuWin, mainMenu );
+    wclrtoeol( menuWin );
     wattroff( menuWin, A_REVERSE );
     wrefresh( menuWin );
     
@@ -69,7 +70,7 @@ char    getMenuSelection ()
 
 void    menuDisplayMessage (const char *msg)
 {
-    wmove( menuWin, 1, 1 );
+    wmove( menuWin, 0, 0 );
     wattron( menuWin, A_REVERSE );
     wprintw( menuWin, msg );
     wclrtoeol( menuWin );
