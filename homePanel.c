@@ -119,7 +119,7 @@ void    showHomePanel ()
     int     ctlY = pvY;
     int     ctlX = pvCols + battCols + + loadCols;
     int     ctlRows = pvRows;
-    int     ctlCols = 20;
+    int     ctlCols = 21;
     ctlWin = grouping( &ctlWin, ctlY, ctlX, ctlRows, ctlCols, "Controller" );
     paintDeviceGroupData();
     

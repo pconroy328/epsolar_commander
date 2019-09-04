@@ -161,7 +161,9 @@ void *local_readSCCValues ( void *x_void_ptr)
 
         if (getActivePanel() == HOME_PANEL)
             paintHomePanelData();
-        
+        else if (getActivePanel() == BATTERY_PANEL)
+            paintBatteryPanelData();
+    
         sleep( 10 );
     }
 

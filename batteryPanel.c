@@ -17,8 +17,8 @@
 
 extern  int     MaxRows;
 extern  int     MaxCols;
-static  WINDOW  *batteryPanel;
-static  WINDOW  *batteryPanel2;
+static  WINDOW  *ratedPanel;
+static  WINDOW  *settingsPanel;
 
 // -----------------------------------------------------------------------------
 void    showBatteryPanel()
@@ -28,24 +28,60 @@ void    showBatteryPanel()
     int     battX = 0;
     int     battRows = 5;
     int     battCols = MaxCols;
-    batteryPanel = grouping( &batteryPanel, battY, battX, battRows, battCols, "Battery Ratings" );
+    ratedPanel = grouping( &ratedPanel, battY, battX, battRows, battCols, "Battery Rated Data" );
     
     
     int     battY2 = battRows;
     int     battX2 = 0;
     int     battRows2 = 18;
     int     battCols2 = MaxCols;
-    batteryPanel2 = grouping( &batteryPanel2, battY2, battX2, battRows2, battCols2, "Battery Settings" );
+    settingsPanel = grouping( &settingsPanel, battY2, battX2, battRows2, battCols2, "Battery Settings" );
     refresh();
+}
+
+// -----------------------------------------------------------------------------
+static
+void    paintRatedData ()
+{
+    //
+    // Figure out how to space three values in the top window
+    int maxCols;
+    int maxRows;
+    getmaxyx( ratedPanel, maxRows, maxCols ); 
+    
+    int     beginCol = (maxCols / 3);
+    floatAddTextField( ratedPanel, 1, beginCol, "Voltage", batteryRatedVoltage, 1, 4 );
+    
+    beginCol = (maxCols / 2);
+    beginCol -= 8;
+    floatAddTextField( ratedPanel, 1, beginCol, "Load Current", batteryRatedLoadCurrent, 2, 4 );
+    
+    beginCol = (maxCols / 3);
+    beginCol *= 2;
+    floatAddTextField( ratedPanel, 1, beginCol, "Charge Current", batteryRatedChargingCurrent, 2, 4 );    
+}
+
+// -----------------------------------------------------------------------------
+static
+void    paintSettingsData()
+{
+    
+}
+
+// -----------------------------------------------------------------------------
+void    paintBatteryPanelData()
+{
+    paintRatedData();
+    paintSettingsData();
 }
 
 // -----------------------------------------------------------------------------
 void    clearBatteryPanel()
 {
-    werase( batteryPanel );
-    werase( batteryPanel2 );
-    delwin( batteryPanel );
-    delwin( batteryPanel2 );
+    werase( ratedPanel );
+    werase( settingsPanel );
+    delwin( ratedPanel );
+    delwin( settingsPanel );
     werase( stdscr );
     refresh();
 }

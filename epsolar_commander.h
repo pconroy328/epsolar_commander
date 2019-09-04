@@ -99,6 +99,7 @@ extern  void    switchPanel (const int newActivePanelID);
 
 extern  void    showBatteryPanel();
 extern  void    clearBatteryPanel();
+extern  void    paintBatteryPanelData();
 
 extern  void    showHomePanel();
 extern  void    clearHomePanel();
