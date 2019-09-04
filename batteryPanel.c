@@ -20,26 +20,6 @@ extern  int     MaxCols;
 static  WINDOW  *ratedPanel;
 static  WINDOW  *settingsPanel;
 
-// -----------------------------------------------------------------------------
-void    showBatteryPanel()
-{
-    setActivePanel( BATTERY_PANEL );
-    int     battY = 0;
-    int     battX = 0;
-    int     battRows = 3;
-    int     battCols = MaxCols;
-    ratedPanel = grouping( &ratedPanel, battY, battX, battRows, battCols, "Battery Rated Data" );
-    paintRatedData();
-    
-    int     battY2 = battRows;
-    int     battX2 = 0;
-    int     battRows2 = 18;
-    int     battCols2 = MaxCols;
-    settingsPanel = grouping( &settingsPanel, battY2, battX2, battRows2, battCols2, "Battery Settings" );
-    paintSettingsData();
-    
-    refresh();
-}
 
 // -----------------------------------------------------------------------------
 static
@@ -71,6 +51,27 @@ void    paintSettingsData()
 {
     wrefresh( settingsPanel );
     
+}
+
+// -----------------------------------------------------------------------------
+void    showBatteryPanel()
+{
+    setActivePanel( BATTERY_PANEL );
+    int     battY = 0;
+    int     battX = 0;
+    int     battRows = 3;
+    int     battCols = MaxCols;
+    ratedPanel = grouping( &ratedPanel, battY, battX, battRows, battCols, "Battery Rated Data" );
+    paintRatedData();
+    
+    int     battY2 = battRows;
+    int     battX2 = 0;
+    int     battRows2 = 18;
+    int     battCols2 = MaxCols;
+    settingsPanel = grouping( &settingsPanel, battY2, battX2, battRows2, battCols2, "Battery Settings" );
+    paintSettingsData();
+    
+    refresh();
 }
 
 // -----------------------------------------------------------------------------
