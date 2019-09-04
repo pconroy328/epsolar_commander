@@ -110,9 +110,6 @@ int getActivePanel ()
     return whichPanelActive;
 }
 
-// -----------------------------------------------------------------------------
-extern  void    paintFirstPanelData();
-
 
 // -----------------------------------------------------------------------------
 void *local_readSCCValues ( void *x_void_ptr)
@@ -161,7 +158,10 @@ void *local_readSCCValues ( void *x_void_ptr)
         energyGeneratedTotal = getGeneratedEnergyTotal( ctx );
 
         getRealtimeClockStr( ctx, &controllerClock[ 0 ], sizeof( controllerClock ) );
-    
+
+        if (getActivePanel() == HOME_PANEL)
+            paintHomePanelData();
+        
         sleep( 10 );
     }
 

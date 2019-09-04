@@ -78,7 +78,6 @@ void    paintConsumedGroupData()
 }
 
 // -----------------------------------------------------------------------------
-static
 void    paintHomePanelData()
 {
     paintPVGroupData();    
