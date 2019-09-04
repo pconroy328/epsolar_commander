@@ -26,16 +26,18 @@ void    showBatteryPanel()
     setActivePanel( BATTERY_PANEL );
     int     battY = 0;
     int     battX = 0;
-    int     battRows = 4;
+    int     battRows = 3;
     int     battCols = MaxCols;
     ratedPanel = grouping( &ratedPanel, battY, battX, battRows, battCols, "Battery Rated Data" );
-    
+    paintRatedData();
     
     int     battY2 = battRows;
     int     battX2 = 0;
     int     battRows2 = 18;
     int     battCols2 = MaxCols;
     settingsPanel = grouping( &settingsPanel, battY2, battX2, battRows2, battCols2, "Battery Settings" );
+    paintSettingsData();
+    
     refresh();
 }
 
@@ -57,7 +59,7 @@ void    paintRatedData ()
     HfloatAddTextField( ratedPanel, 2, beginCol, "Load Current", batteryRatedLoadCurrent, 2, 4 );
     
     beginCol = maxCols;
-    beginCol -= 22;
+    beginCol -= 24;
     HfloatAddTextField( ratedPanel, 2, beginCol, "Charge Current", batteryRatedChargingCurrent, 2, 4 ); 
     
     wrefresh( ratedPanel );

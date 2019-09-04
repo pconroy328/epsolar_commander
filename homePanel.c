@@ -55,7 +55,7 @@ void    paintDeviceGroupData()
     floatAddTextField( ctlWin, 1, 1, "Temp", deviceTemp, 1, 5 );
     addTextField( ctlWin, 3, 1, "Status", "Normal" );    
     addTextField( ctlWin, 5, 1, "Date/Time", controllerClock );
-    addTextField( ctlWin, 7, 1, "Night Time", (isNight? "Yes" : "No" ) );
+    addTextField( ctlWin, 7, 1, "Night Time", (isNight? "Yes" : "No " ) );
 }
 
 // -----------------------------------------------------------------------------
