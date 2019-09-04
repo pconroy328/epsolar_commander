@@ -93,6 +93,11 @@ int main (int argc, char *argv[])
     showMenu();
     menuDisplayMessage( "Waiting for data from solar charge controller..." );
     
+    int loopCount = 0;
+    while (deviceTemp < 0 && loopCount < 10)
+        sleep( 1 );
+    showMenu();
+    
     while (TRUE) {       
         
         char ch = getMenuSelection();
@@ -102,7 +107,6 @@ int main (int argc, char *argv[])
             showMenu();
         } else if (ch == 'B') {
             switchPanel( BATTERY_PANEL );
-            showBatteryPanel();
             showMenu();
         } else if (ch == 'L') {
         } else if (ch == 'D') {
