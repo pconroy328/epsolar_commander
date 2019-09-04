@@ -80,7 +80,7 @@ extern  float   energyConsumedTotal;
 
 extern  char    controllerClock[];
 
-extern  int     batteryRatedVoltage;        // will be 12, 24,36, 48...
+extern  float   batteryRatedVoltage;        // will be 12, 24,36, 48...
 extern  float   batteryRatedLoadCurrent;
 extern  float   batteryRatedChargingCurrent;
 
