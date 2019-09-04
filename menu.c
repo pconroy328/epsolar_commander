@@ -45,15 +45,8 @@ void    showMenu ()
     box( menuWin, ACS_VLINE, ACS_HLINE );  
     wrefresh( menuWin );
     
-    beginY = 0;
-    beginX = 0;
-    wmove( menuWin, beginY, beginX );
-    wprintw( menuWin, "Test 0,0" );
-    wrefresh( menuWin );
-    wmove( menuWin, beginY + 1, beginX + 1 );
-    wprintw( menuWin, "Test 1,1" );
-    wrefresh( menuWin );
-    
+    beginY = 1;
+    beginX = 1;    
     wmove( menuWin, beginY, beginX );
     wattron( menuWin, A_REVERSE );
     wprintw( menuWin, "(H)ome    (B)attery    (L)oad    (D)evice   (S)ettings   (Q)uit");
@@ -69,7 +62,7 @@ char    getMenuSelection ()
 
 void    menuDisplayMessage (const char *msg)
 {
-    wmove( menuWin, 0,0 );
+    wmove( menuWin, 1, 1 );
     wattron( menuWin, A_REVERSE );
     wprintw( menuWin, msg );
     wattroff( menuWin, A_REVERSE );
