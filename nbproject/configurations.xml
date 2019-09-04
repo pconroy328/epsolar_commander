@@ -5,7 +5,6 @@
                    displayName="Header Files"
                    projectFiles="true">
       <itemPath>epsolar_commander.h</itemPath>
-      <itemPath>ncurses-menu.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -15,8 +14,10 @@
                    displayName="Source Files"
                    projectFiles="true">
       <itemPath>batteryPanel.c</itemPath>
+      <itemPath>curses_helpers.c</itemPath>
+      <itemPath>homePanel.c</itemPath>
       <itemPath>main.c</itemPath>
-      <itemPath>ncurses-menu.c</itemPath>
+      <itemPath>menu.c</itemPath>
       <itemPath>readSCCvalues.c</itemPath>
       <itemPath>scc_settings.c</itemPath>
     </logicalFolder>
@@ -135,17 +136,25 @@
                             perm="755"
                             owner="root"
                             group="bin"/>
+          <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}bin/${OUTPUT_BASENAME}"
+                            from="${OUTPUT_PATH}"
+                            perm="755"
+                            owner="root"
+                            group="bin"/>
         </packFileList>
       </packaging>
       <item path="batteryPanel.c" ex="false" tool="0" flavor2="0">
       </item>
+      <item path="curses_helpers.c" ex="false" tool="0" flavor2="0">
+      </item>
       <item path="epsolar_commander.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="homePanel.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="main.c" ex="false" tool="0" flavor2="0">
       </item>
-      <item path="ncurses-menu.c" ex="false" tool="0" flavor2="0">
-      </item>
-      <item path="ncurses-menu.h" ex="false" tool="3" flavor2="0">
+      <item path="menu.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="readSCCvalues.c" ex="false" tool="0" flavor2="0">
       </item>
@@ -175,13 +184,15 @@
       </compileType>
       <item path="batteryPanel.c" ex="false" tool="0" flavor2="0">
       </item>
+      <item path="curses_helpers.c" ex="false" tool="0" flavor2="0">
+      </item>
       <item path="epsolar_commander.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="homePanel.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="main.c" ex="false" tool="0" flavor2="0">
       </item>
-      <item path="ncurses-menu.c" ex="false" tool="0" flavor2="0">
-      </item>
-      <item path="ncurses-menu.h" ex="false" tool="3" flavor2="0">
+      <item path="menu.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="readSCCvalues.c" ex="false" tool="0" flavor2="0">
       </item>

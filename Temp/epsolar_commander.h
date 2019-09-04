@@ -20,11 +20,9 @@ extern "C" {
 
 #include <ncurses.h>
 
-#define HOME_PANEL      1
-#define BATTERY_PANEL   2
-#define LOAD_PANEL      3
-#define DEVICE_PANEL    4
-#define SETTINGS_PANEL  5
+#define FIRST_PANEL     0
+#define BATTERY_PANEL   1
+#define SETTINGS_PANEL  3
 
     
     
@@ -87,28 +85,12 @@ extern  float   batteryRatedChargingCurrent;
 extern void     *local_readSCCValues( void * );
 
 extern  WINDOW *grouping (WINDOW **window, const int startY, const int startX, const int rows, const int cols, const char *title);
-extern  void    addTextField (WINDOW *window, const int startY, const int startX, const char *fieldName, const char *initialValue);
-extern  void    floatAddTextField (WINDOW *window, const int startY, const int startX, const char *fieldName, const float fVal, const int precision, const int width);
-extern  void    intAddTextField (WINDOW *window, const int startY, const int startX, const char *fieldName, const int iVal, const int precision, const int width);
 
 
 extern  int     getActivePanel();
 extern  void    setActivePanel( const int panelNum );
-extern  void    switchPanel (const int newActivePanelID);
-
-
 extern  void    showBatteryPanel();
-extern  void    clearBatteryPanel();
-extern  void    showHomePanel();
-extern  void    clearHomePanel();
-extern  void    showLoadPanel();
-extern  void    clearLoadPanel();
-extern  void    showDevicePanel();
-extern  void    clearDevicePanel();
-
-extern  void    showMenu ();
-extern  char    getMenuSelection();
-extern  void    menuDisplayMessage( const char * );
+extern  void    cleanupBatteryPanel();
 
 #ifdef __cplusplus
 }

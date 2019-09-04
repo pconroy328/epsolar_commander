@@ -23,7 +23,6 @@ static  WINDOW  *batteryPanel2;
 // -----------------------------------------------------------------------------
 void    showBatteryPanel()
 {
-    setActivePanel( BATTERY_PANEL );
     int     battY = 0;
     int     battX = 0;
     int     battRows = 5;
@@ -40,7 +39,7 @@ void    showBatteryPanel()
 }
 
 // -----------------------------------------------------------------------------
-void    clearBatteryPanel()
+void    cleanupBatteryPanel()
 {
     werase( batteryPanel );
     werase( batteryPanel2 );
@@ -49,10 +48,3 @@ void    clearBatteryPanel()
     werase( stdscr );
     refresh();
 }
-
-
-void    clearLoadPanel() {}
-void    clearDevicePanel() {}
-void    showLoadPanel() {}
-void    showDevicePanel() {}
-        

@@ -36,8 +36,10 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 # Object Files
 OBJECTFILES= \
 	${OBJECTDIR}/batteryPanel.o \
+	${OBJECTDIR}/curses_helpers.o \
+	${OBJECTDIR}/homePanel.o \
 	${OBJECTDIR}/main.o \
-	${OBJECTDIR}/ncurses-menu.o \
+	${OBJECTDIR}/menu.o \
 	${OBJECTDIR}/readSCCvalues.o \
 	${OBJECTDIR}/scc_settings.o
 
@@ -71,15 +73,25 @@ ${OBJECTDIR}/batteryPanel.o: batteryPanel.c
 	${RM} "$@.d"
 	$(COMPILE.c) -g -std=c99 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/batteryPanel.o batteryPanel.c
 
+${OBJECTDIR}/curses_helpers.o: curses_helpers.c
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.c) -g -std=c99 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/curses_helpers.o curses_helpers.c
+
+${OBJECTDIR}/homePanel.o: homePanel.c
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.c) -g -std=c99 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/homePanel.o homePanel.c
+
 ${OBJECTDIR}/main.o: main.c
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.c) -g -std=c99 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.c
 
-${OBJECTDIR}/ncurses-menu.o: ncurses-menu.c
+${OBJECTDIR}/menu.o: menu.c
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.c) -g -std=c99 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ncurses-menu.o ncurses-menu.c
+	$(COMPILE.c) -g -std=c99 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/menu.o menu.c
 
 ${OBJECTDIR}/readSCCvalues.o: readSCCvalues.c
 	${MKDIR} -p ${OBJECTDIR}

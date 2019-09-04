@@ -162,6 +162,9 @@ void *local_readSCCValues ( void *x_void_ptr)
 
         getRealtimeClockStr( ctx, &controllerClock[ 0 ], sizeof( controllerClock ) );
     
+        if (whichPanelActive == FIRST_PANEL)
+            paintFirstPanelData();
+        
         sleep( 10 );
     }
 
