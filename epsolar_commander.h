@@ -87,7 +87,8 @@ extern  float   batteryRatedChargingCurrent;
 extern  char    *batteryType;
 extern  char    *batteryChargingMode;
 extern  int     batteryCapacity;
-
+extern  float   tempertureCompensationCoefficient;
+extern  float   overVDisconnectV;
 
 
 

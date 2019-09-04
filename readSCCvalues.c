@@ -62,7 +62,8 @@ float   batteryRatedChargingCurrent = -9.9;
 char    *batteryType = "?";
 char    *batteryChargingMode = "?";
 int     batteryCapacity = -9;
-
+float   tempertureCompensationCoefficient = -9.9;
+float   overVDisconnectV = -9.9;
 
 
 // -----------------------------------------------------------------------------
@@ -167,6 +168,8 @@ void *local_readSCCValues ( void *x_void_ptr)
         batteryType = getBatteryType( ctx );
         //batteryChargingMode = getBatteryChargingMode( ctx );
         batteryCapacity = getBatteryCapacity( ctx );
+        tempertureCompensationCoefficient = getTempertureCompensationCoefficient( ctx );
+        overVDisconnectV = getHighVoltageDisconnect( ctx );
         
         if (getActivePanel() == HOME_PANEL)
             paintHomePanelData();

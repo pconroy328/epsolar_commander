@@ -49,13 +49,15 @@ void    paintRatedData ()
 static
 void    paintSettingsData()
 {
-    int beginCol = 1;
-    int beginRow = 1;
-    addTextField( settingsPanel, beginRow++, beginCol, "Battery Type", batteryType );
+    int beginCol = 2;
+    int beginRow = 2;
+    HaddTextField( settingsPanel, beginRow++, beginCol, "Battery Type", batteryType );
 
-    addTextField( settingsPanel, beginRow++, beginCol, "Charging Mode", "0x9070" );
-    addTextField( settingsPanel, beginRow++, beginCol, "Capacity", batteryCapacity );
+    HaddTextField( settingsPanel, beginRow++, beginCol, "Charging Mode", "0x9070" );
+    HintAddTextField( settingsPanel, beginRow++, beginCol, "Capacity", batteryCapacity, 0, 4 );
+    HfloatAddTextField( settingsPanel, beginRow++, beginCol, "Temp C. Coeff", tempertureCompensationCoefficient, 1, 4 );
 
+    HfloatAddTextField( settingsPanel, beginRow++, beginCol, "Over V Disconnect V", tempertureCompensationCoefficient, 1, 4 );
     wrefresh( settingsPanel );
 }
 
