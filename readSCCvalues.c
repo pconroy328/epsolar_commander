@@ -13,52 +13,52 @@
 
 static  modbus_t    *ctx = NULL;
 
-float   deviceTemp = -99.99;
-float   batteryTemp = -99.99;
-float   loadPower = -99.99;
-float   loadCurrent = -99.99;
-float   loadVoltage = -99.99;
-float   pvInputPower =  -99.99;
-float   pvInputCurrent = -99.99;
-float   pvInputVoltage = -99.99;
+float   deviceTemp = -9.9;
+float   batteryTemp = -9.9;
+float   loadPower = -9.9;
+float   loadCurrent = -9.9;
+float   loadVoltage = -9.9;
+float   pvInputPower =  -9.9;
+float   pvInputCurrent = -9.9;
+float   pvInputVoltage = -9.9;
 int     isNight = -1;
-int     batterySoC = -99;
-float   batteryVoltage = -99.99;
-float   batteryCurrent = -99.99;
-float   batteryPower = -99.99;
+int     batterySoC = -9;
+float   batteryVoltage = -9.9;
+float   batteryCurrent = -9.9;
+float   batteryPower = -9.9;
 
-float   minBatteryVoltage = -99.99;
-float   maxBatteryVoltage = -99.99;
+float   minBatteryVoltage = -9.9;
+float   maxBatteryVoltage = -9.9;
 
 
 uint16_t    chargingStatusBits = 0xFFFF;
-char    *chargingStatus = "???";
-char    *pvInputStatus = "???";
+char    *chargingStatus = "?";
+char    *pvInputStatus = "?";
 
 uint16_t    dischargingStatusBits = 0xFFFF;
-char    *dischargeRunning = "???";
+char    *dischargeRunning = "?";
 
 uint16_t    batteryStatusBits = 0xFFFF;
-char    *batteryStatusVoltage = "???";
-char    *batteryStatusID = "???";
-char    *battweryStatusInnerResistance = "???";
-char    *batteryStatusTemperature = "???";
+char    *batteryStatusVoltage = "?";
+char    *batteryStatusID = "?";
+char    *battweryStatusInnerResistance = "?";
+char    *batteryStatusTemperature = "?";
 
-float   energyGeneratedToday = -99.9;
-float   energyGeneratedMonth = -99.9;
-float   energyGeneratedYear = -99.9;
-float   energyGeneratedTotal = -99.9;
+float   energyGeneratedToday = -9.9;
+float   energyGeneratedMonth = -9.9;
+float   energyGeneratedYear = -9.9;
+float   energyGeneratedTotal = -9.9;
 
-float   energyConsumedToday = -99.9;
-float   energyConsumedMonth = -99.9;
-float   energyConsumedYear = -99.9;
-float   energyConsumedTotal = -99.9;
+float   energyConsumedToday = -9.9;
+float   energyConsumedMonth = -9.9;
+float   energyConsumedYear = -9.9;
+float   energyConsumedTotal = -9.9;
 
 char    controllerClock[ 64 ];
 
-int     batteryRatedVoltage;
-float   batteryRatedLoadCurrent;
-float   batteryRatedChargingCurrent;
+int     batteryRatedVoltage = -9;
+float   batteryRatedLoadCurrent = -9.9;
+float   batteryRatedChargingCurrent = -9.9;
 
 
 // -----------------------------------------------------------------------------

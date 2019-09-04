@@ -80,7 +80,7 @@ void    addTextField (WINDOW *window, const int startY, const int startX, const 
     assert( initialValue != NULL );
     assert( fieldName != NULL );
     
-    Logger_LogDebug( "  Painting a field [%s].  Window's maxx: %d, string length %d\n", initialValue, windowCols, valueLength );
+    // Logger_LogDebug( "  Painting a field [%s].  Window's maxx: %d, string length %d\n", initialValue, windowCols, valueLength );
     
     wmove( window, startY, startX );
     wattron( window,  COLOR_PAIR( TF_PAIR ) );
