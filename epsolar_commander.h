@@ -90,6 +90,9 @@ extern  WINDOW *grouping (WINDOW **window, const int startY, const int startX, c
 extern  void    addTextField (WINDOW *window, const int startY, const int startX, const char *fieldName, const char *initialValue);
 extern  void    floatAddTextField (WINDOW *window, const int startY, const int startX, const char *fieldName, const float fVal, const int precision, const int width);
 extern  void    intAddTextField (WINDOW *window, const int startY, const int startX, const char *fieldName, const int iVal, const int precision, const int width);
+extern  void    HaddTextField (WINDOW *window, const int startY, const int startX, const char *fieldName, const char *initialValue);
+extern  void    HfloatAddTextField (WINDOW *window, const int startY, const int startX, const char *fieldName, const float fVal, const int precision, const int width);
+extern  void    HintAddTextField (WINDOW *window, const int startY, const int startX, const char *fieldName, const int iVal, const int precision, const int width);
 
 
 extern  int     getActivePanel();

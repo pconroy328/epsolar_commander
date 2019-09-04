@@ -49,16 +49,16 @@ void    paintRatedData ()
     int maxRows;
     getmaxyx( ratedPanel, maxRows, maxCols ); 
     
-    int     beginCol = (maxCols / 3);
-    floatAddTextField( ratedPanel, 1, beginCol, "Voltage", batteryRatedVoltage, 1, 4 );
+    int beginCol = 2;
+    HintAddTextField( ratedPanel, 1, beginCol, "Voltage", batteryRatedVoltage, 1, 4 );
     
     beginCol = (maxCols / 2);
     beginCol -= 8;
-    floatAddTextField( ratedPanel, 1, beginCol, "Load Current", batteryRatedLoadCurrent, 2, 4 );
+    HfloatAddTextField( ratedPanel, 1, beginCol, "Load Current", batteryRatedLoadCurrent, 2, 4 );
     
-    beginCol = (maxCols / 3);
-    beginCol *= 2;
-    floatAddTextField( ratedPanel, 1, beginCol, "Charge Current", batteryRatedChargingCurrent, 2, 4 );    
+    beginCol = maxCols;
+    beginCol -= 19;
+    HfloatAddTextField( ratedPanel, 1, beginCol, "Charge Current", batteryRatedChargingCurrent, 2, 4 );    
 }
 
 // -----------------------------------------------------------------------------
