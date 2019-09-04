@@ -14,7 +14,9 @@
 #include "epsolar_commander.h"
 
 
-WINDOW      *menuWin;
+static  WINDOW      *menuWin;
+static  char        *mainMenu = "(H)ome    (B)attery    (L)oad    (D)evice   (S)ettings   (Q)uit";
+static  int         maxMenuMsgLen = 0;
 
 // ---------------------------------------------------------------------------------
 void    showMenu ()
@@ -49,9 +51,14 @@ void    showMenu ()
     beginX = 1;    
     wmove( menuWin, beginY, beginX );
     wattron( menuWin, A_REVERSE );
-    wprintw( menuWin, "(H)ome    (B)attery    (L)oad    (D)evice   (S)ettings   (Q)uit");
+    wprintw( menuWin, mainMenu );
     wattroff( menuWin, A_REVERSE );
     wrefresh( menuWin );
+    
+    //
+    // keep track of the longest message we've displayed
+    if (maxMenuMsgLen <= 0)
+        maxMenuMsgLen = strlen( mainMenu );
 }
 
 // -----------------------------------------------------------------------------
@@ -65,6 +72,7 @@ void    menuDisplayMessage (const char *msg)
     wmove( menuWin, 1, 1 );
     wattron( menuWin, A_REVERSE );
     wprintw( menuWin, msg );
+    wclrtoeol( menuWin );
     wattroff( menuWin, A_REVERSE );
     wrefresh( menuWin );
 }

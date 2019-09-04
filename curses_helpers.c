@@ -19,10 +19,10 @@ static  int     activePanelID = HOME_PANEL;
 // -----------------------------------------------------------------------------
 void    switchPanel (const int newActivePanelID)
 {
-    if (newActivePanelID > 0 && newActivePanelID == oldPanelID) {
-        Logger_LogDebug( "New panel same as old one - nothing to do..." );
-        return;
-    }
+    //if (newActivePanelID > 0 && newActivePanelID == oldPanelID) {
+    //    Logger_LogDebug( "New panel same as old one - nothing to do..." );
+    //    return;
+    // }
     
     activePanelID = newActivePanelID;
     
@@ -39,6 +39,7 @@ void    switchPanel (const int newActivePanelID)
         case    LOAD_PANEL:     showLoadPanel();   break;
         case    DEVICE_PANEL:   showDevicePanel();   break;
     }
+    
     oldPanelID = activePanelID;
 }
 

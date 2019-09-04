@@ -99,9 +99,11 @@ int main (int argc, char *argv[])
 
         if (ch == 'H') {
             switchPanel( HOME_PANEL );
+            showMenu();
         } else if (ch == 'B') {
             switchPanel( BATTERY_PANEL );
             showBatteryPanel();
+            showMenu();
         } else if (ch == 'L') {
         } else if (ch == 'D') {
         } else if (ch == 'S') {
