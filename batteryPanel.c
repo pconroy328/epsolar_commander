@@ -31,16 +31,16 @@ void    paintRatedData ()
     int maxRows;
     getmaxyx( ratedPanel, maxRows, maxCols ); 
     
-    int beginCol = 2;
-    HfloatAddTextField( ratedPanel, 2, beginCol, "Voltage", batteryRatedVoltage, 2, 4 );
+    int beginCol = 3;
+    HfloatAddTextField( ratedPanel, 1, beginCol, "Voltage", batteryRatedVoltage, 2, 4 );
     
     beginCol = (maxCols / 2);
     beginCol -= 12;
-    HfloatAddTextField( ratedPanel, 2, beginCol, "Load Current", batteryRatedLoadCurrent, 2, 4 );
+    HfloatAddTextField( ratedPanel, 1, beginCol, "Load Current", batteryRatedLoadCurrent, 2, 4 );
     
     beginCol = maxCols;
     beginCol -= 24;
-    HfloatAddTextField( ratedPanel, 2, beginCol, "Charge Current", batteryRatedChargingCurrent, 2, 4 ); 
+    HfloatAddTextField( ratedPanel, 1, beginCol, "Charge Current", batteryRatedChargingCurrent, 2, 4 ); 
     
     wrefresh( ratedPanel );
 }
@@ -49,8 +49,14 @@ void    paintRatedData ()
 static
 void    paintSettingsData()
 {
+    int beginCol = 1;
+    int beginRow = 1;
+    addTextField( settingsPanel, beginRow++, beginCol, "Battery Type", batteryType );
+
+    addTextField( settingsPanel, beginRow++, beginCol, "Charging Mode", "0x9070" );
+    addTextField( settingsPanel, beginRow++, beginCol, "Capacity", batteryCapacity );
+
     wrefresh( settingsPanel );
-    
 }
 
 // -----------------------------------------------------------------------------
@@ -66,7 +72,7 @@ void    showBatteryPanel()
     
     int     battY2 = battRows;
     int     battX2 = 0;
-    int     battRows2 = 18;
+    int     battRows2 = 20;
     int     battCols2 = MaxCols;
     settingsPanel = grouping( &settingsPanel, battY2, battX2, battRows2, battCols2, "Battery Settings" );
     paintSettingsData();

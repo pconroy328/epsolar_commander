@@ -59,6 +59,10 @@ char    controllerClock[ 64 ];
 float   batteryRatedVoltage = -9.9;
 float   batteryRatedLoadCurrent = -9.9;
 float   batteryRatedChargingCurrent = -9.9;
+char    *batteryType = "?";
+char    *batteryChargingMode = "?";
+int     batteryCapacity = -9;
+
 
 
 // -----------------------------------------------------------------------------
@@ -159,6 +163,11 @@ void *local_readSCCValues ( void *x_void_ptr)
 
         getRealtimeClockStr( ctx, &controllerClock[ 0 ], sizeof( controllerClock ) );
 
+        
+        batteryType = getBatteryType( ctx );
+        //batteryChargingMode = getBatteryChargingMode( ctx );
+        batteryCapacity = getBatteryCapacity( ctx );
+        
         if (getActivePanel() == HOME_PANEL)
             paintHomePanelData();
         else if (getActivePanel() == BATTERY_PANEL)

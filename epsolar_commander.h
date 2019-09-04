@@ -84,6 +84,14 @@ extern  float   batteryRatedVoltage;        // will be 12, 24,36, 48...
 extern  float   batteryRatedLoadCurrent;
 extern  float   batteryRatedChargingCurrent;
 
+extern  char    *batteryType;
+extern  char    *batteryChargingMode;
+extern  int     batteryCapacity;
+
+
+
+
+
 extern void     *local_readSCCValues( void * );
 
 extern  WINDOW *grouping (WINDOW **window, const int startY, const int startX, const int rows, const int cols, const char *title);
