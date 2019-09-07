@@ -67,6 +67,10 @@ void    paintSettingsData()
     
     HintAddTextField( settingsPanel, beginRow++, beginCol,  "State of Charge    ", batterySoC, 1, 4 );
     wrefresh( settingsPanel );
+    
+    beginCol = (MaxCols / 2) + 2;
+    beginRow = 2;
+    addTextField( settingsPanel, beginRow++, beginCol, "Battery Rated Code", batteryRatedVoltageCode );
 }
 
 // -----------------------------------------------------------------------------

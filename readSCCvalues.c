@@ -69,7 +69,7 @@ float   equalizationVoltage;
 float   boostVoltage;
 float   floatVoltage;
 float   boostReconnectVoltage;
-
+char    *batteryRatedVoltageCode = "?";
 
 
 // -----------------------------------------------------------------------------
@@ -181,7 +181,8 @@ void *local_readSCCValues ( void *x_void_ptr)
         boostVoltage = getBoostingVoltage( ctx );
         floatVoltage = getFloatingVoltage( ctx );
         boostReconnectVoltage = getBoostReconnectVoltage( ctx );
-        
+        batteryRatedVoltageCode = getBatteryRatedVoltageCode( ctx );
+
         if (getActivePanel() == HOME_PANEL)
             paintHomePanelData();
         else if (getActivePanel() == BATTERY_PANEL)
