@@ -73,6 +73,12 @@ char    *batteryRatedVoltageCode = "?";
 
 int     boostDuration = -9;
 int     equalizeDuration = -9;
+float   chargingLimitVoltage = -9.9;
+float   dischargingLimitVoltage = -9.9;
+float   lowVoltageDisconnectVoltage = -9.9;
+float   lowVoltageReconnectVoltage;
+float   underVoltageWarningVoltage;
+float   underVolatageWarningReconnectVoltage;
 
 
 // -----------------------------------------------------------------------------
@@ -188,6 +194,12 @@ void *local_readSCCValues ( void *x_void_ptr)
 
         boostDuration = getBoostDuration( ctx );
         equalizeDuration = getEqualizeDuration( ctx );
+        chargingLimitVoltage = getChargingLimitVoltage( ctx );
+        dischargingLimitVoltage = getDischargingLimitVoltage( ctx );
+        lowVoltageDisconnectVoltage = getLowVoltageDisconnectVoltage( ctx );
+        lowVoltageReconnectVoltage = getLowVoltageReconnectVoltage( ctx );
+        underVoltageWarningVoltage = getUnderVoltageWarningVoltage( ctx );
+        underVolatageWarningReconnectVoltage = getUnderVoltageWarningRecoverVoltage( ctx );
         
         if (getActivePanel() == HOME_PANEL)
             paintHomePanelData();

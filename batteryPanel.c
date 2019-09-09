@@ -70,9 +70,15 @@ void    paintSettingsData()
     
     beginCol = (MaxCols / 2) + 2;
     beginRow = 2;
-    HaddTextField( settingsPanel, beginRow++, beginCol, "11. Battery Rated Code", batteryRatedVoltageCode );
-    HintAddTextField( settingsPanel, beginRow++, beginCol, "12. Boost Duration", boostDuration, 0, 4 );
-    HintAddTextField( settingsPanel, beginRow++, beginCol, "13. Equalization Duration", equalizeDuration, 0, 4 );
+    HaddTextField( settingsPanel, beginRow++, beginCol,     "11. Battery Rated Code   ", batteryRatedVoltageCode );
+    HintAddTextField( settingsPanel, beginRow++, beginCol,  "12. Boost Duration       ", boostDuration, 0, 4 );
+    HintAddTextField( settingsPanel, beginRow++, beginCol,  "13. Equalization Duration", equalizeDuration, 0, 4 );
+    HfloatAddTextField( settingsPanel, beginRow++,beginCol, "14. Charging Limit V     ", chargingLimitVoltage, 1, 4 );
+    HfloatAddTextField( settingsPanel, beginRow++,beginCol, "15. Discharging Limit V  ", dischargingLimitVoltage, 1, 4 );    
+    HfloatAddTextField( settingsPanel, beginRow++,beginCol, "16. Low V Disconnect V   ", lowVoltageDisconnectVoltage, 1, 4 );
+    HfloatAddTextField( settingsPanel, beginRow++,beginCol, "17. Low V Reconnect V    ", lowVoltageReconnectVoltage, 1, 4 );
+    HfloatAddTextField( settingsPanel, beginRow++,beginCol, "18. Low V Warning V      ", underVoltageWarningVoltage, 1, 4 );
+    HfloatAddTextField( settingsPanel, beginRow++,beginCol, "19. Low V Warnign Recon V", underVolatageWarningReconnectVoltage, 1, 4 );
 }
 
 // -----------------------------------------------------------------------------

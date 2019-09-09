@@ -97,7 +97,12 @@ extern  float   boostReconnectVoltage;
 extern  char    *batteryRatedVoltageCode;
 extern  int     boostDuration;
 extern  int     equalizeDuration;
-
+extern  float   chargingLimitVoltage;
+extern  float   dischargingLimitVoltage;
+extern  float   lowVoltageDisconnectVoltage;
+extern  float   lowVoltageReconnectVoltage;
+extern  float   underVoltageWarningVoltage;
+extern  float   underVolatageWarningReconnectVoltage;
 
 
 extern void     *local_readSCCValues( void * );
