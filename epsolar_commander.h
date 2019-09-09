@@ -107,6 +107,14 @@ extern  float   batteryChargePercent;
 extern  float   batteryDischargePercent;
 
 extern  int     loadControlMode;
+extern  float   nighttimeThresholdVoltage;
+extern  int     nighttimeThresholdVoltageDelay;
+extern  float   daytimeThresholdVoltage;
+extern  int     daytimeThresholdVoltageDelay;
+extern  char    *timerOneOn, *timerOneOff;
+extern  char    *timerTwoOn, *timerTwoOff;
+extern  char    *workOneTime, *workTwoTime;
+extern  char    *lengthOfNight;
 
 
 
@@ -130,6 +138,7 @@ extern  void    switchPanel (const int newActivePanelID);
 extern  void    showBatteryPanel();
 extern  void    clearBatteryPanel();
 extern  void    paintBatteryPanelData();
+extern  void    paintLoadPanelData();
 
 extern  void    showHomePanel();
 extern  void    clearHomePanel();

@@ -82,7 +82,15 @@ float   underVolatageWarningReconnectVoltage = -9.9;;
 float   batteryChargePercent = -9.9;
 float   batteryDischargePercent = -9.9;
 
-int     loadControlMode = -1;
+int     loadControlMode = -9;
+float   nighttimeThresholdVoltage = -9.9;
+int     nighttimeThresholdVoltageDelay = -9;
+float   daytimeThresholdVoltage= -9.9;
+int     daytimeThresholdVoltageDelay= -9;
+char    *timerOneOn = "?", *timerOneOff = "?";
+char    *timerTwoOn = "?", *timerTwoOff = "?";
+char    *workOneTime = "?", *workTwoTime = "?";
+char    *lengthOfNight = "??:??";
 
 // -----------------------------------------------------------------------------
 void    connectLocally ()
@@ -209,6 +217,15 @@ void *local_readSCCValues ( void *x_void_ptr)
         
         
         loadControlMode = getLoadControllingMode( ctx );
+        nighttimeThresholdVoltage = getNightTimeThresholdVoltage( ctx );
+     nighttimeThresholdVoltageDelay = getLightSignalStartupDelayTime( ctx );
+   daytimeThresholdVoltage = getDayTimeThresholdVoltage( ctx );
+     daytimeThresholdVoltageDelay = getLightSignalCloseDelayTime( ctx );
+    timerOneOn = "?", timerOneOff = "?";
+    timerTwoOn = "?", timerTwoOff = "?";
+    workOneTime = "?", workTwoTime = "?";
+    lengthOfNight = "??:??";
+
         
         if (getActivePanel() == HOME_PANEL)
             paintHomePanelData();

@@ -31,6 +31,21 @@ void    paintLoadData ()
     HaddTextField( panel, beginRow++, beginCol, "Night On and Timer", (loadControlMode == 0x02 ? "Yes" : "No ") );
     HaddTextField( panel, beginRow++, beginCol, "Timer On and Off  ", (loadControlMode == 0x03 ? "Yes" : "No ") );
     
+    beginRow ++;
+    HaddTextField( panel, beginRow++, beginCol, "Timer One - On", timerOneOn );
+    HaddTextField( panel, beginRow++, beginCol, "Timer Two - On", timerTwoOn ); 
+            
+    beginRow++;
+    HfloatAddTextField( panel, beginRow++, beginCol, "Is Night Threshold <= V", nighttimeThresholdVoltage, 1, 4 );
+    HfloatAddTextField( panel, beginRow++, beginCol, "Is Day Threshold >= V  ", daytimeThresholdVoltage, 1, 4 );
+
+    beginRow++;
+    HaddTextField( panel, beginRow++, beginCol, "Work Timer One", workOneTime );
+    HaddTextField( panel, beginRow++, beginCol, "Work Timer Two", workTwoTime );
+    
+    beginRow++;
+    HaddTextField( panel, beginRow++, beginCol, "Length of Night", workTwoTime );
+            
     wrefresh( panel );
 }
 
