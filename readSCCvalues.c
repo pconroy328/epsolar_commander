@@ -92,6 +92,17 @@ char    *timerTwoOn = "?", *timerTwoOff = "?";
 char    *workOneTime = "?", *workTwoTime = "?";
 char    *lengthOfNight = "??:??";
 
+int     HH_LON, MM_LON;
+int     backlightTime;
+int     HH_T1On, MM_T1On, SS_T1On;
+int     HH_T2On, MM_T2On, SS_T2On;
+int     HH_T1Off, MM_T1Off, SS_T1Off;
+int     HH_T2Off, MM_T2Off, SS_T2Off;
+int     HH_WT1, MM_WT1, HH_WT2, MM_WT2;     
+
+
+
+
 // -----------------------------------------------------------------------------
 void    connectLocally ()
 {
@@ -136,6 +147,8 @@ void    setActivePanel (const int panelNum)
 {
     whichPanelActive = panelNum;
 }
+
+// -----------------------------------------------------------------------------
 int getActivePanel ()
 {
     return whichPanelActive;
@@ -221,10 +234,22 @@ void *local_readSCCValues ( void *x_void_ptr)
      nighttimeThresholdVoltageDelay = getLightSignalStartupDelayTime( ctx );
    daytimeThresholdVoltage = getDayTimeThresholdVoltage( ctx );
      daytimeThresholdVoltageDelay = getLightSignalCloseDelayTime( ctx );
-    timerOneOn = "?", timerOneOff = "?";
-    timerTwoOn = "?", timerTwoOff = "?";
-    workOneTime = "?", workTwoTime = "?";
-    lengthOfNight = "??:??";
+
+
+     getLengthOfNight( ctx, &HH_LON, &MM_LON );
+     backlightTime = getBacklightTime( ctx );
+     
+     getTurnOffTiming1( ctx, &HH_T1Off, &MM_T1Off, &SS_T1Off );
+     getTurnOnTiming1( ctx, &HH_T1On, &MM_T1On, &SS_T1On );
+     getTurnOffTiming2( ctx, &HH_T2Off, &MM_T2Off, &SS_T2Off );
+     getTurnOnTiming2( ctx, &HH_T2On, &MM_T2On, &SS_T2On );
+
+     getWorkingTimeLength1( ctx, &HH_WT1, &MM_WT1 );
+     getWorkingTimeLength2( ctx, &HH_WT2, &MM_WT2 );
+
+     
+extern  void    setWorkingTimeLength2( modbus_t *ctx, const int hour, const int minute );
+extern  void    setWorkingTimeLength1( modbus_t *ctx, const int hour, const int minute );
 
         
         if (getActivePanel() == HOME_PANEL)

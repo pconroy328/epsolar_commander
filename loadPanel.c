@@ -56,7 +56,7 @@ void    showLoadPanel()
 
     int     startY = 0;
     int     startX = 0;
-    int     nRows = 10;
+    int     nRows = MaxRows;
     int     nCols = MaxCols;
 
     panel = grouping( &panel, startY, startX, nRows, nCols, "Load Control" );
