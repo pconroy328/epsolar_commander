@@ -53,7 +53,7 @@ void    paintSettingsData()
     int beginRow = 2;
     HaddTextField( settingsPanel, beginRow++, beginCol,     " 1. Battery Type       ", batteryType );
 
-    HaddTextField( settingsPanel, beginRow++, beginCol,     " 2. Charging Mode      ", "0x9070" );
+    HaddTextField( settingsPanel, beginRow++, beginCol,     " 2. Charging Mode      ", batteryChargingMode );
     HintAddTextField( settingsPanel, beginRow++, beginCol,  " 3. Capacity (AH)      ", batteryCapacity, 0, 4 );
     HfloatAddTextField( settingsPanel, beginRow++,beginCol, " 4. Temp Comp Coeff    ", tempertureCompensationCoefficient, 1, 4 );
 
@@ -78,7 +78,7 @@ void    paintSettingsData()
     HfloatAddTextField( settingsPanel, beginRow++,beginCol, "16. Low V Disconnect V   ", lowVoltageDisconnectVoltage, 1, 4 );
     HfloatAddTextField( settingsPanel, beginRow++,beginCol, "17. Low V Reconnect V    ", lowVoltageReconnectVoltage, 1, 4 );
     HfloatAddTextField( settingsPanel, beginRow++,beginCol, "18. Low V Warning V      ", underVoltageWarningVoltage, 1, 4 );
-    HfloatAddTextField( settingsPanel, beginRow++,beginCol, "19. Low V Warnign Recon V", underVolatageWarningReconnectVoltage, 1, 4 );
+    HfloatAddTextField( settingsPanel, beginRow++,beginCol, "19. Low V Warning Recon V", underVolatageWarningReconnectVoltage, 1, 4 );
 }
 
 // -----------------------------------------------------------------------------

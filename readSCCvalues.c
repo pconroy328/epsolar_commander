@@ -181,7 +181,7 @@ void *local_readSCCValues ( void *x_void_ptr)
 
         
         batteryType = getBatteryType( ctx );
-        //batteryChargingMode = getBatteryChargingMode( ctx );
+        batteryChargingMode = getManagementModesOfBatteryChargingAndDischarging( ctx );
         batteryCapacity = getBatteryCapacity( ctx );
         tempertureCompensationCoefficient = getTempertureCompensationCoefficient( ctx );
         overVDisconnectV = getHighVoltageDisconnect( ctx );
