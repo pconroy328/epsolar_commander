@@ -41,7 +41,7 @@ char    *dischargeRunning = "?";
 uint16_t    batteryStatusBits = 0xFFFF;
 char    *batteryStatusVoltage = "?";
 char    *batteryStatusID = "?";
-char    *battweryStatusInnerResistance = "?";
+char    *batteryStatusInnerResistance = "?";
 char    *batteryStatusTemperature = "?";
 
 float   energyGeneratedToday = -9.9;
@@ -156,7 +156,7 @@ void *local_readSCCValues ( void *x_void_ptr)
         batteryStatusBits = getBatteryStatusBits( ctx );
         batteryStatusVoltage = getBatteryStatusVoltage( batteryStatusBits );
         batteryStatusID = getBatteryStatusIdentification( batteryStatusBits );
-        battweryStatusInnerResistance = getBatteryStatusInnerResistance( batteryStatusBits );
+        batteryStatusInnerResistance = getBatteryStatusInnerResistance( batteryStatusBits );
         batteryStatusTemperature = getBatteryStatusTemperature( batteryStatusBits );
 
         
@@ -184,7 +184,7 @@ void *local_readSCCValues ( void *x_void_ptr)
         boostVoltage = getBoostingVoltage( ctx );
         floatVoltage = getFloatingVoltage( ctx );
         boostReconnectVoltage = getBoostReconnectVoltage( ctx );
-        batteryRatedVoltageCode = getBatteryRatedVoltageCode( ctx );
+        batteryRatedVoltageCode = getBatteryRatedVoltageCode( ctx );                                  
 
         boostDuration = getBoostDuration( ctx );
         equalizeDuration = getEqualizeDuration( ctx );

@@ -61,7 +61,7 @@ extern  float   minBatteryVoltage;
 extern  float   maxBatteryVoltage;
 extern  char    *batteryStatusVoltage;
 extern  char    *batteryStatusID;
-extern  char    *battweryStatusInnerResistance;
+extern  char    *batteryStatusInnerResistance;
 extern  char    *batteryStatusTemperature;
 
 extern  char    *chargingStatus;
