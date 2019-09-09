@@ -122,7 +122,7 @@ extern  int     HH_T1On, MM_T1On, SS_T1On;
 extern  int     HH_T2On, MM_T2On, SS_T2On;
 extern  int     HH_T1Off, MM_T1Off, SS_T1Off;
 extern  int     HH_T2Off, MM_T2Off, SS_T2Off;
-extern  int     HH_WT1, MM_WT1, HH_WT2, MM_HT2;     
+extern  int     HH_WT1, MM_WT1, HH_WT2, MM_WT2;     
 
 
 

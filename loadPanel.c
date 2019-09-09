@@ -32,19 +32,34 @@ void    paintLoadData ()
     HaddTextField( panel, beginRow++, beginCol, "Timer On and Off  ", (loadControlMode == 0x03 ? "Yes" : "No ") );
     
     beginRow ++;
-    HaddTextField( panel, beginRow++, beginCol, "Timer One - On", timerOneOn );
-    HaddTextField( panel, beginRow++, beginCol, "Timer Two - On", timerTwoOn ); 
+    char    buf1[ 12 ], buf2[ 12 ];
+    snprintf( buf1, sizeof buf1, "%02d:%02d:%02d", HH_T1On, MM_T1On, SS_T1On );
+    snprintf( buf2, sizeof buf2, "%02d:%02d:%02d", HH_T2On, MM_T2On, SS_T2On );
+    HaddTextField( panel, beginRow++, beginCol, "Timer One - On", buf1 );
+    HaddTextField( panel, beginRow++, beginCol, "Timer Two - On", buf2 ); 
             
+    char    buf3[ 12 ], buf4[ 12 ];
+    snprintf( buf3, sizeof buf3, "%02d:%02d:%02d", HH_T1Off, MM_T1Off, SS_T1Off );
+    snprintf( buf4, sizeof buf4, "%02d:%02d:%02d", HH_T2Off, MM_T2Off, SS_T2Off );
+    HaddTextField( panel, beginRow++, beginCol, "Timer One - Off", buf3 );
+    HaddTextField( panel, beginRow++, beginCol, "Timer Two - Off", buf4 ); 
+    
+    
     beginRow++;
     HfloatAddTextField( panel, beginRow++, beginCol, "Is Night Threshold <= V", nighttimeThresholdVoltage, 1, 4 );
     HfloatAddTextField( panel, beginRow++, beginCol, "Is Day Threshold >= V  ", daytimeThresholdVoltage, 1, 4 );
 
     beginRow++;
-    HaddTextField( panel, beginRow++, beginCol, "Work Timer One", workOneTime );
-    HaddTextField( panel, beginRow++, beginCol, "Work Timer Two", workTwoTime );
+    char    buf5[ 12 ], buf6[ 12 ];
+    snprintf( buf5, sizeof buf5, "%02d:%02d", HH_WT1, MM_WT1 );
+    snprintf( buf6, sizeof buf6, "%02d:%02d", HH_WT2, MM_WT2 );
+    HaddTextField( panel, beginRow++, beginCol, "Work Timer One", buf5 );
+    HaddTextField( panel, beginRow++, beginCol, "Work Timer Two", buf6 );
     
     beginRow++;
-    HaddTextField( panel, beginRow++, beginCol, "Length of Night", workTwoTime );
+    char    buf7[ 10 ];
+    snprintf( buf7, sizeof buf7, "%02d:%02d", HH_LON, MM_LON );
+    HaddTextField( panel, beginRow++, beginCol, "Length of Night", buf7 );
             
     wrefresh( panel );
 }
