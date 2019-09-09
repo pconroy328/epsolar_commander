@@ -133,8 +133,6 @@ void    clearBatteryPanel()
 }
 
 
-void    clearLoadPanel() {}
 void    clearDevicePanel() {}
-void    showLoadPanel() {}
 void    showDevicePanel() {}
         

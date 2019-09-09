@@ -38,6 +38,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/batteryPanel.o \
 	${OBJECTDIR}/curses_helpers.o \
 	${OBJECTDIR}/homePanel.o \
+	${OBJECTDIR}/loadPanel.o \
 	${OBJECTDIR}/main.o \
 	${OBJECTDIR}/menu.o \
 	${OBJECTDIR}/readSCCvalues.o \
@@ -82,6 +83,11 @@ ${OBJECTDIR}/homePanel.o: homePanel.c
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.c) -O2 -std=c99 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/homePanel.o homePanel.c
+
+${OBJECTDIR}/loadPanel.o: loadPanel.c
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.c) -O2 -std=c99 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/loadPanel.o loadPanel.c
 
 ${OBJECTDIR}/main.o: main.c
 	${MKDIR} -p ${OBJECTDIR}

@@ -106,6 +106,10 @@ extern  float   underVolatageWarningReconnectVoltage;
 extern  float   batteryChargePercent;
 extern  float   batteryDischargePercent;
 
+extern  int     loadControlMode;
+
+
+
 
 extern void     *local_readSCCValues( void * );
 

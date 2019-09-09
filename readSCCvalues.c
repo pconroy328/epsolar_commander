@@ -82,6 +82,7 @@ float   underVolatageWarningReconnectVoltage = -9.9;;
 float   batteryChargePercent = -9.9;
 float   batteryDischargePercent = -9.9;
 
+int     loadControlMode = -1;
 
 // -----------------------------------------------------------------------------
 void    connectLocally ()
@@ -206,10 +207,15 @@ void *local_readSCCValues ( void *x_void_ptr)
         batteryChargePercent = getChargingPercentage( ctx );
         batteryDischargePercent = getDischargingPercentage( ctx );
         
+        
+        loadControlMode = getLoadControllingMode( ctx );
+        
         if (getActivePanel() == HOME_PANEL)
             paintHomePanelData();
         else if (getActivePanel() == BATTERY_PANEL)
             paintBatteryPanelData();
+        else if (getActivePanel() == LOAD_PANEL)
+            paintLoadPanelData();
     
         sleep( 10 );
     }
