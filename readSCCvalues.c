@@ -76,9 +76,11 @@ int     equalizeDuration = -9;
 float   chargingLimitVoltage = -9.9;
 float   dischargingLimitVoltage = -9.9;
 float   lowVoltageDisconnectVoltage = -9.9;
-float   lowVoltageReconnectVoltage;
-float   underVoltageWarningVoltage;
-float   underVolatageWarningReconnectVoltage;
+float   lowVoltageReconnectVoltage = -9.9;;
+float   underVoltageWarningVoltage = -9.9;;
+float   underVolatageWarningReconnectVoltage = -9.9;;
+float   batteryChargePercent = -9.9;
+float   batteryDischargePercent = -9.9;
 
 
 // -----------------------------------------------------------------------------
@@ -200,6 +202,9 @@ void *local_readSCCValues ( void *x_void_ptr)
         lowVoltageReconnectVoltage = getLowVoltageReconnectVoltage( ctx );
         underVoltageWarningVoltage = getUnderVoltageWarningVoltage( ctx );
         underVolatageWarningReconnectVoltage = getUnderVoltageWarningRecoverVoltage( ctx );
+        
+        batteryChargePercent = getChargingPercentage( ctx );
+        batteryDischargePercent = getDischargingPercentage( ctx );
         
         if (getActivePanel() == HOME_PANEL)
             paintHomePanelData();

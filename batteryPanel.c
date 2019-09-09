@@ -64,21 +64,21 @@ void    paintSettingsData()
     HfloatAddTextField( settingsPanel, beginRow++,beginCol, " 8. Boost Voltage      ", boostVoltage, 1, 4 );
     HfloatAddTextField( settingsPanel, beginRow++,beginCol, " 9. Float Voltage      ", floatVoltage, 1, 4 );
     HfloatAddTextField( settingsPanel, beginRow++,beginCol, "10. Boost Recon Chrg V ", boostReconnectVoltage, 1, 4 );
-    
-    HintAddTextField( settingsPanel, beginRow++, beginCol,  "State of Charge    ", batterySoC, 1, 4 );
+    HfloatAddTextField( settingsPanel, beginRow++,beginCol, "11. Battery Charge %   ", batteryChargePercent, 1, 4 );
     wrefresh( settingsPanel );
     
     beginCol = (MaxCols / 2) + 2;
     beginRow = 2;
-    HaddTextField( settingsPanel, beginRow++, beginCol,     "11. Battery Rated Code   ", batteryRatedVoltageCode );
-    HintAddTextField( settingsPanel, beginRow++, beginCol,  "12. Boost Duration       ", boostDuration, 0, 4 );
-    HintAddTextField( settingsPanel, beginRow++, beginCol,  "13. Equalization Duration", equalizeDuration, 0, 4 );
-    HfloatAddTextField( settingsPanel, beginRow++,beginCol, "14. Charging Limit V     ", chargingLimitVoltage, 1, 4 );
-    HfloatAddTextField( settingsPanel, beginRow++,beginCol, "15. Discharging Limit V  ", dischargingLimitVoltage, 1, 4 );    
-    HfloatAddTextField( settingsPanel, beginRow++,beginCol, "16. Low V Disconnect V   ", lowVoltageDisconnectVoltage, 1, 4 );
-    HfloatAddTextField( settingsPanel, beginRow++,beginCol, "17. Low V Reconnect V    ", lowVoltageReconnectVoltage, 1, 4 );
-    HfloatAddTextField( settingsPanel, beginRow++,beginCol, "18. Low V Warning V      ", underVoltageWarningVoltage, 1, 4 );
-    HfloatAddTextField( settingsPanel, beginRow++,beginCol, "19. Low V Warning Recon V", underVolatageWarningReconnectVoltage, 1, 4 );
+    HaddTextField( settingsPanel, beginRow++, beginCol,     "12. Battery Rated Code   ", batteryRatedVoltageCode );
+    HintAddTextField( settingsPanel, beginRow++, beginCol,  "13. Boost Duration       ", boostDuration, 0, 4 );
+    HintAddTextField( settingsPanel, beginRow++, beginCol,  "14. Equalization Duration", equalizeDuration, 0, 4 );
+    HfloatAddTextField( settingsPanel, beginRow++,beginCol, "15. Charging Limit V     ", chargingLimitVoltage, 1, 4 );
+    HfloatAddTextField( settingsPanel, beginRow++,beginCol, "16. Discharging Limit V  ", dischargingLimitVoltage, 1, 4 );    
+    HfloatAddTextField( settingsPanel, beginRow++,beginCol, "17. Low V Disconnect V   ", lowVoltageDisconnectVoltage, 1, 4 );
+    HfloatAddTextField( settingsPanel, beginRow++,beginCol, "18. Low V Reconnect V    ", lowVoltageReconnectVoltage, 1, 4 );
+    HfloatAddTextField( settingsPanel, beginRow++,beginCol, "19. Low V Warning V      ", underVoltageWarningVoltage, 1, 4 );
+    HfloatAddTextField( settingsPanel, beginRow++,beginCol, "20. Low V Warning Recon V", underVolatageWarningReconnectVoltage, 1, 4 );
+    HfloatAddTextField( settingsPanel, beginRow++,beginCol, "21. Battery Disharge %   ", batteryDischargePercent, 1, 4 );
 }
 
 // -----------------------------------------------------------------------------
