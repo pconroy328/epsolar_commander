@@ -90,7 +90,7 @@ void    paintSettingsData()
     //
     // Litte format - shove it down a row
     beginRow += 1;
-    HfloatAddTextField( settingsPanel, beginRow++,beginCol, "21. Battery Disxharge %  ", batteryDischargePercent, 1, 4 );
+    HfloatAddTextField( settingsPanel, beginRow++,beginCol, "21. Battery Discharge %  ", batteryDischargePercent, 1, 4 );
 }
 
 // -----------------------------------------------------------------------------
