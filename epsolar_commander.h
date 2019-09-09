@@ -95,7 +95,8 @@ extern  float   boostVoltage;
 extern  float   floatVoltage;
 extern  float   boostReconnectVoltage;
 extern  char    *batteryRatedVoltageCode;
-
+extern  int     boostDuration;
+extern  int     equalizeDuration;
 
 
 
