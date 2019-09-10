@@ -28,9 +28,9 @@ void    paintLoadData ()
     int beginRow = 1;
     int beginCol = 3;
 
-    HaddTextField( manualPanel, beginRow++, beginCol, "Manual            ", (loadControlMode == 0x00 ? "Yes" : "No ") );
+    HaddTextField( manualPanel, beginRow++, beginCol, "Manual ", (loadControlMode == 0x00 ? "Yes" : "No ") );
     //HaddTextField( manualPanel, beginRow++, beginCol, "Timer On and Off  ", (loadControlMode == 0x03 ? "Yes" : "No ") );
-    wrefresh( panel );
+    wrefresh( manualPanel );
 
     beginRow = 1;
     snprintf( buf1, sizeof buf1, "%02d:%02d:%02d", HH_T1On, MM_T1On, SS_T1On );
