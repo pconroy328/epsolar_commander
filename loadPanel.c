@@ -25,6 +25,8 @@ void    paintLoadData ()
     //
     char    buf1[ 12 ], buf2[ 12 ];
     char    buf3[ 12 ], buf4[ 12 ];
+    char    buf5[ 12 ], buf6[ 12 ];
+    char    buf7[ 10 ];
     
     int beginRow = 1;
     int beginCol = 3;
@@ -49,21 +51,14 @@ void    paintLoadData ()
             
     
     beginRow = 1;
-    HaddTextField( manualPanel, beginRow++, beginCol, "Night On and Timer", (loadControlMode == 0x02 ? "Yes" : "No ") );
-    wrefresh( duskTimerPanel );
-    
-    
-    beginRow++;
-
-    beginRow++;
-    char    buf5[ 12 ], buf6[ 12 ];
+    HaddTextField( duskTimerPanel, beginRow++, beginCol, "Night On and Timer", (loadControlMode == 0x02 ? "Yes" : "No ") );
     snprintf( buf5, sizeof buf5, "%02d:%02d", HH_WT1, MM_WT1 );
     snprintf( buf6, sizeof buf6, "%02d:%02d", HH_WT2, MM_WT2 );
-    //HaddTextField( panel, beginRow++, beginCol, "Work Timer One", buf5 );
-    //HaddTextField( panel, beginRow++, beginCol, "Work Timer Two", buf6 );
+    HaddTextField( duskTimerPanel, beginRow, beginCol, "Work Timer One", buf5 );
+    HaddTextField( duskTimerPanel, beginRow++, beginCol + 30, "Work Timer Two", buf6 );
+    wrefresh( duskTimerPanel );
     
     beginRow++;
-    char    buf7[ 10 ];
     snprintf( buf7, sizeof buf7, "%02d:%02d", HH_LON, MM_LON );
     //HaddTextField( panel, beginRow++, beginCol, "Length of Night", buf7 );
             
