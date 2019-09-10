@@ -93,7 +93,7 @@ void    showLoadPanel()
     duskDawnPanel = grouping( &duskDawnPanel, startY, startX, nRows, nCols, "Dusk to Dawn Control" );
     
     startY += nRows;
-    nRows = 4;
+    nRows = 5;
     //nCols = MaxCols - startY;
     duskTimerPanel = grouping( &duskTimerPanel, startY, startX, nRows, nCols, "Dusk Plus Timer Control" );
     
