@@ -40,7 +40,7 @@ void    paintLoadData ()
     snprintf( buf3, sizeof buf3, "%02d:%02d:%02d", HH_T1Off, MM_T1Off, SS_T1Off );
     snprintf( buf4, sizeof buf4, "%02d:%02d:%02d", HH_T2Off, MM_T2Off, SS_T2Off );
     
-    HaddTextField( duskDawnPanel, beginRow++, beginCol,             "Dusk On/Dawn Off", (loadControlMode == 0x01 ? "Enabled" : "Disabled ") );
+    HaddTextField( duskDawnPanel, beginRow++, beginCol,             "Dusk On/Dawn Off", (loadControlMode == 0x01 ? "Enabled " : "Disabled") );
     HaddTextField( duskDawnPanel, beginRow, beginCol,               "Timer One - On  ", buf1 );
     HaddTextField( duskDawnPanel, beginRow++, beginCol + 30,        "Timer One - Off ", buf3 );
     HaddTextField( duskDawnPanel, beginRow, beginCol,               "Timer Two - On  ", buf2 ); 
@@ -51,7 +51,7 @@ void    paintLoadData ()
             
     
     beginRow = 1;
-    HaddTextField( duskTimerPanel, beginRow++, beginCol, "Night On and Timer", (loadControlMode == 0x02 ? "Yes" : "No ") );
+    HaddTextField( duskTimerPanel, beginRow++, beginCol, "Dusk On and Timer", (loadControlMode == 0x02 ? "Enabled " : "Disabled") );
     snprintf( buf5, sizeof buf5, "%02d:%02d", HH_WT1, MM_WT1 );
     snprintf( buf6, sizeof buf6, "%02d:%02d", HH_WT2, MM_WT2 );
     HaddTextField( duskTimerPanel, beginRow, beginCol, "Work Timer One", buf5 );
@@ -72,7 +72,7 @@ void    showLoadPanel()
 
     int     startY = 0;
     int     startX = 0;
-    int     nRows = MaxRows;
+    int     nRows = MaxRows - 1;
     int     nCols = MaxCols;
 
     panel = grouping( &panel, startY, startX, nRows, nCols, "Load Control" );
@@ -91,7 +91,7 @@ void    showLoadPanel()
     
     startY += nRows;
     startX = 1;
-    nRows = 5;
+    nRows = 4;
     //nCols = MaxCols - startY;
     duskTimerPanel = grouping( &duskTimerPanel, startY, startX, nRows, nCols, "Dusk Plus Timer Control" );
     
