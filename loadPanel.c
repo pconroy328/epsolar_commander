@@ -25,10 +25,10 @@ void    paintLoadData ()
     //
     char    buf1[ 12 ], buf2[ 12 ];
     char    buf3[ 12 ], buf4[ 12 ];
+    
     int beginRow = 1;
     int beginCol = 3;
-
-    HaddTextField( manualPanel, beginRow++, beginCol, "Manual ", (loadControlMode == 0x00 ? "Yes" : "No ") );
+    HaddTextField( manualPanel, beginRow++, beginCol, "Manual ", (loadControlMode == 0x00 ? "Enabled " : "Disabled") );
     //HaddTextField( manualPanel, beginRow++, beginCol, "Timer On and Off  ", (loadControlMode == 0x03 ? "Yes" : "No ") );
     wrefresh( manualPanel );
 
@@ -38,11 +38,13 @@ void    paintLoadData ()
     snprintf( buf3, sizeof buf3, "%02d:%02d:%02d", HH_T1Off, MM_T1Off, SS_T1Off );
     snprintf( buf4, sizeof buf4, "%02d:%02d:%02d", HH_T2Off, MM_T2Off, SS_T2Off );
     
-    HaddTextField( duskDawnPanel, beginRow++, beginCol,       "Dusk On/Dawn Off", (loadControlMode == 0x01 ? "Yes" : "No ") );
-    HaddTextField( duskDawnPanel, beginRow, beginCol,         "Timer One - On  ", buf1 );
-    HaddTextField( duskDawnPanel, beginRow++, beginCol + 30,  "Timer One - Off ", buf3 );
-    HaddTextField( duskDawnPanel, beginRow, beginCol,         "Timer Two - On  ", buf2 ); 
-    HaddTextField( duskDawnPanel, beginRow++, beginCol + 30,  "Timer Two - Off ", buf4 ); 
+    HaddTextField( duskDawnPanel, beginRow++, beginCol,             "Dusk On/Dawn Off", (loadControlMode == 0x01 ? "Enabled" : "Disabled ") );
+    HaddTextField( duskDawnPanel, beginRow, beginCol,               "Timer One - On  ", buf1 );
+    HaddTextField( duskDawnPanel, beginRow++, beginCol + 30,        "Timer One - Off ", buf3 );
+    HaddTextField( duskDawnPanel, beginRow, beginCol,               "Timer Two - On  ", buf2 ); 
+    HaddTextField( duskDawnPanel, beginRow++, beginCol + 30,        "Timer Two - Off ", buf4 ); 
+    HfloatAddTextField( duskDawnPanel, beginRow, beginCol,          "Dusk Threshold <= V", nighttimeThresholdVoltage, 1, 4 );
+    HfloatAddTextField( duskDawnPanel, beginRow++, beginCol + 30,   "Dawn Threshold >= V", daytimeThresholdVoltage, 1, 4 );
     wrefresh( duskDawnPanel );
             
     
@@ -52,8 +54,6 @@ void    paintLoadData ()
     
     
     beginRow++;
-    //HfloatAddTextField( panel, beginRow++, beginCol, "Is Night Threshold <= V", nighttimeThresholdVoltage, 1, 4 );
-    //HfloatAddTextField( panel, beginRow++, beginCol, "Is Day Threshold >= V  ", daytimeThresholdVoltage, 1, 4 );
 
     beginRow++;
     char    buf5[ 12 ], buf6[ 12 ];
