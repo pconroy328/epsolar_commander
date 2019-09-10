@@ -79,6 +79,7 @@ extern  float   energyConsumedYear;
 extern  float   energyConsumedTotal;
 
 extern  char    controllerClock[];
+extern  char    computerClock[];
 
 extern  float   batteryRatedVoltage;        // will be 12, 24,36, 48...
 extern  float   batteryRatedLoadCurrent;
@@ -124,7 +125,10 @@ extern  int     HH_T1Off, MM_T1Off, SS_T1Off;
 extern  int     HH_T2Off, MM_T2Off, SS_T2Off;
 extern  int     HH_WT1, MM_WT1, HH_WT2, MM_WT2;     
 
-
+extern  float   deviceOverTemperature;
+extern  float   deviceRecoveryTemperature;
+extern  float   batteryUpperLimitTemperature;
+extern  float   batteryLowerLimitTemperature;
 
 extern void     *local_readSCCValues( void * );
 
@@ -135,7 +139,7 @@ extern  void    intAddTextField (WINDOW *window, const int startY, const int sta
 extern  void    HaddTextField (WINDOW *window, const int startY, const int startX, const char *fieldName, const char *initialValue);
 extern  void    HfloatAddTextField (WINDOW *window, const int startY, const int startX, const char *fieldName, const float fVal, const int precision, const int width);
 extern  void    HintAddTextField (WINDOW *window, const int startY, const int startX, const char *fieldName, const int iVal, const int precision, const int width);
-
+extern  char    *getCurrentDateTime( char *, const size_t len );
 
 extern  int     getActivePanel();
 extern  void    setActivePanel( const int panelNum );
@@ -143,18 +147,24 @@ extern  void    switchPanel (const int newActivePanelID);
 
 
 extern  void    showBatteryPanel();
-extern  void    clearBatteryPanel();
 extern  void    paintBatteryPanelData();
-extern  void    paintLoadPanelData();
+extern  void    clearBatteryPanel();
 
 extern  void    showHomePanel();
 extern  void    clearHomePanel();
 extern  void    paintHomePanelData();
 
 extern  void    showLoadPanel();
+extern  void    paintLoadPanelData();
 extern  void    clearLoadPanel();
+
 extern  void    showDevicePanel();
 extern  void    clearDevicePanel();
+extern  void    paintDevicePanelData();
+
+extern  void    showSettingsPanel();
+extern  void    clearSettingsPanel();
+extern  void    paintSettingsPanelData();
 
 extern  void    showMenu ();
 extern  char    getMenuSelection();

@@ -37,12 +37,14 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 OBJECTFILES= \
 	${OBJECTDIR}/batteryPanel.o \
 	${OBJECTDIR}/curses_helpers.o \
+	${OBJECTDIR}/devicePanel.o \
 	${OBJECTDIR}/homePanel.o \
 	${OBJECTDIR}/loadPanel.o \
 	${OBJECTDIR}/main.o \
 	${OBJECTDIR}/menu.o \
 	${OBJECTDIR}/readSCCvalues.o \
-	${OBJECTDIR}/scc_settings.o
+	${OBJECTDIR}/scc_settings.o \
+	${OBJECTDIR}/settingsPanel.o
 
 
 # C Compiler Flags
@@ -79,6 +81,11 @@ ${OBJECTDIR}/curses_helpers.o: curses_helpers.c
 	${RM} "$@.d"
 	$(COMPILE.c) -g -std=c99 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/curses_helpers.o curses_helpers.c
 
+${OBJECTDIR}/devicePanel.o: devicePanel.c
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.c) -g -std=c99 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/devicePanel.o devicePanel.c
+
 ${OBJECTDIR}/homePanel.o: homePanel.c
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
@@ -108,6 +115,11 @@ ${OBJECTDIR}/scc_settings.o: scc_settings.c
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.c) -g -std=c99 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/scc_settings.o scc_settings.c
+
+${OBJECTDIR}/settingsPanel.o: settingsPanel.c
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.c) -g -std=c99 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/settingsPanel.o settingsPanel.c
 
 # Subprojects
 .build-subprojects:

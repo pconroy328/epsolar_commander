@@ -23,7 +23,7 @@ static  WINDOW  *settingsPanel;
 
 // -----------------------------------------------------------------------------
 static
-void    paintRatedData ()
+void    paintBatteryRatedData ()
 {
     //
     // Figure out how to space three values in the top window
@@ -47,7 +47,7 @@ void    paintRatedData ()
 
 // -----------------------------------------------------------------------------
 static
-void    paintSettingsData()
+void    paintBatterySettingsData()
 {
     int beginCol = 2;
     int beginRow = 2;
@@ -102,14 +102,14 @@ void    showBatteryPanel()
     int     battRows = 3;
     int     battCols = MaxCols;
     ratedPanel = grouping( &ratedPanel, battY, battX, battRows, battCols, "Battery Rated Data" );
-    paintRatedData();
+    paintBatteryRatedData();
     
     int     battY2 = battRows;
     int     battX2 = 0;
     int     battRows2 = 20;
     int     battCols2 = MaxCols;
     settingsPanel = grouping( &settingsPanel, battY2, battX2, battRows2, battCols2, "Battery Settings" );
-    paintSettingsData();
+    paintBatterySettingsData();
     
     refresh();
 }
@@ -117,8 +117,8 @@ void    showBatteryPanel()
 // -----------------------------------------------------------------------------
 void    paintBatteryPanelData()
 {
-    paintRatedData();
-    paintSettingsData();
+    paintBatteryRatedData();
+    paintBatterySettingsData();
 }
 
 // -----------------------------------------------------------------------------
@@ -131,8 +131,4 @@ void    clearBatteryPanel()
     werase( stdscr );
     refresh();
 }
-
-
-void    clearDevicePanel() {}
-void    showDevicePanel() {}
         

@@ -55,6 +55,7 @@ float   energyConsumedYear = -9.9;
 float   energyConsumedTotal = -9.9;
 
 char    controllerClock[ 64 ];
+char    computerClock[ 64 ];
 
 float   batteryRatedVoltage = -9.9;
 float   batteryRatedLoadCurrent = -9.9;
@@ -87,10 +88,6 @@ float   nighttimeThresholdVoltage = -9.9;
 int     nighttimeThresholdVoltageDelay = -9;
 float   daytimeThresholdVoltage= -9.9;
 int     daytimeThresholdVoltageDelay= -9;
-char    *timerOneOn = "?", *timerOneOff = "?";
-char    *timerTwoOn = "?", *timerTwoOff = "?";
-char    *workOneTime = "?", *workTwoTime = "?";
-char    *lengthOfNight = "??:??";
 
 int     HH_LON, MM_LON;
 int     backlightTime;
@@ -100,6 +97,10 @@ int     HH_T1Off, MM_T1Off, SS_T1Off;
 int     HH_T2Off, MM_T2Off, SS_T2Off;
 int     HH_WT1, MM_WT1, HH_WT2, MM_WT2;     
 
+float   deviceOverTemperature = -9.9;
+float   deviceRecoveryTemperature = -9.9;
+float   batteryUpperLimitTemperature = -9.9;
+float   batteryLowerLimitTemperature = -9.9;
 
 
 
@@ -202,6 +203,7 @@ void *local_readSCCValues ( void *x_void_ptr)
         energyGeneratedTotal = getGeneratedEnergyTotal( ctx );
 
         getRealtimeClockStr( ctx, &controllerClock[ 0 ], sizeof( controllerClock ) );
+        getCurrentDateTime( &computerClock[ 0 ], sizeof( computerClock ) );
 
         
         batteryType = getBatteryType( ctx );
@@ -231,26 +233,26 @@ void *local_readSCCValues ( void *x_void_ptr)
         
         loadControlMode = getLoadControllingMode( ctx );
         nighttimeThresholdVoltage = getNightTimeThresholdVoltage( ctx );
-     nighttimeThresholdVoltageDelay = getLightSignalStartupDelayTime( ctx );
-   daytimeThresholdVoltage = getDayTimeThresholdVoltage( ctx );
-     daytimeThresholdVoltageDelay = getLightSignalCloseDelayTime( ctx );
+        nighttimeThresholdVoltageDelay = getLightSignalStartupDelayTime( ctx );
+        daytimeThresholdVoltage = getDayTimeThresholdVoltage( ctx );
+        daytimeThresholdVoltageDelay = getLightSignalCloseDelayTime( ctx );
 
 
-     getLengthOfNight( ctx, &HH_LON, &MM_LON );
-     backlightTime = getBacklightTime( ctx );
-     
-     getTurnOffTiming1( ctx, &HH_T1Off, &MM_T1Off, &SS_T1Off );
-     getTurnOnTiming1( ctx, &HH_T1On, &MM_T1On, &SS_T1On );
-     getTurnOffTiming2( ctx, &HH_T2Off, &MM_T2Off, &SS_T2Off );
-     getTurnOnTiming2( ctx, &HH_T2On, &MM_T2On, &SS_T2On );
+        getLengthOfNight( ctx, &HH_LON, &MM_LON );
+        backlightTime = getBacklightTime( ctx );
 
-     getWorkingTimeLength1( ctx, &HH_WT1, &MM_WT1 );
-     getWorkingTimeLength2( ctx, &HH_WT2, &MM_WT2 );
+        getTurnOffTiming1( ctx, &HH_T1Off, &MM_T1Off, &SS_T1Off );
+        getTurnOnTiming1( ctx, &HH_T1On, &MM_T1On, &SS_T1On );
+        getTurnOffTiming2( ctx, &HH_T2Off, &MM_T2Off, &SS_T2Off );
+        getTurnOnTiming2( ctx, &HH_T2On, &MM_T2On, &SS_T2On );
 
-     
-extern  void    setWorkingTimeLength2( modbus_t *ctx, const int hour, const int minute );
-extern  void    setWorkingTimeLength1( modbus_t *ctx, const int hour, const int minute );
+        getWorkingTimeLength1( ctx, &HH_WT1, &MM_WT1 );
+        getWorkingTimeLength2( ctx, &HH_WT2, &MM_WT2 );
 
+        deviceOverTemperature = getControllerInnerTemperatureUpperLimit( ctx );
+        deviceRecoveryTemperature = getControllerInnerTemperatureUpperLimitRecover( ctx );
+        batteryUpperLimitTemperature = getBatteryTemperatureWarningUpperLimit( ctx );
+        batteryLowerLimitTemperature = getBatteryTemperatureWarningLowerLimit( ctx );
         
         if (getActivePanel() == HOME_PANEL)
             paintHomePanelData();
@@ -258,6 +260,10 @@ extern  void    setWorkingTimeLength1( modbus_t *ctx, const int hour, const int 
             paintBatteryPanelData();
         else if (getActivePanel() == LOAD_PANEL)
             paintLoadPanelData();
+        else if (getActivePanel() == SETTINGS_PANEL)
+            paintSettingsPanelData();
+        else if (getActivePanel() == DEVICE_PANEL)
+            paintDevicePanelData();
     
         sleep( 10 );
     }

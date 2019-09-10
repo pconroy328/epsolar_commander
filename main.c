@@ -21,11 +21,11 @@
 
 
 
-int             MaxRows;
-int             MaxCols;
+int     MaxRows;
+int     MaxCols;
 
-float       VoltageUpperBound = 17.0;
-float       VoltageLowerBound = 9.0;
+float   VoltageUpperBound = 17.0;
+float   VoltageLowerBound = 9.0;
 
 
 // -----------------------------------------------------------------------------
@@ -112,7 +112,11 @@ int main (int argc, char *argv[])
             switchPanel( LOAD_PANEL );
             showMenu();
         } else if (ch == 'D') {
+            switchPanel( DEVICE_PANEL );
+            showMenu();
         } else if (ch == 'S') {
+            switchPanel( SETTINGS_PANEL );
+            showMenu();
         } else if (ch == 'Q') {
             break;
         }

@@ -15,12 +15,14 @@
                    projectFiles="true">
       <itemPath>batteryPanel.c</itemPath>
       <itemPath>curses_helpers.c</itemPath>
+      <itemPath>devicePanel.c</itemPath>
       <itemPath>homePanel.c</itemPath>
       <itemPath>loadPanel.c</itemPath>
       <itemPath>main.c</itemPath>
       <itemPath>menu.c</itemPath>
       <itemPath>readSCCvalues.c</itemPath>
       <itemPath>scc_settings.c</itemPath>
+      <itemPath>settingsPanel.c</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
                    displayName="Test Files"
@@ -155,11 +157,19 @@
                             perm="755"
                             owner="root"
                             group="bin"/>
+          <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}bin/${OUTPUT_BASENAME}"
+                            from="${OUTPUT_PATH}"
+                            perm="755"
+                            owner="root"
+                            group="bin"/>
         </packFileList>
       </packaging>
       <item path="batteryPanel.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="curses_helpers.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="devicePanel.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="epsolar_commander.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -174,6 +184,8 @@
       <item path="readSCCvalues.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="scc_settings.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="settingsPanel.c" ex="false" tool="0" flavor2="0">
       </item>
     </conf>
     <conf name="Release" type="1">
@@ -201,6 +213,8 @@
       </item>
       <item path="curses_helpers.c" ex="false" tool="0" flavor2="0">
       </item>
+      <item path="devicePanel.c" ex="false" tool="0" flavor2="0">
+      </item>
       <item path="epsolar_commander.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="homePanel.c" ex="false" tool="0" flavor2="0">
@@ -214,6 +228,8 @@
       <item path="readSCCvalues.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="scc_settings.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="settingsPanel.c" ex="false" tool="0" flavor2="0">
       </item>
     </conf>
   </confs>
