@@ -13,6 +13,7 @@
 
 static  modbus_t    *ctx = NULL;
 
+int     refreshContollerDataTime = 10;
 float   deviceTemp = -9.9;
 float   batteryTemp = -9.9;
 float   loadPower = -9.9;
@@ -265,7 +266,7 @@ void *local_readSCCValues ( void *x_void_ptr)
         else if (getActivePanel() == DEVICE_PANEL)
             paintDevicePanelData();
     
-        sleep( 10 );
+        sleep( refreshContollerDataTime );
     }
 
     return NULL;

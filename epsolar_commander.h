@@ -43,7 +43,7 @@ extern "C" {
 #define TOOLOW_PAIR     5
 #define OK_PAIR         6
 
-
+extern int      refreshContollerDataTime;
 extern  float   deviceTemp;
 extern  float   batteryTemp;
 extern  float   loadPower;
