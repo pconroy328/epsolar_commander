@@ -40,7 +40,7 @@ void    paintLoadData ()
     
     HaddTextField( duskDawnPanel, beginRow++, beginCol,       "Dusk On/Dawn Off", (loadControlMode == 0x01 ? "Yes" : "No ") );
     HaddTextField( duskDawnPanel, beginRow, beginCol,         "Timer One - On  ", buf1 );
-    HaddTextField( duskTimerPanel, beginRow++, beginCol + 30, "Timer One - Off ", buf3 );
+    HaddTextField( duskDawnPanel, beginRow++, beginCol + 30,  "Timer One - Off ", buf3 );
     HaddTextField( duskDawnPanel, beginRow, beginCol,         "Timer Two - On  ", buf2 ); 
     HaddTextField( duskDawnPanel, beginRow++, beginCol + 30,  "Timer Two - Off ", buf4 ); 
     wrefresh( duskDawnPanel );
