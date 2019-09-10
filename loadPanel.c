@@ -98,7 +98,7 @@ void    showLoadPanel()
     startX = 1;
     nRows = 5;
     //nCols = MaxCols - startY;
-    duskTimerPanel = grouping( &manualPanel, startY, startX, nRows, nCols, "Dusk Plus Timer Control" );
+    duskTimerPanel = grouping( &duskTimerPanel, startY, startX, nRows, nCols, "Dusk Plus Timer Control" );
     
     paintLoadData();
 }
