@@ -84,13 +84,13 @@ void    showLoadPanel()
     
     startY = 1;
     startX = 1;
-    nRows = 4;
+    nRows = 2;
     nCols = MaxCols - startY - 1;
     manualPanel = grouping( &manualPanel, startY, startX, nRows, nCols, "Manual Control" );
 
     startY += nRows;
     startX = 1;
-    nRows = 5;
+    nRows = 7;
     //nCols = MaxCols - startY;
     duskDawnPanel = grouping( &duskDawnPanel, startY, startX, nRows, nCols, "Dusk to Dawn Control" );
     
