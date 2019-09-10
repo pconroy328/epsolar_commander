@@ -58,7 +58,7 @@ void    paintLoadData ()
     HaddTextField( duskTimerPanel, beginRow++, beginCol + 30, "Work Timer Two", buf6 );
 
     snprintf( buf7, sizeof buf7, "%02d:%02d", HH_LON, MM_LON );
-    HaddTextField( panel, beginRow++, beginCol, "Length of Night", buf7 );
+    HaddTextField( duskTimerPanel, beginRow++, beginCol, "Length of Night", buf7 );
     wrefresh( duskTimerPanel );
     
     beginRow = 1;
