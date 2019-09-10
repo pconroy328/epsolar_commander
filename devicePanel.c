@@ -71,6 +71,22 @@ void    clearDevicePanel()
     refresh();
 }
 
+#define MIN_SELECTION   1
+#define MAX_SELECTION   6
+
+// -----------------------------------------------------------------------------
+void    editDataRefreshValue()
+{
+    int beginRow = 11;
+    int beginCol = 30;
+    
+    wmove( panel, beginRow, beginCol );
+    wattron( panel, A_REVERSE );
+    wprintw( panel, "___________" );
+    wclrtoeol( panel );
+    wattroff( panel, A_REVERSE );
+    wrefresh( panel );
+}
 
 // -----------------------------------------------------------------------------
 void    editDevicePanel ()
@@ -79,6 +95,7 @@ void    editDevicePanel ()
     int done = FALSE;
     
     char    buffer[ 10 ];
+    int     selection = 0;
    
     while (!done) {
         memset( buffer, '\0', sizeof buffer );
@@ -86,11 +103,23 @@ void    editDevicePanel ()
         
         if (!isdigit( buffer[ 0 ] )) {
             break;
-        }        
+        }
+        
+        selection = atoi( buffer );
+        if (selection >= MIN_SELECTION && selection <= MAX_SELECTION)
+            done = TRUE;
+        else {
+            beep();
+            flash();
+        }
     }
     
     if (done) {
         int value = atoi( buffer );
         Logger_LogInfo( "About to edit menu selection [%d]\n", value );
+        
+        switch (selection) {
+            case 6:     editDataRefreshValue();     break;
+        }
     }
 }

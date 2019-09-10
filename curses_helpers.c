@@ -253,7 +253,9 @@ void    showEditMenu ()
 // -----------------------------------------------------------------------------
 void    getEditMenuSelection (char *buffer, const size_t bufsize)
 {
+    echo();
     wgetnstr( menuWin, buffer, bufsize );
+    noecho();
 }
 
 //------------------------------------------------------------------------------
