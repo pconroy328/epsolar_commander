@@ -139,11 +139,18 @@ extern  void    intAddTextField (WINDOW *window, const int startY, const int sta
 extern  void    HaddTextField (WINDOW *window, const int startY, const int startX, const char *fieldName, const char *initialValue);
 extern  void    HfloatAddTextField (WINDOW *window, const int startY, const int startX, const char *fieldName, const float fVal, const int precision, const int width);
 extern  void    HintAddTextField (WINDOW *window, const int startY, const int startX, const char *fieldName, const int iVal, const int precision, const int width);
+
+extern  void    showMenu ();
+extern  char    getMenuSelection();
+extern  void    getEditMenuSelection( char *buffer, const size_t bufsize );
+extern  void    menuDisplayMessage( const char * );
+
 extern  char    *getCurrentDateTime( char *, const size_t len );
 
 extern  int     getActivePanel();
 extern  void    setActivePanel( const int panelNum );
 extern  void    switchPanel (const int newActivePanelID);
+extern  void    editCurrentPanel( const char ch );
 
 
 extern  void    showBatteryPanel();
@@ -161,14 +168,12 @@ extern  void    clearLoadPanel();
 extern  void    showDevicePanel();
 extern  void    clearDevicePanel();
 extern  void    paintDevicePanelData();
+extern  void    editDevicePanel();
 
 extern  void    showSettingsPanel();
 extern  void    clearSettingsPanel();
 extern  void    paintSettingsPanelData();
 
-extern  void    showMenu ();
-extern  char    getMenuSelection();
-extern  void    menuDisplayMessage( const char * );
 
 #ifdef __cplusplus
 }

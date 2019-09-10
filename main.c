@@ -119,6 +119,8 @@ int main (int argc, char *argv[])
             showMenu();
         } else if (ch == 'Q') {
             break;
+        } else if (ch == 'E') {
+            editCurrentPanel( ch );
         }
     }
     endwin();
