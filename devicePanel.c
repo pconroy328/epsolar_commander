@@ -102,6 +102,19 @@ void    editDeviceClocktime()
     showDevicePanel();
 }
 
+// -----------------------------------------------------------------------------
+void    editBatteryUpperLimitTemperature()
+{
+    suspendUpdatingPanels();
+    
+    float val = dialogGetFloat( "Battery Limit", 
+            "The Upper Limit Temperature for the Battery\nUse Fahrenheit. Factory default is 150*\n.", 
+            120.0, 175.0, 150.0, 0, 4 );
+    setBatteryTemperatureWarningUpperLimit( getContext(), val );
+    resumeUpdatingPanels();
+    Logger_LogInfo( "Setting battery Upper Limit Temperature to %f'\n", val );
+    showDevicePanel();   
+}
 
 // -----------------------------------------------------------------------------
 void    editBatteryLowerLimitTemperature()
@@ -109,13 +122,12 @@ void    editBatteryLowerLimitTemperature()
     suspendUpdatingPanels();
     
     float val = dialogGetFloat( "Battery Limit", 
-            "Enter the Lower Limit Temperature for the Battery\nUse Fahrenheit. Factory default is -40.0*\nNot sure what the controller does with this.", 
+            "The Lower Limit Temperature for the Battery\nUse Fahrenheit. Factory default is -40.0*\nNot sure what the controller does with this.", 
             -40.0, 32.0, -40.0, 0, 4 );
     setBatteryTemperatureWarningLowerLimit( getContext(), val );
     resumeUpdatingPanels();
     Logger_LogInfo( "Setting battery Lower Limit Temperature to %f'\n", val );
-    showDevicePanel();
-    
+    showDevicePanel();   
 }
 
 // -----------------------------------------------------------------------------
@@ -149,9 +161,10 @@ void    editDevicePanel ()
         Logger_LogInfo( "About to edit menu selection [%d]\n", value );
         
         switch (selection) {
+            case 3:     editBatteryUpperLimitTemperature(); break;
             case 4:     editBatteryLowerLimitTemperature(); break;
-            case 5:     editDeviceClocktime();     break;
-            case 6:     editDataRefreshValue();     break;
+            case 5:     editDeviceClocktime();              break;
+            case 6:     editDataRefreshValue();             break;
         }
     }
 }

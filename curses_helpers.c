@@ -19,7 +19,7 @@ static  int     activePanelID = HOME_PANEL;
 
 static  int     MaxRows, MaxCols;
 static  int     dialogRows = 8;
-static  int     dialogCols = 45;
+static  int     dialogCols = 50;
 
 // -----------------------------------------------------------------------------
 void    switchPanel (const int newActivePanelID)
@@ -323,7 +323,7 @@ int dialogGetInteger2(const char *title, const char *prompt, const int minVal, c
 
 static  WINDOW      *menuWin;
 static  char        *mainMenu = "(H)ome (B)attery (L)oad (D)evice (E)dit   (Q)uit";
-static  char        *editMenu = "Type number then <Enter> or               e(X)it";
+static  char        *editMenu = "Type number then <Enter> or             e(X)it  ";
 static  int         maxMenuMsgLen = 0;
 
 // ---------------------------------------------------------------------------------
