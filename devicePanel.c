@@ -98,7 +98,7 @@ void    editDeviceClocktime()
     int beginRow = 12;
     int beginCol = 30;
     suspendUpdatingPanels();
-    int refreshValue = dialogGetInteger( "Device Date and Time", "Press <Enter> to set device time", 0, 9999, 1 );
+    int refreshValue = dialogGetInteger( "Device Date and Time", "Press <Enter> to set device time to 'now'", 0, 9999, 1 );
     
     setRealtimeClockToNow( getContext() );
     resumeUpdatingPanels();
@@ -137,6 +137,7 @@ void    editDevicePanel ()
         Logger_LogInfo( "About to edit menu selection [%d]\n", value );
         
         switch (selection) {
+            case 5:     editDeviceClocktime();     break;
             case 6:     editDataRefreshValue();     break;
         }
     }
