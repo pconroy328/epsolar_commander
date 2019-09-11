@@ -17,6 +17,10 @@
 static  int     oldPanelID = HOME_PANEL;
 static  int     activePanelID = HOME_PANEL;
 
+static  int     MaxRows, MaxCols;
+static  int     dialogRows = 8;
+static  int     dialogCols = 45;
+
 // -----------------------------------------------------------------------------
 void    switchPanel (const int newActivePanelID)
 {
@@ -171,6 +175,141 @@ void    HintAddTextField (WINDOW *window, const int startY, const int startX, co
 }
 
 
+// -----------------------------------------------------------------------------
+void openDialog (WINDOW **win, const char *title, const char *text)
+{
+    //
+    //  Figure out how to pop window in the center of the screen
+    getmaxyx( stdscr, MaxRows, MaxCols );
+    
+    int centerCol = (MaxCols / 2);
+    int startCol = (centerCol - (dialogCols / 2));
+    int centerRow = (MaxRows / 2);
+    int startRow = (centerRow - (dialogRows / 2));
+    
+    
+    *win = newwin( dialogRows, dialogCols, startRow, startCol );
+    // *win = newwin( 5, 5, 10, 10 );
+    box( *win, ACS_VLINE, ACS_HLINE );  
+    // wrefresh( *win );
+    
+   
+    //
+    // Windows coordinate systems are local to that window!
+    wmove( *win, 0, 1 );
+    wprintw( *win, title );
+    wrefresh( *win );
+
+
+    startRow = 2;
+    startCol = 2;
+    int last = strlen( text );
+    
+    for (int i = 0; i < last; i += 1) {
+        
+        if (text[ i ] == '\n') {
+            startRow += 1;
+            startCol = 2;
+            i += 1;
+        }
+        
+        mvwaddch( *win, startRow, startCol++, text[ i ] );
+    }
+    
+    wrefresh( *win );
+}
+
+// -----------------------------------------------------------------------------
+float   dialogGetFloat(const char *title, const char *prompt, const float minVal, const float maxVal, const float defaultVal, const int width, const int precision)
+{
+    WINDOW  *d;
+    openDialog( &d, title, prompt );
+
+    int startRow = dialogRows - 2;
+    int startCol = 2;
+
+    char    buf[ 255 ];
+    int     len = snprintf( buf, sizeof buf, "[Min:%*.*f, Max: %*.*f] -> ", width, precision, minVal, width, precision, maxVal );
+    mvwprintw( d, startRow, startCol, buf );
+    wrefresh( d );
+    
+    char    result[ 64 ]; 
+    
+    float returnValue = defaultVal;
+    int done = FALSE;
+    do {
+        echo();
+        mvwgetnstr( d, startRow, (startCol + len), result, sizeof result );
+        noecho();
+    
+        if (strlen( result ) == 0) {
+            returnValue = defaultVal;
+        } else {
+            returnValue = (result != NULL ? atof( result ) : -1 );
+        }
+        
+        
+        if ((returnValue <= minVal) || (returnValue >= maxVal)) {
+            beep();
+            flash();
+            for (int i = 0; i < strlen( result ); i += 1)
+                mvwaddch( d, startRow, (startCol + len + i), ' ' );
+        } else 
+            done = TRUE;
+    } while (!done);
+
+    return returnValue;
+}
+
+// -----------------------------------------------------------------------------
+int dialogGetInteger2(const char *title, const char *prompt, const int minVal, const int maxVal, const int defaultVal)
+{
+    float   fValue = dialogGetFloat( title, prompt, (float) minVal, (float) maxVal, (float) defaultVal, 0, 0 );
+    return (int) fValue;
+}
+
+
+// -----------------------------------------------------------------------------
+int dialogGetInteger(const char *title, const char *prompt, const int minVal, const int maxVal, const int defaultVal)
+{
+    WINDOW  *d;
+    openDialog( &d, title, prompt );
+
+    int startRow = dialogRows - 2;
+    int startCol = 2;
+
+    char    buf[ 255 ];
+    int     len = snprintf( buf, sizeof buf, "[Min:%d, Max: %d] -> ", minVal, maxVal );
+    mvwprintw( d, startRow, startCol, buf );
+    wrefresh( d );
+    
+    char    result[ 64 ]; 
+    
+    int returnValue = defaultVal;
+    int done = FALSE;
+    do {
+        echo();
+        mvwgetnstr( d, startRow, (startCol + len), result, sizeof result );
+        noecho();
+    
+        if (strlen( result ) == 0) {
+            returnValue = defaultVal;
+        } else {
+            returnValue = (result != NULL ? atoi( result ) : -1 );
+        }
+        
+        
+        if ((returnValue <= minVal) || (returnValue >= maxVal)) {
+            beep();
+            flash();
+            for (int i = 0; i < strlen( result ); i += 1)
+                mvwaddch( d, startRow, (startCol + len + i), ' ' );
+        } else 
+            done = TRUE;
+    } while (!done);
+
+    return returnValue;
+}
 
 
 

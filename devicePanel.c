@@ -74,18 +74,15 @@ void    clearDevicePanel()
 #define MIN_SELECTION   1
 #define MAX_SELECTION   6
 
+extern  int dialogGetInteger2(const char *title, const char *prompt, const int minVal, const int maxVal, const int defaultVal);
+
 // -----------------------------------------------------------------------------
 void    editDataRefreshValue()
 {
-    int beginRow = 11;
+    int beginRow = 12;
     int beginCol = 30;
-    
-    wmove( panel, beginRow, beginCol );
-    wattron( panel, A_REVERSE );
-    wprintw( panel, "___________" );
-    wclrtoeol( panel );
-    wattroff( panel, A_REVERSE );
-    wrefresh( panel );
+    int refreshValue = dialogGetInteger2( "Data Refresh Time", "Sets seconds between data updates\nDefault is 10 seconds", 1, 3600, 10 );
+    Logger_LogInfo( "Changing data refresh time to [%d]\n", refreshValue );
 }
 
 // -----------------------------------------------------------------------------
