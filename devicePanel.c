@@ -81,29 +81,41 @@ extern  int dialogGetInteger2(const char *title, const char *prompt, const int m
 // -----------------------------------------------------------------------------
 void    editDataRefreshValue()
 {
-    int beginRow = 12;
-    int beginCol = 30;
     suspendUpdatingPanels();
     int refreshValue = dialogGetInteger( "Data Refresh Time", "Sets seconds between data updates\nDefault is 10 seconds", 1, 3600, 10 );
     
     refreshContollerDataTime = refreshValue;
     resumeUpdatingPanels();
     Logger_LogInfo( "Changing data refresh time to [%d]\n", refreshValue );
-    wrefresh( panel );
+    showDevicePanel();
 }
 
 // -----------------------------------------------------------------------------
 void    editDeviceClocktime()
 {
-    int beginRow = 12;
-    int beginCol = 30;
     suspendUpdatingPanels();
-    int refreshValue = dialogGetInteger( "Device Date and Time", "Press <Enter> to set device time to 'now'", 0, 9999, 1 );
+    
+    (void) dialogGetInteger( "Device Date and Time", "Press <Enter> to set device time to 'now'", 0, 9999, 1 );
     
     setRealtimeClockToNow( getContext() );
     resumeUpdatingPanels();
-    Logger_LogInfo( "Setting device clock to 'now'\n", refreshValue );
-    wrefresh( panel );
+    showDevicePanel();
+}
+
+
+// -----------------------------------------------------------------------------
+void    editBatteryLowerLimitTemperature()
+{
+    suspendUpdatingPanels();
+    
+    float val = dialogGetFloat( "Battery Limit", 
+            "Enter the Lower Limit Temperature for the Battery\nUse Fahrenheit. Factory default is -40.0*\nNot sure what the controller does with this.", 
+            -40.0, 32.0, -40.0, 0, 4 );
+    setBatteryTemperatureWarningLowerLimit( getContext(), val );
+    resumeUpdatingPanels();
+    Logger_LogInfo( "Setting battery Lower Limit Temperature to %f'\n", val );
+    showDevicePanel();
+    
 }
 
 // -----------------------------------------------------------------------------
@@ -137,6 +149,7 @@ void    editDevicePanel ()
         Logger_LogInfo( "About to edit menu selection [%d]\n", value );
         
         switch (selection) {
+            case 4:     editBatteryLowerLimitTemperature(); break;
             case 5:     editDeviceClocktime();     break;
             case 6:     editDataRefreshValue();     break;
         }
