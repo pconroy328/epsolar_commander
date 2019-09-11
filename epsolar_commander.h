@@ -131,6 +131,9 @@ extern  float   batteryUpperLimitTemperature;
 extern  float   batteryLowerLimitTemperature;
 
 extern void     *local_readSCCValues( void * );
+extern  void    suspendUpdatingPanels( void );
+extern  void    resumeUpdatingPanels( void );
+
 
 extern  WINDOW *grouping (WINDOW **window, const int startY, const int startX, const int rows, const int cols, const char *title);
 extern  void    addTextField (WINDOW *window, const int startY, const int startX, const char *fieldName, const char *initialValue);
@@ -139,6 +142,10 @@ extern  void    intAddTextField (WINDOW *window, const int startY, const int sta
 extern  void    HaddTextField (WINDOW *window, const int startY, const int startX, const char *fieldName, const char *initialValue);
 extern  void    HfloatAddTextField (WINDOW *window, const int startY, const int startX, const char *fieldName, const float fVal, const int precision, const int width);
 extern  void    HintAddTextField (WINDOW *window, const int startY, const int startX, const char *fieldName, const int iVal, const int precision, const int width);
+extern  float   dialogGetFloat(const char *title, const char *prompt, const float minVal, const float maxVal, const float defaultVal, const int width, const int precision);
+extern  int     dialogGetInteger(const char *title, const char *prompt, const int minVal, const int maxVal, const int defaultVal);
+
+
 
 extern  void    showMenu ();
 extern  char    getMenuSelection();

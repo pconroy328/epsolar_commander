@@ -81,7 +81,9 @@ void    editDataRefreshValue()
 {
     int beginRow = 12;
     int beginCol = 30;
-    int refreshValue = dialogGetInteger2( "Data Refresh Time", "Sets seconds between data updates\nDefault is 10 seconds", 1, 3600, 10 );
+    suspendUpdatingPanels();
+    int refreshValue = dialogGetInteger( "Data Refresh Time", "Sets seconds between data updates\nDefault is 10 seconds", 1, 3600, 10 );
+    resumeUpdatingPanels();
     Logger_LogInfo( "Changing data refresh time to [%d]\n", refreshValue );
 }
 

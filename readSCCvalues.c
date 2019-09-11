@@ -11,7 +11,10 @@
 #include "epsolar_commander.h"
 
 
-static  modbus_t    *ctx = NULL;
+static  modbus_t            *ctx = NULL;
+static  pthread_mutex_t     refreshLock = PTHREAD_MUTEX_INITIALIZER;
+static  int                 panelUpdatesAllowed = TRUE;
+
 
 int     refreshContollerDataTime = 10;
 float   deviceTemp = -9.9;
@@ -156,6 +159,21 @@ int getActivePanel ()
     return whichPanelActive;
 }
 
+// -----------------------------------------------------------------------------
+void    suspendUpdatingPanels()
+{
+    pthread_mutex_lock( &refreshLock );
+    panelUpdatesAllowed = FALSE;
+    pthread_mutex_unlock( &refreshLock );
+}
+
+// -----------------------------------------------------------------------------
+void    resumeUpdatingPanels()
+{
+    pthread_mutex_lock( &refreshLock );
+    panelUpdatesAllowed = TRUE;
+    pthread_mutex_unlock( &refreshLock );
+}
 
 // -----------------------------------------------------------------------------
 void *local_readSCCValues ( void *x_void_ptr)
@@ -255,17 +273,19 @@ void *local_readSCCValues ( void *x_void_ptr)
         batteryUpperLimitTemperature = getBatteryTemperatureWarningUpperLimit( ctx );
         batteryLowerLimitTemperature = getBatteryTemperatureWarningLowerLimit( ctx );
         
-        if (getActivePanel() == HOME_PANEL)
-            paintHomePanelData();
-        else if (getActivePanel() == BATTERY_PANEL)
-            paintBatteryPanelData();
-        else if (getActivePanel() == LOAD_PANEL)
-            paintLoadPanelData();
-        else if (getActivePanel() == SETTINGS_PANEL)
-            paintSettingsPanelData();
-        else if (getActivePanel() == DEVICE_PANEL)
-            paintDevicePanelData();
-    
+        
+        if (panelUpdatesAllowed) {
+            if (getActivePanel() == HOME_PANEL)
+                paintHomePanelData();
+            else if (getActivePanel() == BATTERY_PANEL)
+                paintBatteryPanelData();
+            else if (getActivePanel() == LOAD_PANEL)
+                paintLoadPanelData();
+            else if (getActivePanel() == SETTINGS_PANEL)
+                paintSettingsPanelData();
+            else if (getActivePanel() == DEVICE_PANEL)
+                paintDevicePanelData();
+        }
         sleep( refreshContollerDataTime );
     }
 

@@ -258,11 +258,14 @@ float   dialogGetFloat(const char *title, const char *prompt, const float minVal
             done = TRUE;
     } while (!done);
 
+    werase( d );
+    delwin( d );
+
     return returnValue;
 }
 
 // -----------------------------------------------------------------------------
-int dialogGetInteger2(const char *title, const char *prompt, const int minVal, const int maxVal, const int defaultVal)
+int dialogGetInteger(const char *title, const char *prompt, const int minVal, const int maxVal, const int defaultVal)
 {
     float   fValue = dialogGetFloat( title, prompt, (float) minVal, (float) maxVal, (float) defaultVal, 0, 0 );
     return (int) fValue;
@@ -270,7 +273,8 @@ int dialogGetInteger2(const char *title, const char *prompt, const int minVal, c
 
 
 // -----------------------------------------------------------------------------
-int dialogGetInteger(const char *title, const char *prompt, const int minVal, const int maxVal, const int defaultVal)
+static
+int dialogGetInteger2(const char *title, const char *prompt, const int minVal, const int maxVal, const int defaultVal)
 {
     WINDOW  *d;
     openDialog( &d, title, prompt );
