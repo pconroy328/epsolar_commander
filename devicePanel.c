@@ -11,7 +11,9 @@
 #include <log4c.h>
 #include <libepsolar.h>
 #include <pthread.h>
+
 #include "epsolar_commander.h"
+#include "libepsolar.h"
 
 extern  int     MaxRows;
 extern  int     MaxCols;
@@ -83,8 +85,25 @@ void    editDataRefreshValue()
     int beginCol = 30;
     suspendUpdatingPanels();
     int refreshValue = dialogGetInteger( "Data Refresh Time", "Sets seconds between data updates\nDefault is 10 seconds", 1, 3600, 10 );
+    
+    refreshContollerDataTime = refreshValue;
     resumeUpdatingPanels();
     Logger_LogInfo( "Changing data refresh time to [%d]\n", refreshValue );
+    wrefresh( panel );
+}
+
+// -----------------------------------------------------------------------------
+void    editDeviceClocktime()
+{
+    int beginRow = 12;
+    int beginCol = 30;
+    suspendUpdatingPanels();
+    int refreshValue = dialogGetInteger( "Device Date and Time", "Press <Enter> to set device time", 0, 9999, 1 );
+    
+    setRealtimeClockToNow( getContext() );
+    resumeUpdatingPanels();
+    Logger_LogInfo( "Setting device clock to 'now'\n", refreshValue );
+    wrefresh( panel );
 }
 
 // -----------------------------------------------------------------------------

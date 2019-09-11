@@ -130,9 +130,10 @@ extern  float   deviceRecoveryTemperature;
 extern  float   batteryUpperLimitTemperature;
 extern  float   batteryLowerLimitTemperature;
 
-extern void     *local_readSCCValues( void * );
-extern  void    suspendUpdatingPanels( void );
-extern  void    resumeUpdatingPanels( void );
+extern void         *local_readSCCValues( void * );
+extern  void        suspendUpdatingPanels( void );
+extern  void        resumeUpdatingPanels( void );
+extern  modbus_t    *getContext( void );
 
 
 extern  WINDOW *grouping (WINDOW **window, const int startY, const int startX, const int rows, const int cols, const char *title);

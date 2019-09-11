@@ -109,6 +109,12 @@ float   batteryLowerLimitTemperature = -9.9;
 
 
 // -----------------------------------------------------------------------------
+modbus_t    *getContext()
+{
+    return ctx;
+}
+
+// -----------------------------------------------------------------------------
 void    connectLocally ()
 {
     char    *devicePort = "/dev/ttyXRUSB0";
