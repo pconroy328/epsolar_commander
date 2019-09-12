@@ -19,6 +19,7 @@ extern  int     MaxRows;
 extern  int     MaxCols;
 static  WINDOW  *panel;
 
+#define getContext      epsolarModbusGetContext
 
 // -----------------------------------------------------------------------------
 static
@@ -108,7 +109,7 @@ void    editBatteryUpperLimitTemperature()
     suspendUpdatingPanels();
     
     float val = dialogGetFloat( "Battery Limit", 
-            "The Upper Limit Temperature for the Battery\nUse Fahrenheit. Factory default is 150*\n.", 
+            "The Upper Limit Temperature for the Battery\nUse Fahrenheit. Factory default is 150*F", 
             120.0, 175.0, 150.0, 0, 4 );
     setBatteryTemperatureWarningUpperLimit( getContext(), val );
     resumeUpdatingPanels();
@@ -122,7 +123,7 @@ void    editBatteryLowerLimitTemperature()
     suspendUpdatingPanels();
     
     float val = dialogGetFloat( "Battery Limit", 
-            "The Lower Limit Temperature for the Battery\nUse Fahrenheit. Factory default is -40.0*\nNot sure what the controller does with this.", 
+            "The Lower Limit Temperature for the Battery\nUse Fahrenheit. Factory default is -40.0*F", 
             -40.0, 32.0, -40.0, 0, 4 );
     setBatteryTemperatureWarningLowerLimit( getContext(), val );
     resumeUpdatingPanels();

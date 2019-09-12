@@ -69,7 +69,7 @@ LDLIBSOPTIONS=-lcurses -lmenu -lpthread
 
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/epsolar_commander: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
-	${LINK.c} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/epsolar_commander ${OBJECTFILES} ${LDLIBSOPTIONS} -lcdk -llog4c -lmodbus -lepsolar
+	${LINK.c} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/epsolar_commander ${OBJECTFILES} ${LDLIBSOPTIONS} -lepsolar -llog4c -lmodbus
 
 ${OBJECTDIR}/batteryPanel.o: batteryPanel.c
 	${MKDIR} -p ${OBJECTDIR}

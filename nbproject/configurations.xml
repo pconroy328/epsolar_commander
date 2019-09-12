@@ -55,7 +55,7 @@
             <linkerLibLibItem>menu</linkerLibLibItem>
             <linkerLibStdlibItem>PosixThreads</linkerLibStdlibItem>
           </linkerLibItems>
-          <commandLine>-lcdk -llog4c -lmodbus -lepsolar</commandLine>
+          <commandLine>-lepsolar -llog4c -lmodbus</commandLine>
         </linkerTool>
       </compileType>
       <packaging>
@@ -76,6 +76,12 @@
           <packFileListElem type="File"
                             to="${PACKAGE_TOP_DIR}bin/libui.so"
                             from="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libui.so"
+                            perm="755"
+                            owner="root"
+                            group="bin"/>
+          <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}bin/${OUTPUT_BASENAME}"
+                            from="${OUTPUT_PATH}"
                             perm="755"
                             owner="root"
                             group="bin"/>

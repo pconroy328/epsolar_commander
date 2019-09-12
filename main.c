@@ -40,9 +40,7 @@ void    setVoltageUpperLowerBounds()
 
 
 
-static  char    *version = "0.1.d";
-
-
+static  char    *version = "0.2a";
 
 
 
@@ -50,10 +48,6 @@ static  char    *version = "0.1.d";
 /* Prints typical menus that you might see in games */
 int main (int argc, char *argv[])
 {
-
-    //CDKparseParams( argc, argv, &params, "s:" CDK_CLI_PARAMS );
-    //(void) initCDKScreen (NULL);
-    //curs_set( 0 );
 
     Logger_Initialize( "/tmp/epsolarcommander.log", 5 );
     Logger_LogWarning( "Version: %s\n", version  );

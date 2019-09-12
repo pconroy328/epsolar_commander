@@ -1,13 +1,14 @@
 /*
  */
 
-#include <pthread.h>
-#include <log4c.h>
-#include <modbus/modbus.h>
-#include <libepsolar.h>
-#include <epsolar/tracerseries.h>
 #include <errno.h>
 #include <unistd.h>
+#include <pthread.h>
+
+#include <modbus/modbus.h>
+#include "log4c.h"
+#include "libepsolar.h"
+#include "epsolar/tracerseries.h"
 #include "epsolar_commander.h"
 
 
@@ -107,48 +108,38 @@ float   batteryUpperLimitTemperature = -9.9;
 float   batteryLowerLimitTemperature = -9.9;
 
 
-
+#if 0
 // -----------------------------------------------------------------------------
 modbus_t    *getContext()
 {
     return ctx;
 }
+#endif 
+
+#define     eps_getBatteryTemperature()               getBatteryTemperature( epsolarModbusGetContext() )
+#define     eps_getBatteryRealRatedVoltage()          getBatteryRealRatedVoltage( epsolarModbusGetContext() )
+#define     eps_getRatedLoadCurrent()                 getRatedLoadCurrent( epsolarModbusGetContext() )
+#define     eps_getRatedChargingCurrent()             getRatedChargingCurrent( epsolarModbusGetContext() )
 
 // -----------------------------------------------------------------------------
 void    connectLocally ()
 {
     char    *devicePort = "/dev/ttyXRUSB0";
     
-    //
-    // Modbus - open the SCC port. We know it's 115.2K 8N1
-    Logger_LogInfo( "Opening %s, 115200 8N1\n", devicePort );
-    ctx = modbus_new_rtu( devicePort, 115200, 'N', 8, 1 );
-    if (ctx == NULL) {
-        Logger_LogFatal( "Unable to create the libmodbus context\n" );
+    if (!epsolarModbusConnect( devicePort, 1 )) {
+        Logger_LogFatal( "Unable to open %s to connect to the solar charge controller", devicePort );
         return;
     }
-    
-    
-    //
-    // I don't know if we need to set the SCC Slave ID or not
-    Logger_LogInfo( "Setting slave ID to %X\n", 1 );
-    modbus_set_slave( ctx, 1 );
 
-    if (modbus_connect( ctx ) == -1) {
-        Logger_LogFatal( "Connection failed: %s\n", modbus_strerror( errno ) );
-        modbus_free( ctx );
-        return;
-    }
-    
-    Logger_LogInfo( "Port to Solar Charge Controller is open.\n", devicePort );
+    ctx = epsolarModbusGetContext();
     
     Logger_LogInfo( "Attempting to communicate w/ controller\n" );
-    batteryRatedVoltage = getBatteryRealRatedVoltage( ctx );
-    batteryRatedLoadCurrent =  getRatedLoadCurrent( ctx );
-    batteryRatedChargingCurrent = getRatedChargingCurrent( ctx );
+    batteryRatedVoltage = eps_getBatteryRealRatedVoltage();
+    batteryRatedLoadCurrent =  eps_getRatedLoadCurrent();
+    batteryRatedChargingCurrent = eps_getRatedChargingCurrent();
 
-    Logger_LogInfo( "Load voltage: %.1f, current: %.2f, power: %.2f\n", loadVoltage, loadCurrent, loadPower );
-    Logger_LogInfo( "PV voltage: %.1f, current: %.2f, power: %.2f\n", pvInputVoltage, pvInputCurrent, pvInputPower );
+    // Logger_LogInfo( "Load voltage: %.1f, current: %.2f, power: %.2f\n", loadVoltage, loadCurrent, loadPower );
+    // Logger_LogInfo( "PV voltage: %.1f, current: %.2f, power: %.2f\n", pvInputVoltage, pvInputCurrent, pvInputPower );
 }
 
 
