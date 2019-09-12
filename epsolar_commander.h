@@ -43,7 +43,10 @@ extern "C" {
 #define TOOLOW_PAIR     5
 #define OK_PAIR         6
 
-extern int      refreshContollerDataTime;
+    
+//
+//  Global Variables - updated by the 'readSCCValues' thread   
+extern  int     refreshContollerDataTime;
 extern  float   deviceTemp;
 extern  float   batteryTemp;
 extern  float   loadPower;
@@ -88,7 +91,7 @@ extern  float   batteryRatedChargingCurrent;
 extern  char    *batteryType;
 extern  char    *batteryChargingMode;
 extern  int     batteryCapacity;
-extern  float   tempertureCompensationCoefficient;
+extern  float   temperatureCompensationCoefficient;
 extern  float   overVDisconnectV;
 extern  float   overVReconnectV;
 extern  float   equalizationVoltage;
@@ -130,7 +133,11 @@ extern  float   deviceRecoveryTemperature;
 extern  float   batteryUpperLimitTemperature;
 extern  float   batteryLowerLimitTemperature;
 
-extern void         *local_readSCCValues( void * );
+
+
+
+
+extern  void        *local_readSCCValues( void * );
 extern  void        suspendUpdatingPanels( void );
 extern  void        resumeUpdatingPanels( void );
 extern  modbus_t    *getContext( void );
@@ -145,8 +152,6 @@ extern  void    HfloatAddTextField (WINDOW *window, const int startY, const int 
 extern  void    HintAddTextField (WINDOW *window, const int startY, const int startX, const char *fieldName, const int iVal, const int precision, const int width);
 extern  float   dialogGetFloat(const char *title, const char *prompt, const float minVal, const float maxVal, const float defaultVal, const int width, const int precision);
 extern  int     dialogGetInteger(const char *title, const char *prompt, const int minVal, const int maxVal, const int defaultVal);
-
-
 
 extern  void    showMenu ();
 extern  char    getMenuSelection();

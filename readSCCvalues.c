@@ -5,18 +5,16 @@
 #include <unistd.h>
 #include <pthread.h>
 
-#include <modbus/modbus.h>
 #include "log4c.h"
 #include "libepsolar.h"
-#include "epsolar/tracerseries.h"
 #include "epsolar_commander.h"
 
 
-static  modbus_t            *ctx = NULL;
 static  pthread_mutex_t     refreshLock = PTHREAD_MUTEX_INITIALIZER;
 static  int                 panelUpdatesAllowed = TRUE;
 
-
+//
+//  Global Variables - updated by the 'readSCCValues' thread
 int     refreshContollerDataTime = 10;
 float   deviceTemp = -9.9;
 float   batteryTemp = -9.9;
@@ -68,7 +66,7 @@ float   batteryRatedChargingCurrent = -9.9;
 char    *batteryType = "?";
 char    *batteryChargingMode = "?";
 int     batteryCapacity = -9;
-float   tempertureCompensationCoefficient = -9.9;
+float   temperatureCompensationCoefficient = -9.9;
 float   overVDisconnectV = -9.9;
 float   overVReconnectV;
 float   equalizationVoltage;
@@ -108,38 +106,21 @@ float   batteryUpperLimitTemperature = -9.9;
 float   batteryLowerLimitTemperature = -9.9;
 
 
-#if 0
-// -----------------------------------------------------------------------------
-modbus_t    *getContext()
-{
-    return ctx;
-}
-#endif 
 
-#define     eps_getBatteryTemperature()               getBatteryTemperature( epsolarModbusGetContext() )
-#define     eps_getBatteryRealRatedVoltage()          getBatteryRealRatedVoltage( epsolarModbusGetContext() )
-#define     eps_getRatedLoadCurrent()                 getRatedLoadCurrent( epsolarModbusGetContext() )
-#define     eps_getRatedChargingCurrent()             getRatedChargingCurrent( epsolarModbusGetContext() )
 
 // -----------------------------------------------------------------------------
-void    connectLocally ()
-{
-    char    *devicePort = "/dev/ttyXRUSB0";
-    
+void    connectLocally (const char *devicePort)
+{   
     if (!epsolarModbusConnect( devicePort, 1 )) {
         Logger_LogFatal( "Unable to open %s to connect to the solar charge controller", devicePort );
         return;
     }
 
-    ctx = epsolarModbusGetContext();
-    
+   
     Logger_LogInfo( "Attempting to communicate w/ controller\n" );
     batteryRatedVoltage = eps_getBatteryRealRatedVoltage();
     batteryRatedLoadCurrent =  eps_getRatedLoadCurrent();
     batteryRatedChargingCurrent = eps_getRatedChargingCurrent();
-
-    // Logger_LogInfo( "Load voltage: %.1f, current: %.2f, power: %.2f\n", loadVoltage, loadCurrent, loadPower );
-    // Logger_LogInfo( "PV voltage: %.1f, current: %.2f, power: %.2f\n", pvInputVoltage, pvInputCurrent, pvInputPower );
 }
 
 
@@ -173,102 +154,108 @@ void    resumeUpdatingPanels()
 }
 
 // -----------------------------------------------------------------------------
-void *local_readSCCValues ( void *x_void_ptr)
+void *local_readSCCValues (void *x_void_ptr)
 {
-    connectLocally();
+    connectLocally( "/dev/ttyXRUSB0" );
+    
     while (TRUE) {
         Logger_LogInfo( "Reading values (locally) from SCC\n" );
         
-        deviceTemp =  getDeviceTemperature( ctx );
-        batteryTemp = getBatteryTemperature( ctx );
-        loadPower = getLoadPower( ctx );
-        loadCurrent = getLoadCurrent( ctx );
-        loadVoltage = getLoadVoltage( ctx );
-        pvInputPower =  getPVArrayInputPower( ctx );
-        pvInputCurrent = getPVArrayInputCurrent( ctx );
-        pvInputVoltage = getPVArrayInputVoltage( ctx );
-        isNight = isNightTime( ctx );
+        deviceTemp = eps_getDeviceTemperature();
+        batteryTemp = eps_getBatteryTemperature();
+        loadPower = eps_getLoadPower();
+        loadCurrent = eps_getLoadCurrent();
+        loadVoltage = eps_getLoadVoltage();
+        pvInputPower = eps_getPVArrayInputPower();
+        pvInputCurrent = eps_getPVArrayInputCurrent();
+        pvInputVoltage = eps_getPVArrayInputVoltage();
+        isNight = eps_isNightTime();
         
-        batterySoC = getBatteryStateOfCharge( ctx );
-        batteryVoltage = getBatteryVoltage( ctx );
-        batteryCurrent = getBatteryCurrent( ctx );
+        batterySoC = eps_getBatteryStateOfCharge();
+        batteryVoltage = eps_getBatteryVoltage();
+        batteryCurrent = eps_getBatteryCurrent();
         batteryPower = (batteryVoltage * batteryCurrent);
-        minBatteryVoltage = getMinimumBatteryVoltageToday( ctx );
-        maxBatteryVoltage = getMaximumBatteryVoltageToday( ctx );
+        minBatteryVoltage = eps_getMinimumBatteryVoltageToday();
+        maxBatteryVoltage = eps_getMaximumBatteryVoltageToday();
         
-        chargingStatusBits = getChargingEquipmentStatusBits( ctx );
-        chargingStatus = getChargingStatus( chargingStatusBits );
-        pvInputStatus = getChargingEquipmentStatusInputVoltageStatus( chargingStatusBits );
+        chargingStatusBits = eps_getChargingEquipmentStatusBits();
+        chargingStatus = eps_getChargingStatus( chargingStatusBits );
+        pvInputStatus = eps_getChargingEquipmentStatusInputVoltageStatus( chargingStatusBits );
         
-        batteryStatusBits = getBatteryStatusBits( ctx );
-        batteryStatusVoltage = getBatteryStatusVoltage( batteryStatusBits );
-        batteryStatusID = getBatteryStatusIdentification( batteryStatusBits );
-        batteryStatusInnerResistance = getBatteryStatusInnerResistance( batteryStatusBits );
-        batteryStatusTemperature = getBatteryStatusTemperature( batteryStatusBits );
+        batteryStatusBits = eps_getBatteryStatusBits();
+        batteryStatusVoltage = eps_getBatteryStatusVoltage( batteryStatusBits );
+        batteryStatusID = eps_getBatteryStatusIdentification( batteryStatusBits );
+        batteryStatusInnerResistance = eps_getBatteryStatusInnerResistance( batteryStatusBits );
+        batteryStatusTemperature = eps_getBatteryStatusTemperature( batteryStatusBits );
 
         
-        dischargingStatusBits = getdisChargingEquipmentStatusBits( ctx );
-        dischargeRunning = (isdischargeStatusRunning( dischargingStatusBits ) ? "On" : "Off" );
-        energyConsumedToday = getConsumedEnergyToday( ctx );
-        energyConsumedMonth = getConsumedEnergyMonth( ctx );
-        energyConsumedYear = getConsumedEnergyYear (ctx)  ;
-        energyConsumedTotal =  getConsumedEnergyTotal( ctx );
-        energyGeneratedToday = getGeneratedEnergyToday( ctx );
-        energyGeneratedMonth = getGeneratedEnergyMonth( ctx );
-        energyGeneratedYear = getGeneratedEnergyYear (ctx)  ;
-        energyGeneratedTotal = getGeneratedEnergyTotal( ctx );
+        dischargingStatusBits = eps_getdisChargingEquipmentStatusBits();
+        dischargeRunning = (eps_isdischargeStatusRunning( dischargingStatusBits ) ? "On" : "Off" );
+        
+        energyConsumedToday = eps_getConsumedEnergyToday();
+        energyConsumedMonth = eps_getConsumedEnergyMonth();
+        energyConsumedYear = eps_getConsumedEnergyYear();
+        energyConsumedTotal = eps_getConsumedEnergyTotal();
+        energyGeneratedToday = eps_getGeneratedEnergyToday();
+        energyGeneratedMonth = eps_getGeneratedEnergyMonth();
+        energyGeneratedYear = eps_getGeneratedEnergyYear();
+        energyGeneratedTotal = eps_getGeneratedEnergyTotal();
 
-        getRealtimeClockStr( ctx, &controllerClock[ 0 ], sizeof( controllerClock ) );
+        eps_getRealtimeClockStr(&controllerClock[ 0 ], sizeof( controllerClock ) );
         getCurrentDateTime( &computerClock[ 0 ], sizeof( computerClock ) );
 
+        temperatureCompensationCoefficient = eps_getTemperatureCompensationCoefficient();
         
-        batteryType = getBatteryType( ctx );
-        batteryChargingMode = getManagementModesOfBatteryChargingAndDischarging( ctx );
-        batteryCapacity = getBatteryCapacity( ctx );
-        tempertureCompensationCoefficient = getTempertureCompensationCoefficient( ctx );
-        overVDisconnectV = getHighVoltageDisconnect( ctx );
-        overVReconnectV = getOverVoltageReconnect( ctx );
-        equalizationVoltage = getEqualizationVoltage( ctx );
-        boostVoltage = getBoostingVoltage( ctx );
-        floatVoltage = getFloatingVoltage( ctx );
-        boostReconnectVoltage = getBoostReconnectVoltage( ctx );
-        batteryRatedVoltageCode = getBatteryRatedVoltageCode( ctx );                                  
-
-        boostDuration = getBoostDuration( ctx );
-        equalizeDuration = getEqualizeDuration( ctx );
-        chargingLimitVoltage = getChargingLimitVoltage( ctx );
-        dischargingLimitVoltage = getDischargingLimitVoltage( ctx );
-        lowVoltageDisconnectVoltage = getLowVoltageDisconnectVoltage( ctx );
-        lowVoltageReconnectVoltage = getLowVoltageReconnectVoltage( ctx );
-        underVoltageWarningVoltage = getUnderVoltageWarningVoltage( ctx );
-        underVolatageWarningReconnectVoltage = getUnderVoltageWarningRecoverVoltage( ctx );
+        batteryType = eps_getBatteryType();
+        batteryChargingMode = eps_getManagementModesOfBatteryChargingAndDischarging();
         
-        batteryChargePercent = getChargingPercentage( ctx );
-        batteryDischargePercent = getDischargingPercentage( ctx );
+        batteryCapacity = eps_getBatteryCapacity();
         
         
-        loadControlMode = getLoadControllingMode( ctx );
-        nighttimeThresholdVoltage = getNightTimeThresholdVoltage( ctx );
-        nighttimeThresholdVoltageDelay = getLightSignalStartupDelayTime( ctx );
-        daytimeThresholdVoltage = getDayTimeThresholdVoltage( ctx );
-        daytimeThresholdVoltageDelay = getLightSignalCloseDelayTime( ctx );
+        
+        overVDisconnectV = eps_getHighVoltageDisconnect();
+        overVReconnectV = eps_getOverVoltageReconnect();
+        equalizationVoltage = eps_getEqualizationVoltage();
+        boostVoltage = eps_getBoostingVoltage();
+        floatVoltage = eps_getFloatingVoltage();
+        boostReconnectVoltage = eps_getBoostReconnectVoltage();
+        batteryRatedVoltageCode = eps_getBatteryRatedVoltageCode();                                  
+
+        boostDuration = eps_getBoostDuration();
+        equalizeDuration = eps_getEqualizeDuration();
+        chargingLimitVoltage = eps_getChargingLimitVoltage();
+        dischargingLimitVoltage = eps_getDischargingLimitVoltage();
+        lowVoltageDisconnectVoltage = eps_getLowVoltageDisconnectVoltage();
+        lowVoltageReconnectVoltage = eps_getLowVoltageReconnectVoltage();
+        underVoltageWarningVoltage = eps_getUnderVoltageWarningVoltage();
+        underVolatageWarningReconnectVoltage = eps_getUnderVoltageWarningRecoverVoltage();
+        
+        batteryChargePercent = eps_getChargingPercentage();
+        batteryDischargePercent = eps_getDischargingPercentage();
+        
+        
+        loadControlMode = eps_getLoadControllingMode();
+        nighttimeThresholdVoltage = eps_getNightTimeThresholdVoltage();
+        nighttimeThresholdVoltageDelay = eps_getLightSignalStartupDelayTime();
+        daytimeThresholdVoltage = eps_getDayTimeThresholdVoltage();
+        daytimeThresholdVoltageDelay = eps_getLightSignalCloseDelayTime();
 
 
-        getLengthOfNight( ctx, &HH_LON, &MM_LON );
-        backlightTime = getBacklightTime( ctx );
+        eps_getLengthOfNight( &HH_LON, &MM_LON );
+        backlightTime = eps_getBacklightTime();
 
-        getTurnOffTiming1( ctx, &HH_T1Off, &MM_T1Off, &SS_T1Off );
-        getTurnOnTiming1( ctx, &HH_T1On, &MM_T1On, &SS_T1On );
-        getTurnOffTiming2( ctx, &HH_T2Off, &MM_T2Off, &SS_T2Off );
-        getTurnOnTiming2( ctx, &HH_T2On, &MM_T2On, &SS_T2On );
+        eps_getTurnOffTiming1( &HH_T1Off, &MM_T1Off, &SS_T1Off );
+        eps_getTurnOnTiming1( &HH_T1On, &MM_T1On, &SS_T1On );
+        eps_getTurnOffTiming2( &HH_T2Off, &MM_T2Off, &SS_T2Off );
+        eps_getTurnOnTiming2( &HH_T2On, &MM_T2On, &SS_T2On );
 
-        getWorkingTimeLength1( ctx, &HH_WT1, &MM_WT1 );
-        getWorkingTimeLength2( ctx, &HH_WT2, &MM_WT2 );
+        eps_getWorkingTimeLength1( &HH_WT1, &MM_WT1 );
+        eps_getWorkingTimeLength2( &HH_WT2, &MM_WT2 );
 
-        deviceOverTemperature = getControllerInnerTemperatureUpperLimit( ctx );
-        deviceRecoveryTemperature = getControllerInnerTemperatureUpperLimitRecover( ctx );
-        batteryUpperLimitTemperature = getBatteryTemperatureWarningUpperLimit( ctx );
-        batteryLowerLimitTemperature = getBatteryTemperatureWarningLowerLimit( ctx );
+        deviceOverTemperature = eps_getControllerInnerTemperatureUpperLimit();
+        deviceRecoveryTemperature = eps_getControllerInnerTemperatureUpperLimitRecover();
+        batteryUpperLimitTemperature = eps_getBatteryTemperatureWarningUpperLimit();
+        batteryLowerLimitTemperature = eps_getBatteryTemperatureWarningLowerLimit();
         
         
         if (panelUpdatesAllowed) {

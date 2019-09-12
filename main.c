@@ -126,6 +126,7 @@ int main (int argc, char *argv[])
     if (pthread_join( sccReaderThread, NULL )) {
     }
     
+    epsolarModbusDisconnect();
     fprintf( stderr, "Goodbye!\n" );
     return 0;
 }
