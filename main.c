@@ -52,6 +52,8 @@ int main (int argc, char *argv[])
     Logger_Initialize( "/tmp/epsolarcommander.log", 5 );
     Logger_LogWarning( "Version: %s\n", version  );
     fprintf( stderr,  "Version: %s\n", version  );
+    Logger_LogWarning( "libepsolar Version: %s\n", epsolarGetVersion() );
+    fprintf( stderr,  "libepsolar Version: %s\n", epsolarGetVersion() );
     
     initscr();
     cbreak();
