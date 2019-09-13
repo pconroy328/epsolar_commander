@@ -249,7 +249,7 @@ float   dialogGetFloat(const char *title, const char *prompt, const float minVal
         }
         
         
-        if ((returnValue <= minVal) || (returnValue >= maxVal)) {
+        if ((returnValue < minVal) || (returnValue > maxVal)) {
             beep();
             flash();
             for (int i = 0; i < strlen( result ); i += 1)

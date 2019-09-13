@@ -104,6 +104,34 @@ void    editDeviceClocktime()
 }
 
 // -----------------------------------------------------------------------------
+void    editDeviceOverTemperature()
+{
+    suspendUpdatingPanels();
+    
+    float val = dialogGetFloat( "Charge Controller Limit", 
+            "The Upper Temperature for the Controller\nUse Fahrenheit. Factory default is 185*F", 
+            100.0, 210.0, 185.0, 0, 4 );
+    setBatteryTemperatureWarningUpperLimit( getContext(), val );
+    resumeUpdatingPanels();
+    Logger_LogInfo( "Setting Device Over Temperature to %f'\n", val );
+    showDevicePanel();       
+}
+
+// -----------------------------------------------------------------------------
+void    editDeviceRecoveryTemperature()
+{
+    suspendUpdatingPanels();
+    
+    float val = dialogGetFloat( "Charge Controller Limit", 
+            "The Recovery Temperature for the Controller\nUse Fahrenheit. Factory default is 165*F", 
+            85.0, 175.0, 165.0, 0, 4 );
+    setBatteryTemperatureWarningUpperLimit( getContext(), val );
+    resumeUpdatingPanels();
+    Logger_LogInfo( "Setting Device Recovery Temperature to %f'\n", val );
+    showDevicePanel();       
+
+}
+// -----------------------------------------------------------------------------
 void    editBatteryUpperLimitTemperature()
 {
     suspendUpdatingPanels();
@@ -162,6 +190,8 @@ void    editDevicePanel ()
         Logger_LogInfo( "About to edit menu selection [%d]\n", value );
         
         switch (selection) {
+            case 1:     editDeviceOverTemperature();        break;
+            case 2:     editDeviceRecoveryTemperature();    break;
             case 3:     editBatteryUpperLimitTemperature(); break;
             case 4:     editBatteryLowerLimitTemperature(); break;
             case 5:     editDeviceClocktime();              break;
