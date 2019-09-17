@@ -119,7 +119,7 @@ void    editDeviceOverTemperature()
     //setBatteryTemperatureWarningUpperLimit( getContext(), val );
     float   val = 185.0;
     if (dialogGetFloat( "Charge Controller Limit", 
-            "The Upper Temperature for the Controller\nUse Fahrenheit. Factory default is 185*F", &val, 100.0, 210.0, 185.0, 0, 4 ) == INPUT_OK) {
+            "The Upper Temperature for the Controller\nUse Fahrenheit. Factory default is 185*F", &val, 100.0, 210.0, 185.0, 3, 1 ) == INPUT_OK) {
     
         Logger_LogInfo( "Setting Device Over Temperature to %f'\n", val );
         eps_setControllerInnerTemperatureUpperLimit( val );
@@ -136,7 +136,7 @@ void    editDeviceRecoveryTemperature()
     
     float   val = 165.0;
     if (dialogGetFloat( "Charge Controller Limit", 
-            "The Recovery Temperature for the Controller\nUse Fahrenheit. Factory default is 165*F", &val, 85.0, 175.0, 165.0, 0, 4 ) == INPUT_OK) {
+            "The Recovery Temperature for the Controller\nUse Fahrenheit. Factory default is 165*F", &val, 85.0, 175.0, 165.0, 3, 1 ) == INPUT_OK) {
     
         Logger_LogInfo( "Setting Device Recovery Temperature to %f'\n", val );
         eps_setControllerInnerTemperatureUpperLimitRecover( val );
@@ -158,7 +158,7 @@ void    editBatteryUpperLimitTemperature()
 
     float   val = 150.0;
     if (dialogGetFloat( "Battery Limit", 
-            "The Upper Limit Temperature for the Battery\nUse Fahrenheit. Factory default is 150*F", &val, 120.0, 175.0, 150.0, 0, 4 ) == INPUT_OK) {
+            "The Upper Limit Temperature for the Battery\nUse Fahrenheit. Factory default is 150*F", &val, 120.0, 175.0, 150.0, 3, 1 ) == INPUT_OK) {
     
         Logger_LogInfo( "Setting Battery Upper Limit Temperature to %f'\n", val );
         eps_setBatteryTemperatureWarningUpperLimit( val );
@@ -182,7 +182,7 @@ void    editBatteryLowerLimitTemperature()
 
     float   val = 150.0;
     if (dialogGetFloat( "Battery Limit", 
-            "The Lower Limit Temperature for the Battery\nUse Fahrenheit. Factory default is -40.0*F", &val, -40.0, 32.0, -40.0, 0, 4 ) == INPUT_OK) {
+            "The Lower Limit Temperature for the Battery\nUse Fahrenheit. Factory default is -40.0*F", &val, -40.0, 32.0, -40.0, 3, 1 ) == INPUT_OK) {
     
         Logger_LogInfo( "Setting Battery Lower Limit Temperature to %f'\n", val );
         eps_setBatteryTemperatureWarningLowerLimit( val );
