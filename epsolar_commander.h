@@ -173,6 +173,7 @@ extern  void    editCurrentPanel( const char ch );
 extern  void    showBatteryPanel();
 extern  void    paintBatteryPanelData();
 extern  void    clearBatteryPanel();
+extern  void    editBatteryPanel();
 
 extern  void    showHomePanel();
 extern  void    clearHomePanel();

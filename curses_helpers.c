@@ -543,10 +543,8 @@ void    editCurrentPanel (const char ch)
     // loop get key until enter
     if (getActivePanel() == DEVICE_PANEL)
         editDevicePanel();
-    
-    // send command to that panel
-    
-    // restore main menu
+    else if (getActivePanel() == BATTERY_PANEL)
+        editBatteryPanel();
     showMenu();
 }
 
