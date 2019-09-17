@@ -21,6 +21,166 @@ static  int     MaxRows, MaxCols;
 static  int     dialogRows = 8;
 static  int     dialogCols = 50;
 
+
+
+static  int         oldCursesEscapeDelay;
+
+static  int         oldESCDELAY     = 1000;
+
+
+
+// -----------------------------------------------------------------------------
+static
+int     getInput (WINDOW *w, const int row, const int col, char result[], const int maxLen)
+{
+    oldESCDELAY = ESCDELAY;
+    ESCDELAY = 100;
+    
+    cbreak();
+    keypad( w, TRUE );
+    noecho();
+    wmove( w, row, col );
+    
+    char            buffer[ 1024 ];
+    unsigned    int bufIndex = 0;
+    
+    int     maxChars = MIN( maxLen, sizeof buffer );
+    maxChars -= 1;          // make room for '\0';
+    
+    int     curRow = row;
+    int     curCol = col;
+
+    int     returnCode = INPUT_OK;
+    int     done = FALSE;
+    
+    do {
+        int ch = wgetch( w );
+        
+        if (ch == 27) {
+            returnCode = INPUT_ESCAPE;
+            done = TRUE;
+            
+        } else if (ch == KEY_UP) {
+            fprintf( stderr, "Up" );
+        } else if (ch == KEY_RIGHT) {
+            fprintf( stderr, "Right" );
+        } else if (ch == KEY_DOWN) {
+            fprintf( stderr, "Down" );
+            
+        } else if (ch == KEY_BACKSPACE || ch == KEY_DC || ch == KEY_LEFT) {
+            if (bufIndex > 0) {
+                curCol -= 1;
+                mvwaddch( w, curRow, curCol, (' ' | A_BOLD | A_UNDERLINE) );
+                bufIndex -= 1;
+            }
+            
+        } else if (ch == KEY_ENTER || ch == 10) {
+            buffer[ bufIndex ] = '\0';
+            memcpy( result, buffer, bufIndex );
+            returnCode = INPUT_OK;
+            done = TRUE;
+            
+        } else {
+            if (bufIndex <= maxChars) {
+                buffer[ bufIndex++ ] = ch;
+                mvwaddch( w, curRow, curCol, (ch | A_BOLD | A_UNDERLINE) );
+                curCol += 1;
+            }
+        }
+    } while (!done);
+    
+    ESCDELAY = oldESCDELAY;
+    return returnCode;
+}
+
+
+// -----------------------------------------------------------------------------
+static
+int     getYesNo (WINDOW *w, const int row, const int col, char result[], const char defaultVal)
+{
+    int     returnCode = 0;
+    do {
+        returnCode = getInput( w, row, col, result, 1 );
+        if (returnCode == INPUT_OK) {
+            result[ 0 ] = toupper( result[ 0 ]);
+            if (result[ 0 ] == 'Y' || result[ 0 ] == 'N')
+                break;
+            else 
+            // erase what's there and keep trying
+            for (int i = 0; i < strlen( result ); i += 1)
+                mvwaddch( w, row, (col + i), (' ' | A_BOLD | A_UNDERLINE) );            
+        } else if (returnCode == INPUT_ESCAPE) {
+            break;
+        } else {
+            ;
+        }
+    } while (1);
+    
+    return returnCode;
+}
+
+// -----------------------------------------------------------------------------
+static
+int     getInteger (WINDOW *w, const int row, const int col, int *intVal, const int defaultVal, const int minVal, const int maxVal)
+{
+    int     returnCode = 0;
+    
+    char    result[ 16 ];
+    *intVal = defaultVal;
+    do {
+        memset( result, '\0', sizeof result );
+        returnCode = getInput( w, row, col, result, 5 );
+        if (returnCode == INPUT_OK) {
+            *intVal = atoi( result );
+            if (*intVal >= minVal &&  *intVal <= maxVal) {
+                break;
+            } else {
+                // erase what's there and keep trying
+                for (int i = 0; i < strlen( result ); i += 1)
+                    mvwaddch( w, row, (col + i), (' ' | A_BOLD | A_UNDERLINE) );
+            }
+            
+        } else if (returnCode == INPUT_ESCAPE) {
+            break;
+        } else {
+            ;
+        }
+    } while (1);
+    
+    return returnCode;
+}
+
+// -----------------------------------------------------------------------------
+static
+int     getFloat (WINDOW *w, const int row, const int col, float *fVal, const float defaultVal, const float minVal, const float maxVal)
+{
+    int     returnCode = 0;
+    
+    char    result[ 16 ];
+    *fVal = defaultVal;
+    do {
+        memset( result, '\0', sizeof result );
+        returnCode = getInput( w, row, col, result, 7 );
+        if (returnCode == INPUT_OK) {
+            *fVal = atof( result );
+            if (*fVal >= minVal &&  *fVal <= maxVal) {
+                break;
+            } else {
+                // erase what's there and keep trying
+                for (int i = 0; i < strlen( result ); i += 1)
+                    mvwaddch( w, row, (col + i), (' ' | A_BOLD | A_UNDERLINE) );
+            }
+            
+        } else if (returnCode == INPUT_ESCAPE) {
+            break;
+        } else {
+            ;
+        }
+    } while (1);
+    
+    return returnCode;
+}
+
 // -----------------------------------------------------------------------------
 void    switchPanel (const int newActivePanelID)
 {
@@ -220,7 +380,7 @@ void openDialog (WINDOW **win, const char *title, const char *text)
 }
 
 // -----------------------------------------------------------------------------
-float   dialogGetFloat(const char *title, const char *prompt, const float minVal, const float maxVal, const float defaultVal, const int width, const int precision)
+int dialogGetFloat(const char *title, const char *prompt, float *floatVal, const float minVal, const float maxVal, const float defaultVal, const int width, const int precision)
 {
     WINDOW  *d;
     openDialog( &d, title, prompt );
@@ -229,52 +389,20 @@ float   dialogGetFloat(const char *title, const char *prompt, const float minVal
     int startCol = 2;
 
     char    buf[ 255 ];
-    int     len = snprintf( buf, sizeof buf, "[Min:%*.*f, Max: %*.*f] -> ", width, precision, minVal, width, precision, maxVal );
+    int     len = snprintf( buf, sizeof buf, "[Min:%*.*f, Max: %*.*f], <Esc> to cancel -> ", width, precision, minVal, width, precision, maxVal );
     mvwprintw( d, startRow, startCol, buf );
     wrefresh( d );
     
-    char    result[ 64 ]; 
-    
-    float returnValue = defaultVal;
-    int done = FALSE;
-    do {
-        echo();
-        mvwgetnstr( d, startRow, (startCol + len), result, sizeof result );
-        noecho();
-    
-        if (strlen( result ) == 0) {
-            returnValue = defaultVal;
-        } else {
-            returnValue = (result != NULL ? atof( result ) : -1 );
-        }
-        
-        
-        if ((returnValue < minVal) || (returnValue > maxVal)) {
-            beep();
-            flash();
-            for (int i = 0; i < strlen( result ); i += 1)
-                mvwaddch( d, startRow, (startCol + len + i), ' ' );
-        } else 
-            done = TRUE;
-    } while (!done);
+    int returnCode = getFloat( d, startRow, (startCol + len), floatVal, defaultVal, minVal, maxVal );
 
     werase( d );
     delwin( d );
 
-    return returnValue;
+    return returnCode;
 }
 
 // -----------------------------------------------------------------------------
-int dialogGetInteger(const char *title, const char *prompt, const int minVal, const int maxVal, const int defaultVal)
-{
-    float   fValue = dialogGetFloat( title, prompt, (float) minVal, (float) maxVal, (float) defaultVal, 0, 0 );
-    return (int) fValue;
-}
-
-
-// -----------------------------------------------------------------------------
-static
-int dialogGetInteger2(const char *title, const char *prompt, const int minVal, const int maxVal, const int defaultVal)
+int dialogGetInteger(const char *title, const char *prompt, int *iVal, const int minVal, const int maxVal, const int defaultVal)
 {
     WINDOW  *d;
     openDialog( &d, title, prompt );
@@ -283,36 +411,16 @@ int dialogGetInteger2(const char *title, const char *prompt, const int minVal, c
     int startCol = 2;
 
     char    buf[ 255 ];
-    int     len = snprintf( buf, sizeof buf, "[Min:%d, Max: %d] -> ", minVal, maxVal );
+    int     len = snprintf( buf, sizeof buf, "[Min:%d, Max: %d], <Esc> to cancel -> ", minVal, maxVal );
     mvwprintw( d, startRow, startCol, buf );
     wrefresh( d );
     
-    char    result[ 64 ]; 
-    
-    int returnValue = defaultVal;
-    int done = FALSE;
-    do {
-        echo();
-        mvwgetnstr( d, startRow, (startCol + len), result, sizeof result );
-        noecho();
-    
-        if (strlen( result ) == 0) {
-            returnValue = defaultVal;
-        } else {
-            returnValue = (result != NULL ? atoi( result ) : -1 );
-        }
-        
-        
-        if ((returnValue <= minVal) || (returnValue >= maxVal)) {
-            beep();
-            flash();
-            for (int i = 0; i < strlen( result ); i += 1)
-                mvwaddch( d, startRow, (startCol + len + i), ' ' );
-        } else 
-            done = TRUE;
-    } while (!done);
+    int returnCode = getInteger( d, startRow, (startCol + len), iVal, defaultVal, minVal, maxVal );
 
-    return returnValue;
+    werase( d );
+    delwin( d );
+
+    return returnCode;
 }
 
 

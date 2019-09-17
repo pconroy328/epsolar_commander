@@ -77,17 +77,19 @@ void    clearDevicePanel()
 #define MIN_SELECTION   1
 #define MAX_SELECTION   6
 
-extern  int dialogGetInteger2(const char *title, const char *prompt, const int minVal, const int maxVal, const int defaultVal);
+//extern  int dialogGetInteger2(const char *title, const char *prompt, const int minVal, const int maxVal, const int defaultVal);
 
 // -----------------------------------------------------------------------------
 void    editDataRefreshValue()
 {
     suspendUpdatingPanels();
-    int refreshValue = dialogGetInteger( "Data Refresh Time", "Sets seconds between data updates\nDefault is 10 seconds", 1, 3600, 10 );
     
-    refreshContollerDataTime = refreshValue;
+    int     iVal = 10;
+    if (dialogGetInteger( "Data Refresh Time", "Sets seconds between data updates\nDefault is 10 seconds", &iVal, 1, 3600, 10 ) == INPUT_OK) {
+        refreshContollerDataTime = iVal;
+        Logger_LogInfo( "Changing data refresh time to [%d]\n", iVal );
+    }
     resumeUpdatingPanels();
-    Logger_LogInfo( "Changing data refresh time to [%d]\n", refreshValue );
     showDevicePanel();
 }
 
@@ -96,9 +98,9 @@ void    editDeviceClocktime()
 {
     suspendUpdatingPanels();
     
-    (void) dialogGetInteger( "Device Date and Time", "Press <Enter> to set device time to 'now'", 0, 9999, 1 );
+    //(void) dialogGetInteger( "Device Date and Time", "Press <Enter> to set device time to 'now'", 0, 9999, 1 );
     
-    setRealtimeClockToNow( getContext() );
+    //setRealtimeClockToNow( getContext() );
     resumeUpdatingPanels();
     showDevicePanel();
 }
@@ -108,12 +110,12 @@ void    editDeviceOverTemperature()
 {
     suspendUpdatingPanels();
     
-    float val = dialogGetFloat( "Charge Controller Limit", 
-            "The Upper Temperature for the Controller\nUse Fahrenheit. Factory default is 185*F", 
-            100.0, 210.0, 185.0, 0, 4 );
-    setBatteryTemperatureWarningUpperLimit( getContext(), val );
+    //float val = dialogGetFloat( "Charge Controller Limit", 
+    //        "The Upper Temperature for the Controller\nUse Fahrenheit. Factory default is 185*F", 
+    //        100.0, 210.0, 185.0, 0, 4 );
+    //setBatteryTemperatureWarningUpperLimit( getContext(), val );
     resumeUpdatingPanels();
-    Logger_LogInfo( "Setting Device Over Temperature to %f'\n", val );
+    //Logger_LogInfo( "Setting Device Over Temperature to %f'\n", val );
     showDevicePanel();       
 }
 
@@ -122,12 +124,12 @@ void    editDeviceRecoveryTemperature()
 {
     suspendUpdatingPanels();
     
-    float val = dialogGetFloat( "Charge Controller Limit", 
-            "The Recovery Temperature for the Controller\nUse Fahrenheit. Factory default is 165*F", 
-            85.0, 175.0, 165.0, 0, 4 );
-    setBatteryTemperatureWarningUpperLimit( getContext(), val );
+    //float val = dialogGetFloat( "Charge Controller Limit", 
+    //        "The Recovery Temperature for the Controller\nUse Fahrenheit. Factory default is 165*F", 
+    //        85.0, 175.0, 165.0, 0, 4 );
+    //setBatteryTemperatureWarningUpperLimit( getContext(), val );
     resumeUpdatingPanels();
-    Logger_LogInfo( "Setting Device Recovery Temperature to %f'\n", val );
+    //Logger_LogInfo( "Setting Device Recovery Temperature to %f'\n", val );
     showDevicePanel();       
 
 }
@@ -136,12 +138,12 @@ void    editBatteryUpperLimitTemperature()
 {
     suspendUpdatingPanels();
     
-    float val = dialogGetFloat( "Battery Limit", 
-            "The Upper Limit Temperature for the Battery\nUse Fahrenheit. Factory default is 150*F", 
-            120.0, 175.0, 150.0, 0, 4 );
-    setBatteryTemperatureWarningUpperLimit( getContext(), val );
+    //float val = dialogGetFloat( "Battery Limit", 
+    //        "The Upper Limit Temperature for the Battery\nUse Fahrenheit. Factory default is 150*F", 
+    //        120.0, 175.0, 150.0, 0, 4 );
+    //setBatteryTemperatureWarningUpperLimit( getContext(), val );
     resumeUpdatingPanels();
-    Logger_LogInfo( "Setting battery Upper Limit Temperature to %f'\n", val );
+    //Logger_LogInfo( "Setting battery Upper Limit Temperature to %f'\n", val );
     showDevicePanel();   
 }
 
@@ -150,12 +152,12 @@ void    editBatteryLowerLimitTemperature()
 {
     suspendUpdatingPanels();
     
-    float val = dialogGetFloat( "Battery Limit", 
-            "The Lower Limit Temperature for the Battery\nUse Fahrenheit. Factory default is -40.0*F", 
-            -40.0, 32.0, -40.0, 0, 4 );
-    setBatteryTemperatureWarningLowerLimit( getContext(), val );
+    //float val = dialogGetFloat( "Battery Limit", 
+    //        "The Lower Limit Temperature for the Battery\nUse Fahrenheit. Factory default is -40.0*F", 
+    //        -40.0, 32.0, -40.0, 0, 4 );
+    //setBatteryTemperatureWarningLowerLimit( getContext(), val );
     resumeUpdatingPanels();
-    Logger_LogInfo( "Setting battery Lower Limit Temperature to %f'\n", val );
+    //Logger_LogInfo( "Setting battery Lower Limit Temperature to %f'\n", val );
     showDevicePanel();   
 }
 
