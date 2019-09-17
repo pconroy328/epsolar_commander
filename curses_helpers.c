@@ -23,8 +23,7 @@ static  int     dialogCols = 50;
 
 
 
-static  int         oldCursesEscapeDelay;
-
+//static  int         oldCursesEscapeDelay;
 static  int         oldESCDELAY     = 1000;
 
 
@@ -96,14 +95,18 @@ int     getInput (WINDOW *w, const int row, const int col, char result[], const 
 
 // -----------------------------------------------------------------------------
 static
-int     getYesNo (WINDOW *w, const int row, const int col, char result[], const char defaultVal)
+int     getYesNo (WINDOW *w, const int row, const int col, char *answer, const char defaultVal)
 {
     int     returnCode = 0;
+    char    result[ 2 ];
     do {
+        result[ 0 ] = '\0';
+        result[ 1 ] = '\0';
+        
         returnCode = getInput( w, row, col, result, 1 );
         if (returnCode == INPUT_OK) {
-            result[ 0 ] = toupper( result[ 0 ]);
-            if (result[ 0 ] == 'Y' || result[ 0 ] == 'N')
+            *answer = toupper( result[ 0 ]);
+            if (*answer == 'Y' || *answer == 'N')
                 break;
             else 
             // erase what's there and keep trying
@@ -416,6 +419,28 @@ int dialogGetInteger(const char *title, const char *prompt, int *iVal, const int
     wrefresh( d );
     
     int returnCode = getInteger( d, startRow, (startCol + len), iVal, defaultVal, minVal, maxVal );
+
+    werase( d );
+    delwin( d );
+
+    return returnCode;
+}
+
+// -----------------------------------------------------------------------------
+int dialogGetYesNo (const char *title, const char *prompt, char *cVal, const char defaultVal)
+{
+    WINDOW  *d;
+    openDialog( &d, title, prompt );
+
+    int startRow = dialogRows - 2;
+    int startCol = 2;
+
+    char    buf[ 255 ];
+    int     len = snprintf( buf, sizeof buf, "Enter Y(es) / N(o) or <Esc> to cancel -> " );
+    mvwprintw( d, startRow, startCol, buf );
+    wrefresh( d );
+    
+    int returnCode = getYesNo( d, startRow, (startCol + len), cVal, defaultVal );
 
     werase( d );
     delwin( d );
