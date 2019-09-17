@@ -24,6 +24,14 @@ static  WINDOW  *ratedPanel;
 static  WINDOW  *settingsPanel;
 
 
+//
+// If the battery is in 12V mode - then the mins are always 9.0V and the Max 17.0V
+//  You double those for 24V systems
+
+static  float   batteryMinVoltages = 9.0;
+static  float   batteryMaxVoltages = 17.0;
+
+
 // -----------------------------------------------------------------------------
 static
 void    paintBatteryRatedData ()
@@ -45,6 +53,13 @@ void    paintBatteryRatedData ()
     beginCol -= 24;
     HfloatAddTextField( ratedPanel, 1, beginCol, "Charge Current", batteryRatedChargingCurrent, 2, 4 ); 
     
+    //
+    // Adjust the min and max
+    if (batteryRatedVoltage == 24.0) {
+        Logger_LogWarning( "Battery Rated Voltage is 24V - Min and Max's doubling!\n" );
+        batteryMinVoltages = 18.0;
+        batteryMaxVoltages = 34.0;
+    }
     wrefresh( ratedPanel );
 }
 
@@ -143,14 +158,14 @@ void    editBatteryType ()
     
     int val = 1;
     if (dialogGetInteger( "Battery", 
-            "Sets the type of Battery. Use (1) Sealed\n(2) Gel, (3) Flooded, (4) User", &val, 0, 3, 1 ) == INPUT_OK) {
+            "Sets the type of Battery. Use (1) Sealed, (2) Gel\n(3) Flooded, (0) User Defined", &val, 0, 3, 1 ) == INPUT_OK) {
     
         Logger_LogInfo( "Setting Battery Type to %d\n", val );
         eps_setBatteryType( val );
     }
 
     resumeUpdatingPanels();
-    showDevicePanel();   
+    showBatteryPanel();   
 }
 
 // -----------------------------------------------------------------------------
@@ -160,14 +175,14 @@ void    editBatteryCapacity ()
     
     int val = 200;
     if (dialogGetInteger( "Battery", 
-            "Sets the Battery Capacity in Amp Hours. Default is 200 AH", &val, 0, 1000, 200 ) == INPUT_OK) {
+            "Sets the Battery Capacity in Amp Hours\nDefault is 200 AH", &val, 0, 1000, 200 ) == INPUT_OK) {
     
         Logger_LogInfo( "Setting Battery Capacity to %d\n", val );
         eps_setBatteryCapacity( val );
     }
 
     resumeUpdatingPanels();
-    showDevicePanel();   
+    showBatteryPanel();   
 }
 
 // -----------------------------------------------------------------------------
@@ -177,15 +192,134 @@ void    editChargingMode ()
     
     int val = 200;
     if (dialogGetInteger( "Battery", 
-            "Sets the Charging Mode for the battery. Use (0) for Voltage\nCompensation (1) for State Of Charge", &val, 0, 1, 0 ) == INPUT_OK) {
+            "Sets the Battery Charging Mode. Use (0) for Voltage\nCompensation, (1) for State Of Charge", &val, 0, 1, 0 ) == INPUT_OK) {
     
         Logger_LogInfo( "Setting Battery Charging Mode to %d\n", val );
         eps_setManagementModesOfBatteryChargingAndDischarging( val );
     }
 
     resumeUpdatingPanels();
-    showDevicePanel();   
+    showBatteryPanel();   
 }
+
+// -----------------------------------------------------------------------------
+void    editTempCompCoeff ()
+{
+    suspendUpdatingPanels();
+    
+    int val = 3;
+    if (dialogGetInteger( "Battery", 
+            "Sets the Temperature Compensation Coefficient \nDefault is 3", &val, 0, 9, 3 ) == INPUT_OK) {
+    
+        Logger_LogInfo( "Setting Temperature Compensation Coefficient to %d\n", val );
+        eps_setTemperatureCompensationCoefficient( val );
+    }
+
+    resumeUpdatingPanels();
+    showBatteryPanel();   
+}
+
+// -----------------------------------------------------------------------------
+void    editOverVDisconnectV()
+{
+    suspendUpdatingPanels();
+    
+    float   val = 16.0;
+    if (dialogGetFloat( "Battery", 
+            "Set the Over Voltage DISCONNECT Voltage\nDefault is 16.0V", &val, 
+            batteryMinVoltages, batteryMaxVoltages, 
+            16.0,           // figure out a way to double this
+            3, 1) == INPUT_OK) {
+    
+        Logger_LogInfo( "Setting Over Voltage Disconnect Voltage to %f\n", val );
+        eps_setHighVoltageDisconnect( val );
+    }
+
+    resumeUpdatingPanels();
+    showBatteryPanel();       
+}
+
+// -----------------------------------------------------------------------------
+void    editOverVReconnectV()
+{
+    suspendUpdatingPanels();
+    
+    float   val = 15.0;
+    if (dialogGetFloat( "Battery", 
+            "Set the Over Voltage RECONNECT Voltage\nDefault is 15.0V", &val,
+            batteryMinVoltages, batteryMaxVoltages, 
+            15.0,           // figure out a way to double this
+            3, 1) == INPUT_OK) {
+    
+        Logger_LogInfo( "Setting Over Voltage Reconnect Voltage to %f\n", val );
+        eps_setOverVoltageReconnect( val );
+    }
+
+    resumeUpdatingPanels();
+    showBatteryPanel();       
+}
+
+// -----------------------------------------------------------------------------
+void    editEqualizationV()
+{
+    suspendUpdatingPanels();
+    
+    float   val = 15.0;
+    if (dialogGetFloat( "Battery", 
+            "Set the Equalization Voltage\nDefault is 14.6V", &val,
+            batteryMinVoltages, batteryMaxVoltages, 
+            14.6,           // figure out a way to double this
+            3, 1) == INPUT_OK) {
+    
+        Logger_LogInfo( "Setting Equalization Voltage to %f\n", val );
+        eps_setEqualizationVoltage( val );
+    }
+
+    resumeUpdatingPanels();
+    showBatteryPanel();       
+}
+
+// -----------------------------------------------------------------------------
+void    editBoostV()
+{
+    suspendUpdatingPanels();
+    
+    float   val = 15.0;
+    if (dialogGetFloat( "Battery", 
+            "Set the Boost Voltage\nDefault is 14.4V", &val,
+            batteryMinVoltages, batteryMaxVoltages, 
+            14.4,           // figure out a way to double this
+            3, 1) == INPUT_OK) {
+    
+        Logger_LogInfo( "Setting Boost Voltage to %f\n", val );
+        eps_setBoostingVoltage( val );
+    }
+
+    resumeUpdatingPanels();
+    showBatteryPanel();       
+}
+
+// -----------------------------------------------------------------------------
+void    editFloatV()
+{
+    suspendUpdatingPanels();
+    
+    float   val = 15.0;
+    if (dialogGetFloat( "Battery", 
+            "Set the Float Voltage\nDefault is 13.8V", &val,
+            batteryMinVoltages, batteryMaxVoltages, 
+            14.4,           // figure out a way to double this
+            3, 1) == INPUT_OK) {
+    
+        Logger_LogInfo( "Setting Float Voltage to %f\n", val );
+        eps_setFloatingVoltage( val );
+    }
+
+    resumeUpdatingPanels();
+    showBatteryPanel();       
+}
+
+
 
 
 #define MIN_SELECTION   1
@@ -221,12 +355,16 @@ void    editBatteryPanel ()
         Logger_LogInfo( "About to edit menu selection [%d]\n", value );
         
         switch (selection) {
-            case 1:     editBatteryType();                  break;
-            case 2:     editChargingMode();    break;
-            case 3:     editBatteryCapacity(); break;
-            //case 4:     editBatteryLowerLimitTemperature(); break;
-            //case 5:     editDeviceClocktime();              break;
-            //case 6:     editDataRefreshValue();             break;
+            case 1:     editBatteryType();          break;
+            case 2:     editChargingMode();         break;
+            case 3:     editBatteryCapacity();      break;
+            case 4:     editTempCompCoeff();        break;
+            case 5:     editOverVDisconnectV();     break;
+            case 6:     editOverVReconnectV();      break;
+
+            case 7:     editEqualizationV();      break;
+            case 8:     editBoostV();      break;
+            case 9:     editFloatV();      break;
         }
     }
 }
