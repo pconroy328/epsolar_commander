@@ -14,6 +14,9 @@
 #include <libepsolar.h>
 #include <pthread.h>
 #include "epsolar_commander.h"
+#include "libepsolar.h"
+
+
 
 extern  int     MaxRows;
 extern  int     MaxCols;
@@ -132,3 +135,98 @@ void    clearBatteryPanel()
     refresh();
 }
         
+
+// -----------------------------------------------------------------------------
+void    editBatteryType ()
+{
+    suspendUpdatingPanels();
+    
+    int val = 1;
+    if (dialogGetInteger( "Battery", 
+            "Sets the type of Battery. Use (1) Sealed\n(2) Gel, (3) Flooded, (4) User", &val, 0, 3, 1 ) == INPUT_OK) {
+    
+        Logger_LogInfo( "Setting Battery Type to %d\n", val );
+        eps_setBatteryType( val );
+    }
+
+    resumeUpdatingPanels();
+    showDevicePanel();   
+}
+
+// -----------------------------------------------------------------------------
+void    editBatteryCapacity ()
+{
+    suspendUpdatingPanels();
+    
+    int val = 200;
+    if (dialogGetInteger( "Battery", 
+            "Sets the Battery Capacity in Amp Hours. Default is 200 AH", &val, 0, 1000, 200 ) == INPUT_OK) {
+    
+        Logger_LogInfo( "Setting Battery Capacity to %d\n", val );
+        eps_setBatteryCapacity( val );
+    }
+
+    resumeUpdatingPanels();
+    showDevicePanel();   
+}
+
+// -----------------------------------------------------------------------------
+void    editChargingMode ()
+{
+    suspendUpdatingPanels();
+    
+    int val = 200;
+    if (dialogGetInteger( "Battery", 
+            "Sets the Charging Mode for the battery. Use (0) for Voltage\nCompensation (1) for State Of Charge", &val, 0, 1, 0 ) == INPUT_OK) {
+    
+        Logger_LogInfo( "Setting Battery Charging Mode to %d\n", val );
+        eps_setManagementModesOfBatteryChargingAndDischarging( val );
+    }
+
+    resumeUpdatingPanels();
+    showDevicePanel();   
+}
+
+
+#define MIN_SELECTION   1
+#define MAX_SELECTION   21
+// -----------------------------------------------------------------------------
+void    editBatteryPanel ()
+{
+    // modal... oh well...
+    int done = FALSE;
+    
+    char    buffer[ 10 ];
+    int     selection = 0;
+   
+    while (!done) {
+        memset( buffer, '\0', sizeof buffer );
+        getEditMenuSelection( buffer, sizeof buffer );
+        
+        if (!isdigit( buffer[ 0 ] )) {
+            break;
+        }
+        
+        selection = atoi( buffer );
+        if (selection >= MIN_SELECTION && selection <= MAX_SELECTION)
+            done = TRUE;
+        else {
+            beep();
+            flash();
+        }
+    }
+    
+    if (done) {
+        int value = atoi( buffer );
+        Logger_LogInfo( "About to edit menu selection [%d]\n", value );
+        
+        switch (selection) {
+            case 1:     editBatteryType();                  break;
+            case 2:     editChargingMode();    break;
+            case 3:     editBatteryCapacity(); break;
+            //case 4:     editBatteryLowerLimitTemperature(); break;
+            //case 5:     editDeviceClocktime();              break;
+            //case 6:     editDataRefreshValue();             break;
+        }
+    }
+}

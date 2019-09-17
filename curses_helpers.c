@@ -19,7 +19,7 @@ static  int     activePanelID = HOME_PANEL;
 
 static  int     MaxRows, MaxCols;
 static  int     dialogRows = 8;
-static  int     dialogCols = 50;
+static  int     dialogCols = 55;
 
 
 
