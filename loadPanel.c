@@ -148,9 +148,9 @@ void    editLoadControlDuskOnDawnOff ()
     
     char    val = 'N';
     if (dialogGetYesNo( "Load Control", 
-            "Enable 'On at Dusk, Off at Dawn' control of the load. Dusk and Dawn are defined\nby PV voltages. Default is disabled", &val, 'N' ) == INPUT_OK &&
+            "Enable 'On at Dusk, Off at Dawn' control of load\n. Dusk and Dawn are defined by PV voltages.\nDefault is disabled", &val, 'N' ) == INPUT_OK &&
             val == 'Y') {
-        Logger_LogInfo( "Enabling manual control of load\n" );
+        Logger_LogInfo( "Enabling Dusk On, Dawn Off control of load\n" );
         eps_setLoadControllingMode( 1 );
     }
 
@@ -160,20 +160,34 @@ void    editLoadControlDuskOnDawnOff ()
 
 //------------------------------------------------------------------------------
 static
-void    editTimer1On ()
+void    editTimer (const int timerNumber, const int onOff)
 {
     suspendUpdatingPanels();
     
     int     hour = -1;
     int     minute = -1;
     int     second = -1;
+    
+    char    prompt[ 255 ];
+    snprintf( prompt, sizeof prompt, 
+            "Set the time that 'Timer %d' turns the Load %s.\nUse 'HH:MM:SS' and a 24 hour clock", 
+            timerNumber, (onOff ? "On" : "Off") );
+    
     if (dialogGetHHMMSS( "Load Control", 
-            "Set the time that 'Timer 1' turns the Load On.\n Use 'HH:MM:SS', 24 hour clock", 
+            prompt,
             &hour, &minute, &second ) == INPUT_OK) {
-        Logger_LogInfo( "Setting Timer 1 On to %d:%d:%d\n", hour, minute, second );
-        eps_setLoadControllingMode( 1 );
+        Logger_LogInfo( "Setting Timer %d %s to   %d:%d:%d\n", timerNumber, (onOff ? "On" : "Off"), hour, minute, second );
+        
+        if (timerNumber == 1 && onOff == 1)
+            eps_setTurnOnTiming1( hour, minute, second );
+        else if (timerNumber == 1 && onOff == 0)
+            eps_setTurnOffTiming1( hour, minute, second );
+        if (timerNumber == 2 && onOff == 1)
+            eps_setTurnOnTiming2( hour, minute, second );
+        else if (timerNumber == 2 && onOff == 0)
+            eps_setTurnOffTiming2( hour, minute, second );
     }
-
+    
     resumeUpdatingPanels();
     showLoadPanel();   
 }
@@ -197,9 +211,11 @@ void    editLoadPanel ()
         if (!isdigit( buffer[ 0 ] )) {
             
             if (buffer[ 0 ] == 'O' || buffer[ 0 ] == 'o') {
-                eps_forceLoadOnOff( 1 );
+                //eps_forceLoadOnOff( 1 );
+                Logger_LogInfo( "Forcing Load to be On!\n" );
             } else if (buffer[ 0 ] == 'X' || buffer[ 0 ] == 'x') {
-                eps_forceLoadOnOff( 0 );
+                // eps_forceLoadOnOff( 0 );
+                Logger_LogInfo( "Forcing Load to be Off!\n" );
             }
             
             break;
@@ -218,11 +234,11 @@ void    editLoadPanel ()
         Logger_LogInfo( "About to edit menu selection [%d]\n", selection );
         switch (selection) {
             case    1:  editLoadControlManual();            break;
-            case    2:  editLoadControlDuskOnDawnOff();    break;
-            case    3:  editTimer1On();                     break;
-            //case    4:  editTimer1Off();                    break;
-            //case    5:  editTimer2On();                     break;
-            //case    6:  editTimer2Off();                    break;
+            case    2:  editLoadControlDuskOnDawnOff();     break;
+            case    3:  editTimer( 1, 1 );                  break;
+            case    4:  editTimer( 1, 0 );                  break;
+            case    5:  editTimer( 2, 1 );                  break;
+            case    6:  editTimer( 2, 0 );                  break;
         }
     }
 }
