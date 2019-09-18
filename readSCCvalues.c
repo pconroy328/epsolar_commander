@@ -68,11 +68,11 @@ char    *batteryChargingMode = "?";
 int     batteryCapacity = -9;
 float   temperatureCompensationCoefficient = -9.9;
 float   overVDisconnectV = -9.9;
-float   overVReconnectV;
-float   equalizationVoltage;
-float   boostVoltage;
-float   floatVoltage;
-float   boostReconnectVoltage;
+float   overVReconnectV = -9.9;
+float   equalizationVoltage = -9.9;
+float   boostVoltage = -9.9;
+float   floatVoltage = -9.9;
+float   boostReconnectVoltage = -9.9;
 char    *batteryRatedVoltageCode = "?";
 
 int     boostDuration = -9;
@@ -92,13 +92,13 @@ int     nighttimeThresholdVoltageDelay = -9;
 float   daytimeThresholdVoltage= -9.9;
 int     daytimeThresholdVoltageDelay= -9;
 
-int     HH_LON, MM_LON;
-int     backlightTime;
-int     HH_T1On, MM_T1On, SS_T1On;
-int     HH_T2On, MM_T2On, SS_T2On;
-int     HH_T1Off, MM_T1Off, SS_T1Off;
-int     HH_T2Off, MM_T2Off, SS_T2Off;
-int     HH_WT1, MM_WT1, HH_WT2, MM_WT2;     
+int     HH_LON = 0, MM_LON = 0;
+int     backlightTime = 0;
+int     HH_T1On = 0, MM_T1On = 0, SS_T1On = 0;
+int     HH_T2On = 0, MM_T2On = 0, SS_T2On = 0;
+int     HH_T1Off = 0, MM_T1Off = 0, SS_T1Off = 0;
+int     HH_T2Off = 0, MM_T2Off = 0, SS_T2Off = 0;
+int     HH_WT1 = 0, MM_WT1 = 0, HH_WT2 = 0, MM_WT2 = 0;     
 
 float   deviceOverTemperature = -9.9;
 float   deviceRecoveryTemperature = -9.9;

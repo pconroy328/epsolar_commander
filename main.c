@@ -75,6 +75,8 @@ int main (int argc, char *argv[])
     init_pair( TOOLOW_PAIR, COLOR_WHITE, COLOR_MAGENTA );
     init_pair( OK_PAIR, COLOR_WHITE, COLOR_GREEN );
    
+    controllerClock[ 0 ] = '\0';
+    computerClock[ 0 ] = '\0';
     
     //
     // Fire up the SCC Data Reader Thread
