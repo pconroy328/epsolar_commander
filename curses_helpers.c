@@ -456,7 +456,7 @@ int dialogGetYesNo (const char *title, const char *prompt, char *cVal, const cha
 
 static  WINDOW      *menuWin;
 static  char        *mainMenu = "(H)ome (B)attery (L)oad (D)evice (E)dit   (Q)uit";
-static  char        *editMenu = "Type number then <Enter> or             e(X)it  ";
+static  char        *editMenu = "Type number then <Enter> or    e(X)it  ";
 static  int         maxMenuMsgLen = 0;
 
 // ---------------------------------------------------------------------------------
@@ -510,28 +510,38 @@ char    getMenuSelection ()
 }
 
 // -----------------------------------------------------------------------------
-void    menuDisplayMessage (const char *msg)
+void    showEditMenu ()
 {
     wmove( menuWin, 0, 0 );
     wattron( menuWin, A_REVERSE );
-    wprintw( menuWin, msg );
+    wprintw( menuWin, editMenu );
     wclrtoeol( menuWin );
     wattroff( menuWin, A_REVERSE );
     wrefresh( menuWin );
 }
 
 // -----------------------------------------------------------------------------
-void    showEditMenu ()
+void    menuDisplayMessage (const char *anyMessage)
 {
-    menuDisplayMessage( editMenu );
+    wmove( menuWin, 0, 0 );
+    wattron( menuWin, A_REVERSE );
+    wprintw( menuWin, anyMessage );
+    wclrtoeol( menuWin );
+    wattroff( menuWin, A_REVERSE );
+    wrefresh( menuWin );    
 }
 
 // -----------------------------------------------------------------------------
 void    getEditMenuSelection (char *buffer, const size_t bufsize)
 {
-    echo();
-    wgetnstr( menuWin, buffer, bufsize );
-    noecho();
+    //echo();
+    //wgetnstr( menuWin, buffer, bufsize );
+    //noecho();
+    int row = 1;
+    int col = strlen( editMenu ) + 1;
+    int returnCode = getInput ( menuWin, row, col, buffer, bufsize );
+    if (returnCode == INPUT_OK)
+        ;
 }
 
 //------------------------------------------------------------------------------
@@ -549,10 +559,6 @@ void    editCurrentPanel (const char ch)
         editLoadPanel();
     showMenu();
 }
-
-
-
-
 
 // -----------------------------------------------------------------------------
 char    *getCurrentDateTime (char *buffer, const size_t buffLen)

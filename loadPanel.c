@@ -32,8 +32,8 @@ void    paintLoadData ()
     int beginCol = 3;
     HaddTextField( manualPanel, beginRow, beginCol, "1. Manual ", (loadControlMode == 0x00 ? "Enabled " : "Disabled") );
     HaddTextField( manualPanel, beginRow, beginCol + 25, "Status ", (dischargeRunning ? "On " : "Off") );
-    HaddTextField( manualPanel, beginRow, beginCol + 38, "Turn On", "<F1>" );
-    HaddTextField( manualPanel, beginRow, beginCol + 52, "Turn Off", "<F2>" );
+    HaddTextField( manualPanel, beginRow, beginCol + 40, "Turn On", "<F2>" );
+    HaddTextField( manualPanel, beginRow, beginCol + 55, "Turn Off", "<F3>" );
     wrefresh( manualPanel );
 
     beginRow = 1;
