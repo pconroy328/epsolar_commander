@@ -156,6 +156,7 @@ extern  void    HintAddTextField( WINDOW *window, const int startY, const int st
 extern  int     dialogGetFloat( const char *title, const char *prompt, float *fVal, const float minVal, const float maxVal, const float defaultVal, const int width, const int precision);
 extern  int     dialogGetInteger( const char *title, const char *prompt, int *iVal,  const int minVal, const int maxVal, const int defaultVal );
 extern  int     dialogGetYesNo( const char *title, const char *prompt, char *cVal, const char defaultVal );
+extern  int     dialogGetHHMMSS( const char *title, const char *prompt, int *hours, int *minutes, int *seconds );
 
 extern  void    showMenu ( void );
 extern  char    getMenuSelection( void );

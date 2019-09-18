@@ -1,5 +1,6 @@
 /*
  */
+#define _XOPEN_SOURCE       700
 
 #include <stdlib.h>
 #include <ctype.h>
@@ -8,6 +9,10 @@
 #include <string.h>
 #include <unistd.h>
 #include <libmqttrv.h>
+
+#include <time.h>                   // strptime()
+
+
 #include <log4c.h>
 #include <libepsolar.h>
 #include <time.h>
@@ -174,6 +179,50 @@ int     getFloat (WINDOW *w, const int row, const int col, float *fVal, const fl
                     mvwaddch( w, row, (col + i), (' ' | A_BOLD | A_UNDERLINE) );
             }
             
+        } else if (returnCode == INPUT_ESCAPE) {
+            break;
+        } else {
+            ;
+        }
+    } while (1);
+    
+    return returnCode;
+}
+
+// -----------------------------------------------------------------------------
+int     getTimer (WINDOW *w, const int row, const int col, int *hours, int *minutes, int *seconds)
+{  
+    int     returnCode = 0;
+    char    result[ 16 ];
+    struct  tm  tmStruct;
+    
+    do {
+        memset( result, '\0', sizeof result );
+        
+        returnCode = getInput( w, row, col, result, 8 );
+        
+        if (returnCode == INPUT_OK) {
+            tmStruct.tm_year = 1;                       // use this as an indicator
+            tmStruct.tm_sec = 61;
+            tmStruct.tm_min = 61;
+            
+            strptime( result, "%H:%M:%S", &tmStruct );
+            int foo = tmStruct.tm_year;
+            
+            *hours = tmStruct.tm_hour;
+            *minutes = tmStruct.tm_min;
+            *seconds = tmStruct.tm_sec;
+            
+            if (*hours >= 0 && *hours <= 23 &&
+                *minutes >= 0 && *minutes <= 59 &&
+                *seconds >= 0 && *seconds <= 59) {
+                break;
+            } else {
+                Logger_LogWarning( "Year: %d, Hour: %d, Min: %d. Sec: %d\n", tmStruct.tm_year, tmStruct.tm_hour, tmStruct.tm_min, tmStruct.tm_sec );
+                // erase what's there and keep trying
+                for (int i = 0; i < strlen( result ); i += 1)
+                    mvwaddch( w, row, (col + i), (' ' | A_BOLD | A_UNDERLINE) );  
+            }
         } else if (returnCode == INPUT_ESCAPE) {
             break;
         } else {
@@ -449,6 +498,39 @@ int dialogGetYesNo (const char *title, const char *prompt, char *cVal, const cha
 }
 
 
+// -----------------------------------------------------------------------------
+int dialogGetHHMMSS (const char *title, const char *prompt, int *hours, int *minutes, int *seconds)
+{
+    WINDOW  *d;
+    openDialog( &d, title, prompt );
+
+    int startRow = dialogRows - 2;
+    int startCol = 2;
+
+    char    buf[ 255 ];
+    int     len; 
+    
+    int     ignored;
+    int     *secPtr;
+    if (seconds == NULL) {
+        len = snprintf( buf, sizeof buf, "Enter HH:MM or <Esc> to cancel -> " );
+        secPtr = &ignored;
+
+    } else {
+        len = snprintf( buf, sizeof buf, "Enter HH:MM:SS or <Esc> to cancel -> " );
+        secPtr = seconds;
+    }
+    
+    mvwprintw( d, startRow, startCol, buf );
+    wrefresh( d );
+    
+    int returnCode = getTimer( d, startRow, (startCol + len), hours, minutes, secPtr );
+
+    werase( d );
+    delwin( d );
+
+    return returnCode;    
+}
 
 
 

@@ -32,8 +32,8 @@ void    paintLoadData ()
     int beginCol = 3;
     HaddTextField( manualPanel, beginRow, beginCol, "1. Manual ", (loadControlMode == 0x00 ? "Enabled " : "Disabled") );
     HaddTextField( manualPanel, beginRow, beginCol + 25, "Status ", (dischargeRunning ? "On " : "Off") );
-    HaddTextField( manualPanel, beginRow, beginCol + 40, "Turn On", "<F2>" );
-    HaddTextField( manualPanel, beginRow, beginCol + 55, "Turn Off", "<F3>" );
+    HaddTextField( manualPanel, beginRow, beginCol + 40, "Turn On", "<O>" );
+    HaddTextField( manualPanel, beginRow, beginCol + 55, "Turn Off", "<X>" );
     wrefresh( manualPanel );
 
     beginRow = 1;
@@ -64,7 +64,7 @@ void    paintLoadData ()
     wrefresh( duskTimerPanel );
     
     beginRow = 1;
-    HaddTextField( timerPanel, beginRow++, beginCol, "13.Timer Mode", (loadControlMode == 0x03 ? "Enabled " : "Disabled") );
+    HaddTextField( timerPanel, beginRow++, beginCol, "13. Timer Mode", (loadControlMode == 0x03 ? "Enabled " : "Disabled") );
     HaddTextField( timerPanel, beginRow, beginCol,   "14. Timer One - On  ", buf1 );
     HaddTextField( timerPanel, beginRow++, beginCol + 35, "15. Timer One - Off ", buf3 );
             
@@ -122,6 +122,63 @@ void    clearLoadPanel()
     refresh();
 }
 
+//------------------------------------------------------------------------------
+static
+void    editLoadControlManual ()
+{
+    suspendUpdatingPanels();
+    
+    char    val = 'N';
+    if (dialogGetYesNo( "Load Control", 
+            "Enable manual control of the load?\nDefault is Enabled", &val, 'N' ) == INPUT_OK &&
+            val == 'Y') {
+        Logger_LogInfo( "Enabling manual control of load\n" );
+        eps_setLoadControllingMode( 0 );
+    }
+
+    resumeUpdatingPanels();
+    showLoadPanel();   
+}
+
+//------------------------------------------------------------------------------
+static
+void    editLoadControlDuskOnDawnOff ()
+{
+    suspendUpdatingPanels();
+    
+    char    val = 'N';
+    if (dialogGetYesNo( "Load Control", 
+            "Enable 'On at Dusk, Off at Dawn' control of the load. Dusk and Dawn are defined\nby PV voltages. Default is disabled", &val, 'N' ) == INPUT_OK &&
+            val == 'Y') {
+        Logger_LogInfo( "Enabling manual control of load\n" );
+        eps_setLoadControllingMode( 1 );
+    }
+
+    resumeUpdatingPanels();
+    showLoadPanel();   
+}
+
+//------------------------------------------------------------------------------
+static
+void    editTimer1On ()
+{
+    suspendUpdatingPanels();
+    
+    int     hour = -1;
+    int     minute = -1;
+    int     second = -1;
+    if (dialogGetHHMMSS( "Load Control", 
+            "Set the time that 'Timer 1' turns the Load On.\n Use 'HH:MM:SS', 24 hour clock", 
+            &hour, &minute, &second ) == INPUT_OK) {
+        Logger_LogInfo( "Setting Timer 1 On to %d:%d:%d\n", hour, minute, second );
+        eps_setLoadControllingMode( 1 );
+    }
+
+    resumeUpdatingPanels();
+    showLoadPanel();   
+}
+
+
 #define     MIN_SELECTION       1
 #define     MAX_SELECTION       15
 // -----------------------------------------------------------------------------
@@ -138,6 +195,13 @@ void    editLoadPanel ()
         getEditMenuSelection( buffer, sizeof buffer );
         
         if (!isdigit( buffer[ 0 ] )) {
+            
+            if (buffer[ 0 ] == 'O' || buffer[ 0 ] == 'o') {
+                eps_forceLoadOnOff( 1 );
+            } else if (buffer[ 0 ] == 'X' || buffer[ 0 ] == 'x') {
+                eps_forceLoadOnOff( 0 );
+            }
+            
             break;
         }
         
@@ -151,8 +215,14 @@ void    editLoadPanel ()
     }
     
     if (done) {
-        int value = atoi( buffer );
-        Logger_LogInfo( "About to edit menu selection [%d]\n", value );
-        
+        Logger_LogInfo( "About to edit menu selection [%d]\n", selection );
+        switch (selection) {
+            case    1:  editLoadControlManual();            break;
+            case    2:  editLoadControlDuskOnDawnOff();    break;
+            case    3:  editTimer1On();                     break;
+            //case    4:  editTimer1Off();                    break;
+            //case    5:  editTimer2On();                     break;
+            //case    6:  editTimer2Off();                    break;
+        }
     }
 }
