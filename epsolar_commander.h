@@ -157,40 +157,41 @@ extern  int     dialogGetFloat( const char *title, const char *prompt, float *fV
 extern  int     dialogGetInteger( const char *title, const char *prompt, int *iVal,  const int minVal, const int maxVal, const int defaultVal );
 extern  int     dialogGetYesNo( const char *title, const char *prompt, char *cVal, const char defaultVal );
 
-extern  void    showMenu ();
-extern  char    getMenuSelection();
+extern  void    showMenu ( void );
+extern  char    getMenuSelection( void );
 extern  void    getEditMenuSelection( char *buffer, const size_t bufsize );
 extern  void    menuDisplayMessage( const char * );
 
 extern  char    *getCurrentDateTime( char *, const size_t len );
 
-extern  int     getActivePanel();
+extern  int     getActivePanel( void );
 extern  void    setActivePanel( const int panelNum );
 extern  void    switchPanel ( const int newActivePanelID);
 extern  void    editCurrentPanel( const char ch );
 
 
-extern  void    showBatteryPanel();
-extern  void    paintBatteryPanelData();
-extern  void    clearBatteryPanel();
-extern  void    editBatteryPanel();
+extern  void    showBatteryPanel( void );
+extern  void    paintBatteryPanelData( void );
+extern  void    clearBatteryPanel( void );
+extern  void    editBatteryPanel( void );
 
-extern  void    showHomePanel();
-extern  void    clearHomePanel();
-extern  void    paintHomePanelData();
+extern  void    showHomePanel( void );
+extern  void    clearHomePanel( void );
+extern  void    paintHomePanelData( void );
 
-extern  void    showLoadPanel();
-extern  void    paintLoadPanelData();
-extern  void    clearLoadPanel();
+extern  void    showLoadPanel( void );
+extern  void    paintLoadPanelData( void );
+extern  void    clearLoadPanel( void );
+extern  void    editLoadPanel( void );
 
-extern  void    showDevicePanel();
-extern  void    clearDevicePanel();
-extern  void    paintDevicePanelData();
-extern  void    editDevicePanel();
+extern  void    showDevicePanel( void );
+extern  void    clearDevicePanel( void );
+extern  void    paintDevicePanelData( void );
+extern  void    editDevicePanel( void );
 
-extern  void    showSettingsPanel();
-extern  void    clearSettingsPanel();
-extern  void    paintSettingsPanelData();
+extern  void    showSettingsPanel( void );
+extern  void    clearSettingsPanel( void );
+extern  void    paintSettingsPanelData( void );
 
 
 #ifdef __cplusplus

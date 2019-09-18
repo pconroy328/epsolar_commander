@@ -545,6 +545,8 @@ void    editCurrentPanel (const char ch)
         editDevicePanel();
     else if (getActivePanel() == BATTERY_PANEL)
         editBatteryPanel();
+    else if (getActivePanel() == LOAD_PANEL)
+        editLoadPanel();
     showMenu();
 }
 

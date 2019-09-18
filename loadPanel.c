@@ -30,8 +30,10 @@ void    paintLoadData ()
     
     int beginRow = 1;
     int beginCol = 3;
-    HaddTextField( manualPanel, beginRow++, beginCol, "Manual ", (loadControlMode == 0x00 ? "Enabled " : "Disabled") );
-    //HaddTextField( manualPanel, beginRow++, beginCol, "Timer On and Off  ", (loadControlMode == 0x03 ? "Yes" : "No ") );
+    HaddTextField( manualPanel, beginRow++, beginCol, "1. Manual ", (loadControlMode == 0x00 ? "Enabled " : "Disabled") );
+    HaddTextField( manualPanel, beginRow, beginCol + 15, "Status ", (dischargeRunning ? "On " : "Off") );
+    HaddTextField( manualPanel, beginRow, beginCol + 30, "<F1> Turn On", "" );
+    HaddTextField( manualPanel, beginRow, beginCol + 40, "<F2> Turn Off", "" );
     wrefresh( manualPanel );
 
     beginRow = 1;
@@ -40,31 +42,31 @@ void    paintLoadData ()
     snprintf( buf3, sizeof buf3, "%02d:%02d:%02d", HH_T1Off, MM_T1Off, SS_T1Off );
     snprintf( buf4, sizeof buf4, "%02d:%02d:%02d", HH_T2Off, MM_T2Off, SS_T2Off );
     
-    HaddTextField( duskDawnPanel, beginRow++, beginCol,             "Dusk On/Dawn Off", (loadControlMode == 0x01 ? "Enabled " : "Disabled") );
-    HaddTextField( duskDawnPanel, beginRow, beginCol,               "Timer One - On  ", buf1 );
-    HaddTextField( duskDawnPanel, beginRow++, beginCol + 30,        "Timer One - Off ", buf3 );
-    HaddTextField( duskDawnPanel, beginRow, beginCol,               "Timer Two - On  ", buf2 ); 
-    HaddTextField( duskDawnPanel, beginRow++, beginCol + 30,        "Timer Two - Off ", buf4 ); 
-    HfloatAddTextField( duskDawnPanel, beginRow, beginCol,          "Dusk Threshold <= V", nighttimeThresholdVoltage, 1, 4 );
-    HfloatAddTextField( duskDawnPanel, beginRow++, beginCol + 30,   "Dawn Threshold >= V", daytimeThresholdVoltage, 1, 4 );
+    HaddTextField( duskDawnPanel, beginRow++, beginCol,             "2. Dusk On/Dawn Off", (loadControlMode == 0x01 ? "Enabled " : "Disabled") );
+    HaddTextField( duskDawnPanel, beginRow, beginCol,               " 3.  Timer One - On  ", buf1 );
+    HaddTextField( duskDawnPanel, beginRow++, beginCol + 30,        " 4.  Timer One - Off ", buf3 );
+    HaddTextField( duskDawnPanel, beginRow, beginCol,               " 5.  Timer Two - On  ", buf2 ); 
+    HaddTextField( duskDawnPanel, beginRow++, beginCol + 30,        " 6.  Timer Two - Off ", buf4 ); 
+    HfloatAddTextField( duskDawnPanel, beginRow, beginCol,          " 7.  Dusk Threshold <= V", nighttimeThresholdVoltage, 1, 4 );
+    HfloatAddTextField( duskDawnPanel, beginRow++, beginCol + 30,   " 8.  Dawn Threshold >= V", daytimeThresholdVoltage, 1, 4 );
     wrefresh( duskDawnPanel );
             
     
     beginRow = 1;
-    HaddTextField( duskTimerPanel, beginRow++, beginCol, "Dusk On and Timer", (loadControlMode == 0x02 ? "Enabled " : "Disabled") );
+    HaddTextField( duskTimerPanel, beginRow++, beginCol, "9. Dusk On and Timer", (loadControlMode == 0x02 ? "Enabled " : "Disabled") );
     snprintf( buf5, sizeof buf5, "%02d:%02d", HH_WT1, MM_WT1 );
     snprintf( buf6, sizeof buf6, "%02d:%02d", HH_WT2, MM_WT2 );
-    HaddTextField( duskTimerPanel, beginRow, beginCol, "Work Timer One", buf5 );
-    HaddTextField( duskTimerPanel, beginRow++, beginCol + 30, "Work Timer Two", buf6 );
+    HaddTextField( duskTimerPanel, beginRow, beginCol, " 10.  Work Timer One", buf5 );
+    HaddTextField( duskTimerPanel, beginRow++, beginCol + 30, " 11.  Work Timer Two", buf6 );
 
     snprintf( buf7, sizeof buf7, "%02d:%02d", HH_LON, MM_LON );
-    HaddTextField( duskTimerPanel, beginRow++, beginCol, "Length of Night", buf7 );
+    HaddTextField( duskTimerPanel, beginRow++, beginCol, " 12.  Length of Night", buf7 );
     wrefresh( duskTimerPanel );
     
     beginRow = 1;
-    HaddTextField( timerPanel, beginRow++, beginCol, "Timer Mode", (loadControlMode == 0x03 ? "Enabled " : "Disabled") );
-    HaddTextField( timerPanel, beginRow, beginCol,               "Timer One - On  ", buf1 );
-    HaddTextField( timerPanel, beginRow++, beginCol + 30,        "Timer One - Off ", buf3 );
+    HaddTextField( timerPanel, beginRow++, beginCol, "13. Timer Mode", (loadControlMode == 0x03 ? "Enabled " : "Disabled") );
+    HaddTextField( timerPanel, beginRow, beginCol,               " 14.  Timer One - On  ", buf1 );
+    HaddTextField( timerPanel, beginRow++, beginCol + 30,        " 15.  Timer One - Off ", buf3 );
             
     wrefresh( panel );
 }
@@ -118,4 +120,39 @@ void    clearLoadPanel()
     delwin( panel );
     werase( stdscr );
     refresh();
+}
+
+#define     MIN_SELECTION       1
+#define     MAX_SELECTION       15
+// -----------------------------------------------------------------------------
+void    editLoadPanel ()
+{
+    // modal... oh well...
+    int done = FALSE;
+    
+    char    buffer[ 10 ];
+    int     selection = 0;
+   
+    while (!done) {
+        memset( buffer, '\0', sizeof buffer );
+        getEditMenuSelection( buffer, sizeof buffer );
+        
+        if (!isdigit( buffer[ 0 ] )) {
+            break;
+        }
+        
+        selection = atoi( buffer );
+        if (selection >= MIN_SELECTION && selection <= MAX_SELECTION)
+            done = TRUE;
+        else {
+            beep();
+            flash();
+        }
+    }
+    
+    if (done) {
+        int value = atoi( buffer );
+        Logger_LogInfo( "About to edit menu selection [%d]\n", value );
+        
+    }
 }

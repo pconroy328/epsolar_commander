@@ -41,6 +41,12 @@ void    paintDeviceData ()
     
     beginRow += 1;
     HintAddTextField( panel, beginRow++, beginCol, "6. Data Refresh Time", refreshContollerDataTime, 1, 2 );
+    
+    beginRow += 1;
+    beginRow += 1;
+    HaddTextField( panel, beginRow++, beginCol, "7. Reset to Factory Defaults", "" );
+    HaddTextField( panel, beginRow++, beginCol, "8. Clear Energy Statistics", "" );
+    
     wrefresh( panel );
 }
 
@@ -195,6 +201,40 @@ void    editBatteryLowerLimitTemperature()
 }
 
 // -----------------------------------------------------------------------------
+void    editResetFactoryDefaults()
+{
+    suspendUpdatingPanels();
+    
+    char    answer;
+    if (dialogGetYesNo( "Device Reset Defaults", "Restores all settings to their Factory Defaults", &answer, 'Y' ) == INPUT_OK) {
+        if (answer == 'Y') {
+            eps_restoreSystemDefaults();
+            Logger_LogInfo( "Resetting device parameters to factory defaults\n" );
+        }
+    }
+    
+    resumeUpdatingPanels();
+    showDevicePanel();
+}
+
+// -----------------------------------------------------------------------------
+void    editClearEnergyStats()
+{
+    suspendUpdatingPanels();
+    
+    char    answer;
+    if (dialogGetYesNo( "Device Clear Statistics", "Zeros-out all energy produced and consumed counters.", &answer, 'Y' ) == INPUT_OK) {
+        if (answer == 'Y') {
+            eps_clearEnergyGeneratingStatistics();
+            Logger_LogInfo( "Clearing out energy statistics\n" );
+        }
+    }
+    
+    resumeUpdatingPanels();
+    showDevicePanel();
+}
+
+// -----------------------------------------------------------------------------
 void    editDevicePanel ()
 {
     // modal... oh well...
@@ -231,6 +271,8 @@ void    editDevicePanel ()
             case 4:     editBatteryLowerLimitTemperature(); break;
             case 5:     editDeviceClocktime();              break;
             case 6:     editDataRefreshValue();             break;
+            case 7:     editResetFactoryDefaults();         break;
+            case 8:     editClearEnergyStats();             break;
         }
     }
 }
