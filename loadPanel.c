@@ -31,9 +31,9 @@ void    paintLoadData ()
     int beginRow = 1;
     int beginCol = 3;
     HaddTextField( manualPanel, beginRow, beginCol, "1. Manual ", (loadControlMode == 0x00 ? "Enabled " : "Disabled") );
-    HaddTextField( manualPanel, beginRow, beginCol + 20, "Status ", (dischargeRunning ? "On " : "Off") );
-    HaddTextField( manualPanel, beginRow, beginCol + 35, "<F1> Turn On", "" );
-    HaddTextField( manualPanel, beginRow, beginCol + 45, "<F2> Turn Off", "" );
+    HaddTextField( manualPanel, beginRow, beginCol + 25, "Status ", (dischargeRunning ? "On " : "Off") );
+    HaddTextField( manualPanel, beginRow, beginCol + 38, "Turn On", "<F1>" );
+    HaddTextField( manualPanel, beginRow, beginCol + 48, "Turn Off", "<F2>" );
     wrefresh( manualPanel );
 
     beginRow = 1;
@@ -44,11 +44,11 @@ void    paintLoadData ()
     
     HaddTextField( duskDawnPanel, beginRow++, beginCol,             "2. Dusk On/Dawn Off", (loadControlMode == 0x01 ? "Enabled " : "Disabled") );
     HaddTextField( duskDawnPanel, beginRow, beginCol,               "3. Timer One - On  ", buf1 );
-    HaddTextField( duskDawnPanel, beginRow++, beginCol + 30,        "4. Timer One - Off ", buf3 );
+    HaddTextField( duskDawnPanel, beginRow++, beginCol + 35,        "4. Timer One - Off ", buf3 );
     HaddTextField( duskDawnPanel, beginRow, beginCol,               "5. Timer Two - On  ", buf2 ); 
-    HaddTextField( duskDawnPanel, beginRow++, beginCol + 30,        "6. Timer Two - Off ", buf4 ); 
+    HaddTextField( duskDawnPanel, beginRow++, beginCol + 35,        "6. Timer Two - Off ", buf4 ); 
     HfloatAddTextField( duskDawnPanel, beginRow, beginCol,          "7. Dusk Threshold <= V", nighttimeThresholdVoltage, 1, 4 );
-    HfloatAddTextField( duskDawnPanel, beginRow++, beginCol + 30,   "8. Dawn Threshold >= V", daytimeThresholdVoltage, 1, 4 );
+    HfloatAddTextField( duskDawnPanel, beginRow++, beginCol + 35,   "8. Dawn Threshold >= V", daytimeThresholdVoltage, 1, 4 );
     wrefresh( duskDawnPanel );
             
     
@@ -57,16 +57,16 @@ void    paintLoadData ()
     snprintf( buf5, sizeof buf5, "%02d:%02d", HH_WT1, MM_WT1 );
     snprintf( buf6, sizeof buf6, "%02d:%02d", HH_WT2, MM_WT2 );
     HaddTextField( duskTimerPanel, beginRow, beginCol, "10. Work Timer One", buf5 );
-    HaddTextField( duskTimerPanel, beginRow++, beginCol + 30, "11. Work Timer Two", buf6 );
+    HaddTextField( duskTimerPanel, beginRow++, beginCol + 35, "11. Work Timer Two", buf6 );
 
     snprintf( buf7, sizeof buf7, "%02d:%02d", HH_LON, MM_LON );
-    HaddTextField( duskTimerPanel, beginRow++, beginCol, " 12. Length of Night", buf7 );
+    HaddTextField( duskTimerPanel, beginRow++, beginCol, "12. Length of Night", buf7 );
     wrefresh( duskTimerPanel );
     
     beginRow = 1;
     HaddTextField( timerPanel, beginRow++, beginCol, "13.Timer Mode", (loadControlMode == 0x03 ? "Enabled " : "Disabled") );
     HaddTextField( timerPanel, beginRow, beginCol,   "14. Timer One - On  ", buf1 );
-    HaddTextField( timerPanel, beginRow++, beginCol + 30, "15. Timer One - Off ", buf3 );
+    HaddTextField( timerPanel, beginRow++, beginCol + 35, "15. Timer One - Off ", buf3 );
             
     wrefresh( panel );
 }
