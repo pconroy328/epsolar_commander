@@ -80,7 +80,7 @@ void    clearDevicePanel()
 }
 
 #define MIN_SELECTION   1
-#define MAX_SELECTION   6
+#define MAX_SELECTION   8
 
 
 // -----------------------------------------------------------------------------

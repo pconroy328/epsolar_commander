@@ -148,7 +148,7 @@ void    editLoadControlDuskOnDawnOff ()
     
     char    val = 'N';
     if (dialogGetYesNo( "Load Control", 
-            "Enable 'On at Dusk, Off at Dawn' control of load\n. Dusk and Dawn are defined by PV voltages.\nDefault is disabled", &val, 'N' ) == INPUT_OK &&
+            "Enable 'On at Dusk, Off at Dawn' control of load.\nDusk and Dawn are defined by PV voltages.\nDefault is disabled", &val, 'N' ) == INPUT_OK &&
             val == 'Y') {
         Logger_LogInfo( "Enabling Dusk On, Dawn Off control of load\n" );
         eps_setLoadControllingMode( 1 );
@@ -191,6 +191,26 @@ void    editTimer (const int timerNumber, const int onOff)
     resumeUpdatingPanels();
     showLoadPanel();   
 }
+
+//------------------------------------------------------------------------------
+static
+void    editDuskThreshold ()
+{
+    suspendUpdatingPanels();
+    
+    char    val = 'N';
+    if (dialogGetYesNo( "Load Control", 
+            "Set the voltage for determing dusk.\nValuesDefault is Enabled", &val, 'N' ) == INPUT_OK &&
+            val == 'Y') {
+        Logger_LogInfo( "Enabling manual control of load\n" );
+        eps_setLoadControllingMode( 0 );
+    }
+
+    resumeUpdatingPanels();
+    showLoadPanel();   
+}
+
+
 
 
 #define     MIN_SELECTION       1
@@ -239,6 +259,8 @@ void    editLoadPanel ()
             case    4:  editTimer( 1, 0 );                  break;
             case    5:  editTimer( 2, 1 );                  break;
             case    6:  editTimer( 2, 0 );                  break;
+            case    7:  editDuskThreshold();                break;
+            case    8:  editDawnThreshold();                break;
         }
     }
 }
