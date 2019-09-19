@@ -31,9 +31,9 @@ void    paintLoadData ()
     int beginRow = 1;
     int beginCol = 3;
     HaddTextField( manualPanel, beginRow, beginCol, "1. Manual ", (loadControlMode == 0x00 ? "Enabled " : "Disabled") );
-    HaddTextField( manualPanel, beginRow, beginCol + 25, "Status ", (dischargeRunning ? "On " : "Off") );
+    HaddTextField( manualPanel, beginRow, beginCol + 25, "Status ", dischargeRunning  );
     HaddTextField( manualPanel, beginRow, beginCol + 40, "Turn On", "<O>" );
-    HaddTextField( manualPanel, beginRow, beginCol + 55, "Turn Off", "<X>" );
+    HaddTextField( manualPanel, beginRow, beginCol + 55, "Turn Off", "<F>" );
     wrefresh( manualPanel );
 
     beginRow = 1;
@@ -231,15 +231,11 @@ void    editLoadPanel ()
         if (!isdigit( buffer[ 0 ] )) {
             
             if (buffer[ 0 ] == 'O' || buffer[ 0 ] == 'o') {
-                eps_forceLoadOnOff( 1 );
                 Logger_LogInfo( "Forcing Load to be On!\n" );
                 eps_forceLoadOn();
-                Logger_LogInfo( "2 - Forcing Load to be On!\n" );
-            } else if (buffer[ 0 ] == 'X' || buffer[ 0 ] == 'x') {
-                 eps_forceLoadOnOff( 0 );
+            } else if (buffer[ 0 ] == 'F' || buffer[ 0 ] == 'f') {
                 Logger_LogInfo( "Forcing Load to be Off!\n" );
                 eps_forceLoadOff();
-                Logger_LogInfo( "2 - Forcing Load to be Off!\n" );                
             }
             
             break;

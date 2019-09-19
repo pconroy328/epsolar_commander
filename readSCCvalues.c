@@ -190,7 +190,7 @@ void *local_readSCCValues (void *x_void_ptr)
 
         
         dischargingStatusBits = eps_getdisChargingEquipmentStatusBits();
-        dischargeRunning = (eps_isdischargeStatusRunning( dischargingStatusBits ) ? "On" : "Off" );
+        dischargeRunning = (eps_isdischargeStatusRunning( dischargingStatusBits ) ? "On " : "Off" );
         
         energyConsumedToday = eps_getConsumedEnergyToday();
         energyConsumedMonth = eps_getConsumedEnergyMonth();
