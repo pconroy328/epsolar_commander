@@ -160,6 +160,42 @@ void    editLoadControlDuskOnDawnOff ()
 
 //------------------------------------------------------------------------------
 static
+void    editLoadControlDuskAndTimer ()
+{
+    suspendUpdatingPanels();
+    
+    char    val = 'N';
+    if (dialogGetYesNo( "Load Control", 
+            "Enable 'dusk + timer' contol of the load?\nDefault is Disabled", &val, 'N' ) == INPUT_OK &&
+            val == 'Y') {
+        Logger_LogInfo( "Enabling 'dusk + timer' control of load\n" );
+        eps_setLoadControllingMode( 2 );
+    }
+
+    resumeUpdatingPanels();
+    showLoadPanel();   
+}
+
+//------------------------------------------------------------------------------
+static
+void    editLoadControlTimer ()
+{
+    suspendUpdatingPanels();
+    
+    char    val = 'N';
+    if (dialogGetYesNo( "Load Control", 
+            "Load is controlled by the timer Off at T1-Off, On at T1-On.\nDefault is disabled.", &val, 'N' ) == INPUT_OK &&
+            val == 'Y') {
+        Logger_LogInfo( "Enabling 'timer only' control of load\n" );
+        eps_setLoadControllingMode( 3 );
+    }
+
+    resumeUpdatingPanels();
+    showLoadPanel();   
+}
+
+//------------------------------------------------------------------------------
+static
 void    editTimer (const int timerNumber, const int onOff)
 {
     suspendUpdatingPanels();
@@ -198,20 +234,97 @@ void    editDuskThreshold ()
 {
     suspendUpdatingPanels();
     
-    char    val = 'N';
-    if (dialogGetYesNo( "Load Control", 
-            "Set the voltage for determing dusk.\nValuesDefault is Enabled", &val, 'N' ) == INPUT_OK &&
-            val == 'Y') {
-        Logger_LogInfo( "Enabling manual control of load\n" );
-        eps_setLoadControllingMode( 0 );
+    float   val = 6.0;
+    if (dialogGetFloat( "Load Control", 
+            "Set the voltage for determing dusk.\nValues <= this are 'dusk'. Default is 6.0V", &val, 
+            0.0, 50.0, 6.0, 
+            0, 1 ) == INPUT_OK) {
+        Logger_LogInfo( "Setting dusk threshold to %f\n", val );
+        eps_setDayTimeThresholdVoltage( val );
     }
 
     resumeUpdatingPanels();
     showLoadPanel();   
 }
 
+//------------------------------------------------------------------------------
+static
+void    editDawnThreshold ()
+{
+    suspendUpdatingPanels();
+    
+    float   val = 6.0;
+    if (dialogGetFloat( "Load Control", 
+            "Set the voltage for determing dawn.\nValues >= this are 'dawn'. Default is 5.0V", &val, 
+            0.0, 50.0, 5.0, 
+            0, 1 ) == INPUT_OK) {
+        Logger_LogInfo( "Setting dawn threshold to %f\n", val );
+        eps_setNightTimeThresholdVoltage( val );
+    }
 
+    resumeUpdatingPanels();
+    showLoadPanel();   
+}
 
+//------------------------------------------------------------------------------
+static
+void    editWorkingTimer (const int timerNumber)
+{
+    suspendUpdatingPanels();
+    
+    int     hour = -1;
+    int     minute = -1;
+    int     second = -1;
+    
+    char    prompt[ 255 ];
+    if (timerNumber == 1)
+        snprintf( prompt, sizeof prompt, 
+            "Set the duration for 'Working Timer 1'. Use 'HH:MM'\nLoad stays on for this duration past dusk" );
+    else
+        snprintf( prompt, sizeof prompt, 
+            "Set the duration for 'Working Timer 2'. Use 'HH:MM'\nLoad comes back on for this duration before dawn\nSee Length of Night parameter." );
+        
+    
+    if (dialogGetHHMMSS( "Load Control", 
+            prompt,
+            &hour, &minute, &second ) == INPUT_OK) {
+        
+        Logger_LogInfo( "Setting Working Timer %d to   %d:%d\n", timerNumber, hour, minute );
+        if (timerNumber == 1)
+            eps_setWorkingTimeLength1( hour, minute );
+        else 
+            eps_setWorkingTimeLength2( hour, minute );
+    }
+    
+    resumeUpdatingPanels();
+    showLoadPanel();   
+}
+
+//------------------------------------------------------------------------------
+static
+void    editLengthOfNight ()
+{
+    suspendUpdatingPanels();
+    
+    int     hour = -1;
+    int     minute = -1;
+    int     second = -1;
+    
+    char    prompt[ 255 ];
+    snprintf( prompt, sizeof prompt, 
+            "Sets duration 'night' after dusk instead of a PV voltage value.\nUse 'HH:MM'.  Dawn will be dusk time + this" );
+    
+    if (dialogGetHHMMSS( "Load Control", 
+            prompt,
+            &hour, &minute, &second ) == INPUT_OK) {
+        
+        Logger_LogInfo( "Setting Length of Night to  %d:%d\n", hour, minute );
+        eps_setLengthOfNight( hour, minute );
+    }
+    
+    resumeUpdatingPanels();
+    showLoadPanel();   
+}
 
 #define     MIN_SELECTION       1
 #define     MAX_SELECTION       15
@@ -260,7 +373,14 @@ void    editLoadPanel ()
             case    5:  editTimer( 2, 1 );                  break;
             case    6:  editTimer( 2, 0 );                  break;
             case    7:  editDuskThreshold();                break;
-            // case    8:  editDawnThreshold();                break;
+            case    8:  editDawnThreshold();                break;
+            case    9:  editLoadControlDuskAndTimer();      break;
+            case    10: editWorkingTimer( 1 );              break;
+            case    11: editWorkingTimer( 2 );              break;
+            case    12: editLengthOfNight();                break;
+            case    13: editLoadControlTimer();             break;
+            case    14: editTimer( 1, 1 );                  break;
+            case    15: editTimer( 1, 0 );                  break;
         }
     }
 }
