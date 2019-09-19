@@ -231,10 +231,10 @@ void    editLoadPanel ()
         if (!isdigit( buffer[ 0 ] )) {
             
             if (buffer[ 0 ] == 'O' || buffer[ 0 ] == 'o') {
-                //eps_forceLoadOnOff( 1 );
+                eps_forceLoadOnOff( 1 );
                 Logger_LogInfo( "Forcing Load to be On!\n" );
             } else if (buffer[ 0 ] == 'X' || buffer[ 0 ] == 'x') {
-                // eps_forceLoadOnOff( 0 );
+                 eps_forceLoadOnOff( 0 );
                 Logger_LogInfo( "Forcing Load to be Off!\n" );
             }
             
@@ -260,7 +260,7 @@ void    editLoadPanel ()
             case    5:  editTimer( 2, 1 );                  break;
             case    6:  editTimer( 2, 0 );                  break;
             case    7:  editDuskThreshold();                break;
-            case    8:  editDawnThreshold();                break;
+            // case    8:  editDawnThreshold();                break;
         }
     }
 }
