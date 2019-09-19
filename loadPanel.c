@@ -233,9 +233,13 @@ void    editLoadPanel ()
             if (buffer[ 0 ] == 'O' || buffer[ 0 ] == 'o') {
                 eps_forceLoadOnOff( 1 );
                 Logger_LogInfo( "Forcing Load to be On!\n" );
+                eps_forceLoadOn();
+                Logger_LogInfo( "2 - Forcing Load to be On!\n" );
             } else if (buffer[ 0 ] == 'X' || buffer[ 0 ] == 'x') {
                  eps_forceLoadOnOff( 0 );
                 Logger_LogInfo( "Forcing Load to be Off!\n" );
+                eps_forceLoadOff();
+                Logger_LogInfo( "2 - Forcing Load to be Off!\n" );                
             }
             
             break;
