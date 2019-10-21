@@ -43,15 +43,15 @@ void    paintBatteryRatedData ()
     getmaxyx( ratedPanel, maxRows, maxCols ); 
     
     int beginCol = 3;
-    HfloatAddTextField( ratedPanel, 1, beginCol, "Voltage", batteryRatedVoltage, 2, 4 );
+    addFloatField( ratedPanel, 1, beginCol, "Voltage", batteryRatedVoltage, 2, 4 );
     
     beginCol = (maxCols / 2);
     beginCol -= 12;
-    HfloatAddTextField( ratedPanel, 1, beginCol, "Load Current", batteryRatedLoadCurrent, 2, 4 );
+    addFloatField( ratedPanel, 1, beginCol, "Load Current", batteryRatedLoadCurrent, 2, 4 );
     
     beginCol = maxCols;
     beginCol -= 24;
-    HfloatAddTextField( ratedPanel, 1, beginCol, "Charge Current", batteryRatedChargingCurrent, 2, 4 ); 
+    addFloatField( ratedPanel, 1, beginCol, "Charge Current", batteryRatedChargingCurrent, 2, 4 ); 
     
     //
     // Adjust the min and max
@@ -69,46 +69,46 @@ void    paintBatterySettingsData()
 {
     int beginCol = 2;
     int beginRow = 2;
-    HaddTextField( settingsPanel, beginRow++, beginCol,     " 1. Battery Type       ", batteryType );
+    addTextField( settingsPanel, beginRow++, beginCol,     " 1. Battery Type       ", batteryType );
 
-    HaddTextField( settingsPanel, beginRow++, beginCol,     " 2. Charging Mode      ", batteryChargingMode );
-    HintAddTextField( settingsPanel, beginRow++, beginCol,  " 3. Capacity (AH)      ", batteryCapacity, 0, 4 );
-    HfloatAddTextField( settingsPanel, beginRow++,beginCol, " 4. Temp Comp Coeff    ", temperatureCompensationCoefficient, 1, 4 );
+    addTextField( settingsPanel, beginRow++, beginCol,     " 2. Charging Mode      ", batteryChargingMode );
+    addIntField( settingsPanel, beginRow++, beginCol,  " 3. Capacity (AH)      ", batteryCapacity, 0, 4 );
+    addFloatField( settingsPanel, beginRow++,beginCol, " 4. Temp Comp Coeff    ", temperatureCompensationCoefficient, 1, 4 );
 
-    HfloatAddTextField( settingsPanel, beginRow++,beginCol, " 5. Over V Disconnect V", overVDisconnectV, 1, 4 );
-    HfloatAddTextField( settingsPanel, beginRow++,beginCol, " 6. Over V Reconnect V ", overVReconnectV, 1, 4 );
+    addFloatField( settingsPanel, beginRow++,beginCol, " 5. Over V Disconnect V", overVDisconnectV, 1, 4 );
+    addFloatField( settingsPanel, beginRow++,beginCol, " 6. Over V Reconnect V ", overVReconnectV, 1, 4 );
 
-    HfloatAddTextField( settingsPanel, beginRow++,beginCol, " 7. Equalization Volts ", equalizationVoltage, 1, 4 );
-    HfloatAddTextField( settingsPanel, beginRow++,beginCol, " 8. Boost Voltage      ", boostVoltage, 1, 4 );
-    HfloatAddTextField( settingsPanel, beginRow++,beginCol, " 9. Float Voltage      ", floatVoltage, 1, 4 );
-    HfloatAddTextField( settingsPanel, beginRow++,beginCol, "10. Boost Recon Chrg V ", boostReconnectVoltage, 1, 4 );
+    addFloatField( settingsPanel, beginRow++,beginCol, " 7. Equalization Volts ", equalizationVoltage, 1, 4 );
+    addFloatField( settingsPanel, beginRow++,beginCol, " 8. Boost Voltage      ", boostVoltage, 1, 4 );
+    addFloatField( settingsPanel, beginRow++,beginCol, " 9. Float Voltage      ", floatVoltage, 1, 4 );
+    addFloatField( settingsPanel, beginRow++,beginCol, "10. Boost Recon Chrg V ", boostReconnectVoltage, 1, 4 );
     
     //
     // Litte format - shove it down a row
     beginRow += 1;
-    HfloatAddTextField( settingsPanel, beginRow++,beginCol, "11. Battery Charge %   ", batteryChargePercent, 1, 4 );
+    addFloatField( settingsPanel, beginRow++,beginCol, "11. Battery Charge %   ", batteryChargePercent, 1, 4 );
     wrefresh( settingsPanel );
     
     
     
     beginCol = (MaxCols / 2) + 2;
     beginRow = 2;
-    HaddTextField( settingsPanel, beginRow++, beginCol,     "12. Battery Rated Code   ", batteryRatedVoltageCode );
-    HintAddTextField( settingsPanel, beginRow++, beginCol,  "13. Boost Duration       ", boostDuration, 0, 4 );
-    HintAddTextField( settingsPanel, beginRow++, beginCol,  "14. Equalization Duration", equalizeDuration, 0, 4 );
+    addTextField( settingsPanel, beginRow++, beginCol,     "12. Battery Rated Code   ", batteryRatedVoltageCode );
+    addIntField( settingsPanel, beginRow++, beginCol,  "13. Boost Duration       ", boostDuration, 0, 4 );
+    addIntField( settingsPanel, beginRow++, beginCol,  "14. Equalization Duration", equalizeDuration, 0, 4 );
     //
     // Litte format - shove it down a row
     beginRow += 1;
-    HfloatAddTextField( settingsPanel, beginRow++,beginCol, "15. Charging Limit V     ", chargingLimitVoltage, 1, 4 );
-    HfloatAddTextField( settingsPanel, beginRow++,beginCol, "16. Discharging Limit V  ", dischargingLimitVoltage, 1, 4 );    
-    HfloatAddTextField( settingsPanel, beginRow++,beginCol, "17. Low V Disconnect V   ", lowVoltageDisconnectVoltage, 1, 4 );
-    HfloatAddTextField( settingsPanel, beginRow++,beginCol, "18. Low V Reconnect V    ", lowVoltageReconnectVoltage, 1, 4 );
-    HfloatAddTextField( settingsPanel, beginRow++,beginCol, "19. Low V Warning V      ", underVoltageWarningVoltage, 1, 4 );
-    HfloatAddTextField( settingsPanel, beginRow++,beginCol, "20. Low V Warning Recon V", underVolatageWarningReconnectVoltage, 1, 4 );
+    addFloatField( settingsPanel, beginRow++,beginCol, "15. Charging Limit V     ", chargingLimitVoltage, 1, 4 );
+    addFloatField( settingsPanel, beginRow++,beginCol, "16. Discharging Limit V  ", dischargingLimitVoltage, 1, 4 );    
+    addFloatField( settingsPanel, beginRow++,beginCol, "17. Low V Disconnect V   ", lowVoltageDisconnectVoltage, 1, 4 );
+    addFloatField( settingsPanel, beginRow++,beginCol, "18. Low V Reconnect V    ", lowVoltageReconnectVoltage, 1, 4 );
+    addFloatField( settingsPanel, beginRow++,beginCol, "19. Low V Warning V      ", underVoltageWarningVoltage, 1, 4 );
+    addFloatField( settingsPanel, beginRow++,beginCol, "20. Low V Warning Recon V", underVolatageWarningReconnectVoltage, 1, 4 );
     //
     // Litte format - shove it down a row
     beginRow += 1;
-    HfloatAddTextField( settingsPanel, beginRow++,beginCol, "21. Battery Discharge %  ", batteryDischargePercent, 1, 4 );
+    addFloatField( settingsPanel, beginRow++,beginCol, "21. Battery Discharge %  ", batteryDischargePercent, 1, 4 );
 }
 
 // -----------------------------------------------------------------------------
@@ -119,14 +119,14 @@ void    showBatteryPanel()
     int     battX = 0;
     int     battRows = 3;
     int     battCols = MaxCols;
-    ratedPanel = grouping( &ratedPanel, battY, battX, battRows, battCols, "Battery Rated Data" );
+    ratedPanel = createGroup( &ratedPanel, battY, battX, battRows, battCols, "Battery Rated Data" );
     paintBatteryRatedData();
     
     int     battY2 = battRows;
     int     battX2 = 0;
     int     battRows2 = 20;
     int     battCols2 = MaxCols;
-    settingsPanel = grouping( &settingsPanel, battY2, battX2, battRows2, battCols2, "Battery Settings" );
+    settingsPanel = createGroup( &settingsPanel, battY2, battX2, battRows2, battCols2, "Battery Settings" );
     paintBatterySettingsData();
     
     refresh();
@@ -158,7 +158,7 @@ void    editBatteryType ()
     
     int val = 1;
     if (dialogGetInteger( "Battery", 
-            "Sets the type of Battery. Use (1) Sealed, (2) Gel\n(3) Flooded, (0) User Defined", &val, 0, 3, 1 ) == INPUT_OK) {
+            "Sets the type of Battery. Use (1) Sealed, (2) Gel\n(3) Flooded, (0) User Defined\nDefault is Sealed", &val, 0, 3, 1 ) == INPUT_OK) {
     
         Logger_LogInfo( "Setting Battery Type to %d\n", val );
         eps_setBatteryType( val );
@@ -192,7 +192,7 @@ void    editChargingMode ()
     
     int val = 200;
     if (dialogGetInteger( "Battery", 
-            "Sets the Battery Charging Mode. Use (0) for Voltage\nCompensation, (1) for State Of Charge", &val, 0, 1, 0 ) == INPUT_OK) {
+            "Sets the Battery Charging Mode. Use (0) for Voltage\nCompensation, (1) for State Of Charge\nDefault is Voltage Comp", &val, 0, 1, 0 ) == INPUT_OK) {
     
         Logger_LogInfo( "Setting Battery Charging Mode to %d\n", val );
         eps_setManagementModesOfBatteryChargingAndDischarging( val );
@@ -304,11 +304,11 @@ void    editFloatV()
 {
     suspendUpdatingPanels();
     
-    float   val = 15.0;
+    float   val = 13.8;
     if (dialogGetFloat( "Battery", 
             "Set the Float Voltage\nDefault is 13.8V", &val,
             batteryMinVoltages, batteryMaxVoltages, 
-            14.4,           // figure out a way to double this
+            13.8,           // figure out a way to double this
             3, 1) == INPUT_OK) {
     
         Logger_LogInfo( "Setting Float Voltage to %f\n", val );
@@ -319,8 +319,143 @@ void    editFloatV()
     showBatteryPanel();       
 }
 
+// -----------------------------------------------------------------------------
+void    editBoostChargeReconnectV()
+{
+    suspendUpdatingPanels();
+    
+    float   val = 13.2;
+    if (dialogGetFloat( "Battery", 
+            "Set the Boost Charge Reconnect Voltage\nDefault is 13.2V", &val,
+            batteryMinVoltages, batteryMaxVoltages, 
+            13.2,           // figure out a way to double this
+            3, 1) == INPUT_OK) {
+    
+        Logger_LogInfo( "Setting Boost Charge Reconnect Voltage to %f\n", val );
+        eps_setBoostReconnectVoltage( val );
+    }
+
+    resumeUpdatingPanels();
+    showBatteryPanel();       
+}
+
+// -----------------------------------------------------------------------------
+void    editDepthOfCharge()
+{
+    suspendUpdatingPanels();
+    
+    int   val = 100;
+    if (dialogGetInteger( "Battery", 
+            "Set the Depth of Charge Percentage\nDefault is 100%", &val,
+            0, 100, 100) == INPUT_OK) {
+    
+        Logger_LogInfo( "Setting Depth of Charge to %d\n", val );
+        eps_setDepthOfCharge( val );
+    }
+
+    resumeUpdatingPanels();
+    showBatteryPanel();       
+}
+
+// -----------------------------------------------------------------------------
+void    editDepthOfDischarge()
+{
+    suspendUpdatingPanels();
+    
+    int   val = 30;
+    if (dialogGetInteger( "Battery", 
+            "Set the Depth of Discharge Percentage\nDefault is 30%", &val,
+            30, 80, 30 ) == INPUT_OK) {
+    
+        Logger_LogInfo( "Setting Depth of Discharge to %d\n", val );
+        eps_setDepthOfDischarge( val );
+    }
+
+    resumeUpdatingPanels();
+    showBatteryPanel();       
+}
+
+// -----------------------------------------------------------------------------
+void    editBoostDuration()
+{
+    suspendUpdatingPanels();
+    
+    int   val = 120;
+    if (dialogGetInteger( "Battery", 
+            "Set the max minutes we'll stay in Boost mode\nDefault is 120", &val,
+            1, 120, val ) == INPUT_OK) {
+    
+        Logger_LogInfo( "Setting Boost Duration to %d\n", val );
+        eps_setBoostDuration( val );
+    }
+
+    resumeUpdatingPanels();
+    showBatteryPanel();       
+}
+
+// -----------------------------------------------------------------------------
+void    editEqualizationDuration()
+{
+    suspendUpdatingPanels();
+    
+    int   val = 120;
+    if (dialogGetInteger( "Battery", 
+            "Set the max minutes we'll stay in Equalization mode\nDefault is 120", &val,
+            1, 120, val ) == INPUT_OK) {
+    
+        Logger_LogInfo( "Setting Equalization Duration to %d\n", val );
+        eps_setEqualizeDuration( val );
+    }
+
+    resumeUpdatingPanels();
+    showBatteryPanel();       
+}
+
+// -----------------------------------------------------------------------------
+void    editChargingLimitVoltage()
+{
+    suspendUpdatingPanels();
+    
+    float   val = 15.0;
+    if (dialogGetFloat( "Battery", 
+            "Set Charging Limit Voltage\nDefault is 15.0V", &val,
+            batteryMinVoltages, batteryMaxVoltages, 
+            val,           
+            3, 1) == INPUT_OK) {
+    
+        Logger_LogInfo( "Setting Charging Limit Voltage to %f\n", val );
+        eps_setChargingLimitVoltage( val );
+    }
+
+    resumeUpdatingPanels();
+    showBatteryPanel();       
+}
+
+// -----------------------------------------------------------------------------
+void    editDischargingLimitVoltage()
+{
+    suspendUpdatingPanels();
+    
+    float   val = 10.6;
+    if (dialogGetFloat( "Battery", 
+            "Set Discharging Limit Voltage\nDefault is 10.6V", &val,
+            batteryMinVoltages, batteryMaxVoltages, 
+            val,           
+            3, 1) == INPUT_OK) {
+    
+        Logger_LogInfo( "Setting Discharging Limit Voltage to %f\n", val );
+        eps_setDischargingLimitVoltage( val );
+    }
+
+    resumeUpdatingPanels();
+    showBatteryPanel();       
+}
 
 
+void    editLowVDisconnectV() { }
+void    editLowVReconnectV() { }
+void    editLowVWarningV() { }
+void    editLowVWarningReconnectV() { }
 
 #define MIN_SELECTION   1
 #define MAX_SELECTION   21
@@ -365,6 +500,22 @@ void    editBatteryPanel ()
             case 7:     editEqualizationV();      break;
             case 8:     editBoostV();      break;
             case 9:     editFloatV();      break;
+            case 10:    editBoostChargeReconnectV();    break;
+            case 11:    editDepthOfCharge();            break;
+            
+            //case 12:    editBatteryRatedCode();     break;
+            case 13:    editBoostDuration();        break;
+            case 14:    editEqualizationDuration();        break;
+            
+            case 15:    editChargingLimitVoltage();     break;
+            case 16:    editDischargingLimitVoltage();     break;
+            
+            case 17:    editLowVDisconnectV();          break;
+            case 18:    editLowVReconnectV();           break;
+            case 19:    editLowVWarningV();             break;
+            case 20:    editLowVWarningReconnectV();    break;
+            
+            case 21:    editDepthOfDischarge();         break;
         }
     }
 }

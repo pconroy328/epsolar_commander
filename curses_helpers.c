@@ -28,7 +28,6 @@ static  int     dialogCols = 55;
 
 
 
-//static  int         oldCursesEscapeDelay;
 static  int         oldESCDELAY     = 1000;
 
 
@@ -190,6 +189,7 @@ int     getFloat (WINDOW *w, const int row, const int col, float *fVal, const fl
 }
 
 // -----------------------------------------------------------------------------
+static
 int     getTimer (WINDOW *w, const int row, const int col, int *hours, int *minutes, int *seconds)
 {  
     int     returnCode = 0;
@@ -264,7 +264,7 @@ void    switchPanel (const int newActivePanelID)
 
 
 // -----------------------------------------------------------------------------
-WINDOW *grouping (WINDOW **window, const int startY, const int startX, const int rows, const int cols, const char *title)
+WINDOW *createGroup (WINDOW **window, const int startY, const int startX, const int rows, const int cols, const char *title)
 {
     *window = newwin( rows, cols, startY, startX );
     box( *window, ACS_VLINE, ACS_HLINE );  
@@ -288,7 +288,8 @@ WINDOW *grouping (WINDOW **window, const int startY, const int startX, const int
     return *window;
 }
 
-// -----------------------------------------------------------------------------
+#if 0
+// ----------------------------------------------------------------------------
 void    addTextField (WINDOW *window, const int startY, const int startX, const char *fieldName, const char *initialValue)
 {
     //
@@ -335,9 +336,10 @@ void    intAddTextField (WINDOW *window, const int startY, const int startX, con
     snprintf( buffer, sizeof buffer, "%-*.*d", width, precision, iVal );
     addTextField( window, startY, startX, fieldName, buffer );
 }
+#endif
 
 // -----------------------------------------------------------------------------
-void    HaddTextField (WINDOW *window, const int startY, const int startX, const char *fieldName, const char *initialValue)
+void    addTextField (WINDOW *window, const int startY, const int startX, const char *fieldName, const char *initialValue)
 {
     //
     // Before we write it out - figure out if our string is too long for the window?
@@ -369,21 +371,21 @@ void    HaddTextField (WINDOW *window, const int startY, const int startX, const
 }
 
 // -----------------------------------------------------------------------------
-void    HfloatAddTextField (WINDOW *window, const int startY, const int startX, const char *fieldName, const float fVal, const int precision, const int width)
+void    addFloatField (WINDOW *window, const int startY, const int startX, const char *fieldName, const float fVal, const int precision, const int width)
 {
     char    buffer[ 80 ];
     
     snprintf( buffer, sizeof buffer, "%-*.*f", width, precision, fVal );
-    HaddTextField( window, startY, startX, fieldName, buffer );
+    addTextField( window, startY, startX, fieldName, buffer );
 }
 
 // -----------------------------------------------------------------------------
-void    HintAddTextField (WINDOW *window, const int startY, const int startX, const char *fieldName, const int iVal, const int precision, const int width)
+void    addIntField (WINDOW *window, const int startY, const int startX, const char *fieldName, const int iVal, const int precision, const int width)
 {
     char    buffer[ 80 ];
     
     snprintf( buffer, sizeof buffer, "%-*.*d", width, precision, iVal );
-    HaddTextField( window, startY, startX, fieldName, buffer );
+    addTextField( window, startY, startX, fieldName, buffer );
 }
 
 

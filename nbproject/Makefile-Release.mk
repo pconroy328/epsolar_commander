@@ -43,7 +43,6 @@ OBJECTFILES= \
 	${OBJECTDIR}/main.o \
 	${OBJECTDIR}/menu.o \
 	${OBJECTDIR}/readSCCvalues.o \
-	${OBJECTDIR}/scc_settings.o \
 	${OBJECTDIR}/settingsPanel.o
 
 
@@ -110,11 +109,6 @@ ${OBJECTDIR}/readSCCvalues.o: readSCCvalues.c
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.c) -O2 -std=c99 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/readSCCvalues.o readSCCvalues.c
-
-${OBJECTDIR}/scc_settings.o: scc_settings.c
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} "$@.d"
-	$(COMPILE.c) -O2 -std=c99 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/scc_settings.o scc_settings.c
 
 ${OBJECTDIR}/settingsPanel.o: settingsPanel.c
 	${MKDIR} -p ${OBJECTDIR}

@@ -37,7 +37,7 @@ void    showSettingsPanel()
     int     nRows = MaxRows - 1;
     int     nCols = MaxCols;
 
-    panel = grouping( &panel, startY, startX, nRows, nCols, "Solar Charge Controller" );
+    panel = createGroup( &panel, startY, startX, nRows, nCols, "Solar Charge Controller" );
     
 }
 

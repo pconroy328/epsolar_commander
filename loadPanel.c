@@ -30,10 +30,10 @@ void    paintLoadData ()
     
     int beginRow = 1;
     int beginCol = 3;
-    HaddTextField( manualPanel, beginRow, beginCol, "1. Manual ", (loadControlMode == 0x00 ? "Enabled " : "Disabled") );
-    HaddTextField( manualPanel, beginRow, beginCol + 25, "Status ", dischargeRunning  );
-    HaddTextField( manualPanel, beginRow, beginCol + 40, "Turn On", "<O>" );
-    HaddTextField( manualPanel, beginRow, beginCol + 55, "Turn Off", "<F>" );
+    addTextField( manualPanel, beginRow, beginCol, "1. Manual ", (loadControlMode == 0x00 ? "Enabled " : "Disabled") );
+    addTextField( manualPanel, beginRow, beginCol + 25, "Status ", dischargeRunning  );
+    addTextField( manualPanel, beginRow, beginCol + 40, "Turn On", "<O>" );
+    addTextField( manualPanel, beginRow, beginCol + 55, "Turn Off", "<F>" );
     wrefresh( manualPanel );
 
     beginRow = 1;
@@ -42,31 +42,31 @@ void    paintLoadData ()
     snprintf( buf3, sizeof buf3, "%02d:%02d:%02d", HH_T1Off, MM_T1Off, SS_T1Off );
     snprintf( buf4, sizeof buf4, "%02d:%02d:%02d", HH_T2Off, MM_T2Off, SS_T2Off );
     
-    HaddTextField( duskDawnPanel, beginRow++, beginCol,             "2. Dusk On/Dawn Off", (loadControlMode == 0x01 ? "Enabled " : "Disabled") );
-    HaddTextField( duskDawnPanel, beginRow, beginCol,               "3. Timer One - On  ", buf1 );
-    HaddTextField( duskDawnPanel, beginRow++, beginCol + 35,        "4. Timer One - Off ", buf3 );
-    HaddTextField( duskDawnPanel, beginRow, beginCol,               "5. Timer Two - On  ", buf2 ); 
-    HaddTextField( duskDawnPanel, beginRow++, beginCol + 35,        "6. Timer Two - Off ", buf4 ); 
-    HfloatAddTextField( duskDawnPanel, beginRow, beginCol,          "7. Dusk Threshold <= V", nighttimeThresholdVoltage, 1, 4 );
-    HfloatAddTextField( duskDawnPanel, beginRow++, beginCol + 35,   "8. Dawn Threshold >= V", daytimeThresholdVoltage, 1, 4 );
+    addTextField( duskDawnPanel, beginRow++, beginCol,             "2. Dusk On/Dawn Off", (loadControlMode == 0x01 ? "Enabled " : "Disabled") );
+    addTextField( duskDawnPanel, beginRow, beginCol,               "3. Timer One - On  ", buf1 );
+    addTextField( duskDawnPanel, beginRow++, beginCol + 35,        "4. Timer One - Off ", buf3 );
+    addTextField( duskDawnPanel, beginRow, beginCol,               "5. Timer Two - On  ", buf2 ); 
+    addTextField( duskDawnPanel, beginRow++, beginCol + 35,        "6. Timer Two - Off ", buf4 ); 
+    addFloatField( duskDawnPanel, beginRow, beginCol,          "7. Dusk Threshold <= V", nighttimeThresholdVoltage, 1, 4 );
+    addFloatField( duskDawnPanel, beginRow++, beginCol + 35,   "8. Dawn Threshold >= V", daytimeThresholdVoltage, 1, 4 );
     wrefresh( duskDawnPanel );
             
     
     beginRow = 1;
-    HaddTextField( duskTimerPanel, beginRow++, beginCol, "9. Dusk On and Timer", (loadControlMode == 0x02 ? "Enabled " : "Disabled") );
+    addTextField( duskTimerPanel, beginRow++, beginCol, "9. Dusk On and Timer", (loadControlMode == 0x02 ? "Enabled " : "Disabled") );
     snprintf( buf5, sizeof buf5, "%02d:%02d", HH_WT1, MM_WT1 );
     snprintf( buf6, sizeof buf6, "%02d:%02d", HH_WT2, MM_WT2 );
-    HaddTextField( duskTimerPanel, beginRow, beginCol, "10. Work Timer One", buf5 );
-    HaddTextField( duskTimerPanel, beginRow++, beginCol + 35, "11. Work Timer Two", buf6 );
+    addTextField( duskTimerPanel, beginRow, beginCol, "10. Work Timer One", buf5 );
+    addTextField( duskTimerPanel, beginRow++, beginCol + 35, "11. Work Timer Two", buf6 );
 
     snprintf( buf7, sizeof buf7, "%02d:%02d", HH_LON, MM_LON );
-    HaddTextField( duskTimerPanel, beginRow++, beginCol, "12. Length of Night", buf7 );
+    addTextField( duskTimerPanel, beginRow++, beginCol, "12. Length of Night", buf7 );
     wrefresh( duskTimerPanel );
     
     beginRow = 1;
-    HaddTextField( timerPanel, beginRow++, beginCol, "13. Timer Mode", (loadControlMode == 0x03 ? "Enabled " : "Disabled") );
-    HaddTextField( timerPanel, beginRow, beginCol,   "14. Timer One - On  ", buf1 );
-    HaddTextField( timerPanel, beginRow++, beginCol + 35, "15. Timer One - Off ", buf3 );
+    addTextField( timerPanel, beginRow++, beginCol, "13. Timer Mode", (loadControlMode == 0x03 ? "Enabled " : "Disabled") );
+    addTextField( timerPanel, beginRow, beginCol,   "14. Timer One - On  ", buf1 );
+    addTextField( timerPanel, beginRow++, beginCol + 35, "15. Timer One - Off ", buf3 );
             
     wrefresh( panel );
 }
@@ -81,28 +81,28 @@ void    showLoadPanel()
     int     nRows = MaxRows - 1;
     int     nCols = MaxCols;
 
-    panel = grouping( &panel, startY, startX, nRows, nCols, "Load Control" );
+    panel = createGroup( &panel, startY, startX, nRows, nCols, "Load Control" );
     
     startY = 1;
     startX = 1;
     nRows = 3;
     nCols = MaxCols - startY - 1;
-    manualPanel = grouping( &manualPanel, startY, startX, nRows, nCols, "Manual Control" );
+    manualPanel = createGroup( &manualPanel, startY, startX, nRows, nCols, "Manual Control" );
 
     startY += nRows;
     nRows = 6;
     //nCols = MaxCols - startY;
-    duskDawnPanel = grouping( &duskDawnPanel, startY, startX, nRows, nCols, "Dusk to Dawn Control" );
+    duskDawnPanel = createGroup( &duskDawnPanel, startY, startX, nRows, nCols, "Dusk to Dawn Control" );
     
     startY += nRows;
     nRows = 5;
     //nCols = MaxCols - startY;
-    duskTimerPanel = grouping( &duskTimerPanel, startY, startX, nRows, nCols, "Dusk Plus Timer Control" );
+    duskTimerPanel = createGroup( &duskTimerPanel, startY, startX, nRows, nCols, "Dusk Plus Timer Control" );
     
     startY += nRows;
     nRows = 4;
     //nCols = MaxCols - startY;
-    timerPanel = grouping( &timerPanel, startY, startX, nRows, nCols, "Timer Control" );
+    timerPanel = createGroup( &timerPanel, startY, startX, nRows, nCols, "Timer Control" );
     
     paintLoadData();
 }
@@ -166,7 +166,7 @@ void    editLoadControlDuskAndTimer ()
     
     char    val = 'N';
     if (dialogGetYesNo( "Load Control", 
-            "Enable 'dusk + timer' contol of the load?\nDefault is Disabled", &val, 'N' ) == INPUT_OK &&
+            "Enable 'dusk + timer' contol of the load. Dusk is a PV\nvoltage. Dawn is 'dusk + length of night.\nDefault is Disabled", &val, 'N' ) == INPUT_OK &&
             val == 'Y') {
         Logger_LogInfo( "Enabling 'dusk + timer' control of load\n" );
         eps_setLoadControllingMode( 2 );
@@ -184,7 +184,7 @@ void    editLoadControlTimer ()
     
     char    val = 'N';
     if (dialogGetYesNo( "Load Control", 
-            "Load is controlled by the timer Off at T1-Off, On at T1-On.\nDefault is disabled.", &val, 'N' ) == INPUT_OK &&
+            "Load is controlled by a timer. \nOff at Timer 1-Off, On at Timer 1-On.\nDefault is disabled.", &val, 'N' ) == INPUT_OK &&
             val == 'Y') {
         Logger_LogInfo( "Enabling 'timer only' control of load\n" );
         eps_setLoadControllingMode( 3 );
@@ -236,7 +236,7 @@ void    editDuskThreshold ()
     
     float   val = 6.0;
     if (dialogGetFloat( "Load Control", 
-            "Set the voltage for determing dusk.\nValues <= this are 'dusk'. Default is 6.0V", &val, 
+            "Set the voltage for determining dusk.\nValues <= this are 'dusk'. Default is 6.0V", &val, 
             0.0, 50.0, 6.0, 
             0, 1 ) == INPUT_OK) {
         Logger_LogInfo( "Setting dusk threshold to %f\n", val );
@@ -255,7 +255,7 @@ void    editDawnThreshold ()
     
     float   val = 6.0;
     if (dialogGetFloat( "Load Control", 
-            "Set the voltage for determing dawn.\nValues >= this are 'dawn'. Default is 5.0V", &val, 
+            "Set the voltage for determining dawn.\nValues >= this are 'dawn'. Default is 5.0V", &val, 
             0.0, 50.0, 5.0, 
             0, 1 ) == INPUT_OK) {
         Logger_LogInfo( "Setting dawn threshold to %f\n", val );
@@ -279,10 +279,10 @@ void    editWorkingTimer (const int timerNumber)
     char    prompt[ 255 ];
     if (timerNumber == 1)
         snprintf( prompt, sizeof prompt, 
-            "Set the duration for 'Working Timer 1'. Use 'HH:MM'\nLoad stays on for this duration past dusk" );
+            "Set the duration for 'Timer 1'. Use 'HH:MM'.\nLoad stays on for this duration past dusk" );
     else
         snprintf( prompt, sizeof prompt, 
-            "Set the duration for 'Working Timer 2'. Use 'HH:MM'\nLoad comes back on for this duration before dawn\nSee Length of Night parameter." );
+            "Set the duration for 'Timer 2'. Use 'HH:MM'.\nLoad comes back on for this duration before dawn\nSee Length of Night parameter." );
         
     
     if (dialogGetHHMMSS( "Load Control", 
@@ -312,7 +312,7 @@ void    editLengthOfNight ()
     
     char    prompt[ 255 ];
     snprintf( prompt, sizeof prompt, 
-            "Sets duration 'night' after dusk instead of a PV voltage value.\nUse 'HH:MM'.  Dawn will be dusk time + this" );
+            "Sets duration 'night' after dusk instead of a PV\nvoltage value. Use 'HH:MM'.\nDawn will be at (dusk time + this duration)" );
     
     if (dialogGetHHMMSS( "Load Control", 
             prompt,

@@ -26,26 +26,26 @@ void    paintDeviceData ()
 {
     int beginRow = 1;
     int beginCol = 3;
-    HfloatAddTextField( panel, beginRow++, beginCol, "1. Over Temperature               ", deviceOverTemperature, 1, 3 );
-    HfloatAddTextField( panel, beginRow++, beginCol, "2. Recovery Temperature           ", deviceRecoveryTemperature, 1, 3 );
-    HfloatAddTextField( panel, beginRow++, beginCol, "   Current Device Temperature     ", deviceTemp, 1, 3 );
+    addFloatField( panel, beginRow++, beginCol, "1. Over Temperature               ", deviceOverTemperature, 1, 3 );
+    addFloatField( panel, beginRow++, beginCol, "2. Recovery Temperature           ", deviceRecoveryTemperature, 1, 3 );
+    addFloatField( panel, beginRow++, beginCol, "   Current Device Temperature     ", deviceTemp, 1, 3 );
     
     beginRow += 1;
-    HfloatAddTextField( panel, beginRow++, beginCol, "3. Battery Upper Limit Temperature", batteryUpperLimitTemperature, 1, 3 );
-    HfloatAddTextField( panel, beginRow++, beginCol, "4. Battery Lower Limit Temperature", batteryLowerLimitTemperature, 1, 3 );
-    HfloatAddTextField( panel, beginRow++, beginCol, "   Current Battery Temperature    ", batteryTemp, 1, 3 );
+    addFloatField( panel, beginRow++, beginCol, "3. Battery Upper Limit Temperature", batteryUpperLimitTemperature, 1, 3 );
+    addFloatField( panel, beginRow++, beginCol, "4. Battery Lower Limit Temperature", batteryLowerLimitTemperature, 1, 3 );
+    addFloatField( panel, beginRow++, beginCol, "   Current Battery Temperature    ", batteryTemp, 1, 3 );
     
     beginRow += 1;
-    HaddTextField( panel, beginRow++, beginCol, "5. Controller Time", controllerClock );
-    HaddTextField( panel, beginRow++, beginCol, "   Computer   Time", computerClock );
+    addTextField( panel, beginRow++, beginCol, "5. Controller Time", controllerClock );
+    addTextField( panel, beginRow++, beginCol, "   Computer   Time", computerClock );
     
     beginRow += 1;
-    HintAddTextField( panel, beginRow++, beginCol, "6. Data Refresh Time", refreshContollerDataTime, 1, 2 );
+    addIntField( panel, beginRow++, beginCol, "6. Data Refresh Time", refreshContollerDataTime, 1, 2 );
     
     beginRow += 1;
     beginRow += 1;
-    HaddTextField( panel, beginRow++, beginCol, "7. Reset to Factory Defaults", "" );
-    HaddTextField( panel, beginRow++, beginCol, "8. Clear Energy Statistics", "" );
+    addTextField( panel, beginRow++, beginCol, "7. Reset to Factory Defaults", "" );
+    addTextField( panel, beginRow++, beginCol, "8. Clear Energy Statistics", "" );
     
     wrefresh( panel );
 }
@@ -60,7 +60,7 @@ void    showDevicePanel()
     int     nRows = MaxRows - 1;
     int     nCols = MaxCols;
 
-    panel = grouping( &panel, startY, startX, nRows, nCols, "Solar Charge Controller" );
+    panel = createGroup( &panel, startY, startX, nRows, nCols, "Solar Charge Controller" );
     paintDeviceData();
 }
 
@@ -119,10 +119,6 @@ void    editDeviceOverTemperature()
 {
     suspendUpdatingPanels();
     
-    //float val = dialogGetFloat( "Charge Controller Limit", 
-    //        "The Upper Temperature for the Controller\nUse Fahrenheit. Factory default is 185*F", 
-    //        100.0, 210.0, 185.0, 0, 4 );
-    //setBatteryTemperatureWarningUpperLimit( getContext(), val );
     float   val = 185.0;
     if (dialogGetFloat( "Charge Controller Limit", 
             "The Upper Temperature for the Controller\nUse Fahrenheit. Factory default is 185*F", &val, 100.0, 210.0, 185.0, 3, 1 ) == INPUT_OK) {
@@ -140,9 +136,9 @@ void    editDeviceRecoveryTemperature()
 {
     suspendUpdatingPanels();
     
-    float   val = 165.0;
+    float   val = 167.0;
     if (dialogGetFloat( "Charge Controller Limit", 
-            "The Recovery Temperature for the Controller\nUse Fahrenheit. Factory default is 165*F", &val, 85.0, 175.0, 165.0, 3, 1 ) == INPUT_OK) {
+            "The Recovery Temperature for the Controller\nUse Fahrenheit. Factory default is 167*F", &val, 85.0, 175.0, 167.0, 3, 1 ) == INPUT_OK) {
     
         Logger_LogInfo( "Setting Device Recovery Temperature to %f'\n", val );
         eps_setControllerInnerTemperatureUpperLimitRecover( val );
@@ -157,14 +153,10 @@ void    editBatteryUpperLimitTemperature()
 {
     suspendUpdatingPanels();
     
-    //float val = dialogGetFloat( "Battery Limit", 
-    //        "The Upper Limit Temperature for the Battery\nUse Fahrenheit. Factory default is 150*F", 
-    //        120.0, 175.0, 150.0, 0, 4 );
-    //setBatteryTemperatureWarningUpperLimit( getContext(), val );
 
-    float   val = 150.0;
+    float   val = 149.0;
     if (dialogGetFloat( "Battery Limit", 
-            "The Upper Limit Temperature for the Battery\nUse Fahrenheit. Factory default is 150*F", &val, 120.0, 175.0, 150.0, 3, 1 ) == INPUT_OK) {
+            "The Upper Limit Temperature for the Battery\nUse Fahrenheit. Factory default is 149*F", &val, 120.0, 175.0, 149.0, 3, 1 ) == INPUT_OK) {
     
         Logger_LogInfo( "Setting Battery Upper Limit Temperature to %f'\n", val );
         eps_setBatteryTemperatureWarningUpperLimit( val );
@@ -172,7 +164,6 @@ void    editBatteryUpperLimitTemperature()
 
 
     resumeUpdatingPanels();
-    //Logger_LogInfo( "Setting battery Upper Limit Temperature to %f'\n", val );
     showDevicePanel();   
 }
 
@@ -181,12 +172,8 @@ void    editBatteryLowerLimitTemperature()
 {
     suspendUpdatingPanels();
     
-    //float val = dialogGetFloat( "Battery Limit", 
-    //        "The Lower Limit Temperature for the Battery\nUse Fahrenheit. Factory default is -40.0*F", 
-    //        -40.0, 32.0, -40.0, 0, 4 );
-    //setBatteryTemperatureWarningLowerLimit( getContext(), val );
 
-    float   val = 150.0;
+    float   val = -40.0;
     if (dialogGetFloat( "Battery Limit", 
             "The Lower Limit Temperature for the Battery\nUse Fahrenheit. Factory default is -40.0*F", &val, -40.0, 32.0, -40.0, 3, 1 ) == INPUT_OK) {
     
@@ -196,7 +183,6 @@ void    editBatteryLowerLimitTemperature()
 
 
     resumeUpdatingPanels();
-    //Logger_LogInfo( "Setting battery Lower Limit Temperature to %f'\n", val );
     showDevicePanel();   
 }
 
