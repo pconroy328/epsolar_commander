@@ -341,6 +341,9 @@ void    intAddTextField (WINDOW *window, const int startY, const int startX, con
 // -----------------------------------------------------------------------------
 void    addTextField (WINDOW *window, const int startY, const int startX, const char *fieldName, const char *initialValue)
 {
+    if (window == NULL)
+        return;
+    
     //
     // Before we write it out - figure out if our string is too long for the window?
     int valueLength = strlen( initialValue );
@@ -387,7 +390,6 @@ void    addIntField (WINDOW *window, const int startY, const int startX, const c
     snprintf( buffer, sizeof buffer, "%-*.*d", width, precision, iVal );
     addTextField( window, startY, startX, fieldName, buffer );
 }
-
 
 // -----------------------------------------------------------------------------
 void openDialog (WINDOW **win, const char *title, const char *text)

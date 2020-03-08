@@ -18,9 +18,9 @@ static  WINDOW *pvWin, *batteryWin, *loadWin, *ctlWin, *egWin, *ecWin;
 // -----------------------------------------------------------------------------
 void    paintPVGroupData()
 {
-    addFloatField( pvWin, 1, 1, "Voltage", pvInputVoltage, 1, 4 );
-    addFloatField( pvWin, 3, 1, "Current", pvInputCurrent, 2, 4 );
-    addFloatField( pvWin, 5, 1, "Power", pvInputPower, 2, 4 );
+    addFloatField( pvWin, 1, 1, "Volts", pvInputVoltage, 1, 4 );
+    addFloatField( pvWin, 3, 1, "Amps", pvInputCurrent, 2, 4 );
+    addFloatField( pvWin, 5, 1, "Watts", pvInputPower, 2, 4 );
     addTextField( pvWin, 7, 1, "Status",  pvInputStatus );
 }
 
@@ -28,23 +28,23 @@ void    paintPVGroupData()
 static
 void    paintBatteryGroupData()
 {
-    addFloatField( batteryWin, 1, 1, "Voltage", batteryVoltage, 1, 4 );
-    addFloatField( batteryWin, 1, 14, "Current", batteryCurrent, 2, 4 );
+    addFloatField( batteryWin, 1, 1, "Volts", batteryVoltage, 1, 4 );
+    addFloatField( batteryWin, 1, 13, "Amps", batteryCurrent, 1, 4 );
     addFloatField( batteryWin, 3, 1, "Min", minBatteryVoltage, 1, 4 );
-    addFloatField( batteryWin, 3, 14, "Max", maxBatteryVoltage, 1, 4 );
+    addFloatField( batteryWin, 3, 13, "Max", maxBatteryVoltage, 1, 4 );
     addFloatField( batteryWin, 5, 1, "Temp", batteryTemp,  0, 3 );
-    addFloatField( batteryWin, 5, 14, "SoC", batterySoC,  0, 3 );
+    addFloatField( batteryWin, 5, 13, "SoC", batterySoC,  0, 3 );
     addTextField( batteryWin, 7, 1, "Charging", chargingStatus );
-    addTextField( batteryWin, 7, 14, "Status", batteryStatusVoltage );    
+    addTextField( batteryWin, 8, 1, "Status", batteryStatusVoltage );    
 }
 
 // -----------------------------------------------------------------------------
 static
 void    paintLoadGroupData()
 {
-    addFloatField( loadWin, 1, 1, "Voltage", loadVoltage, 1, 4 );
-    addFloatField( loadWin, 3, 1, "Current", loadCurrent, 2, 4 );
-    addFloatField( loadWin, 5, 1, "Power", loadPower, 2, 4 );
+    addFloatField( loadWin, 1, 1, "Volts", loadVoltage, 1, 4 );
+    addFloatField( loadWin, 3, 1, "Amps", loadCurrent, 2, 4 );
+    addFloatField( loadWin, 5, 1, "Watts", loadPower, 2, 4 );
     addTextField( loadWin, 7, 1, "Status", dischargeRunning );
 }
 
@@ -54,7 +54,7 @@ void    paintDeviceGroupData()
 {
     addFloatField( ctlWin, 1, 1, "Temp", deviceTemp, 1, 5 );
     addTextField( ctlWin, 3, 1, "Status", "Normal" );    
-    addTextField( ctlWin, 5, 1, "Date/Time", controllerClock );
+    addTextField( ctlWin, 5, 1, "Date", controllerClock );
     addTextField( ctlWin, 7, 1, "Night Time", (isNight? "Yes" : "No " ) );
 }
 
@@ -62,19 +62,19 @@ void    paintDeviceGroupData()
 static
 void    paintGeneratedGroupData()
 {
-    addFloatField( egWin, 1, 2, "Daily", energyGeneratedToday, 2, 4 );
-    addFloatField( egWin, 3, 2, "Monthly", energyGeneratedMonth, 2, 4 );
-    addFloatField( egWin, 5, 2, "Annual", energyGeneratedYear, 1, 4 );
-    addFloatField( egWin, 7, 2, "Total", energyGeneratedTotal, 1, 4 );    
+    addFloatField( egWin, 1, 1, "Daily", energyGeneratedToday, 1, 4 );
+    addFloatField( egWin, 3, 1, "Monthly", energyGeneratedMonth, 1, 4 );
+    addFloatField( egWin, 5, 1, "Annual", energyGeneratedYear, 1, 4 );
+    addFloatField( egWin, 7, 1, "Total", energyGeneratedTotal, 1, 4 );    
 }
 // -----------------------------------------------------------------------------
 static
 void    paintConsumedGroupData()
 {
-    addFloatField( ecWin, 1, 2, "Daily", energyConsumedToday, 2, 4 );
-    addFloatField( ecWin, 3, 2, "Monthly", energyConsumedMonth, 2, 4 );
-    addFloatField( ecWin, 5, 2, "Annual", energyConsumedYear, 1, 4 );
-    addFloatField( ecWin, 7, 2, "Total", energyConsumedTotal, 1, 4 );    
+    addFloatField( ecWin, 1, 1, "Daily", energyConsumedToday, 1, 4 );
+    addFloatField( ecWin, 3, 1, "Monthly", energyConsumedMonth, 1, 4 );
+    addFloatField( ecWin, 5, 1, "Annual", energyConsumedYear, 1, 4 );
+    addFloatField( ecWin, 7, 1, "Total", energyConsumedTotal, 1, 4 );    
 }
 
 // -----------------------------------------------------------------------------
@@ -97,7 +97,7 @@ void    showHomePanel ()
     
     int     pvY = 0, pvX = 0;
     int     pvRows = 10;
-    int     pvCols = 17;
+    int     pvCols = 20;
     
     pvWin = createGroup( &pvWin, pvY, pvX, pvRows, pvCols, "PV" );
     paintPVGroupData();
@@ -105,7 +105,7 @@ void    showHomePanel ()
     int     battY = pvY;
     int     battX = pvCols;
     int     battRows = pvRows;
-    int     battCols = 25;
+    int     battCols = 28;
     batteryWin = createGroup( &batteryWin, battY, battX, battRows, battCols, "Battery" );
     paintBatteryGroupData();
 
@@ -116,24 +116,34 @@ void    showHomePanel ()
     loadWin = createGroup( &loadWin, loadY, loadX, loadRows, loadCols, "Load" );
     paintLoadGroupData();
    
-    int     ctlY = pvY;
-    int     ctlX = pvCols + battCols + + loadCols;
+    //int     ctlY = pvY;
+    //int     ctlX = pvCols + battCols + + loadCols;
+    //int     ctlRows = pvRows;
+    //int     ctlCols = 21;
+    //ctlWin = createGroup( &ctlWin, ctlY, ctlX, ctlRows, ctlCols, "Controller" );
+    //paintDeviceGroupData();
+    int     ctlY = pvY + pvRows;
+    int     ctlX = pvX;
     int     ctlRows = pvRows;
-    int     ctlCols = 21;
+    int     ctlCols = 28;
     ctlWin = createGroup( &ctlWin, ctlY, ctlX, ctlRows, ctlCols, "Controller" );
     paintDeviceGroupData();
     
-    int egY = pvY + pvRows;
-    int egX = pvX;
+    //int egY = pvY + pvRows;
+    //int egX = pvX;
+    //int egRows = 10;
+    //int egCols = 15;
+    int egY = ctlY;
+    int egX = pvX + ctlCols;
     int egRows = 10;
-    int egCols = 15;
+    int egCols = 18;
     egWin = createGroup( &egWin, egY, egX, egRows, egCols, "Generated" );
     paintGeneratedGroupData();
     
     int ecY = egY ;  // + egRows;
-    int ecX = pvX + egCols;
+    int ecX = pvX + egCols + ctlCols;
     int ecRows = 10;
-    int ecCols = 15;
+    int ecCols = 18;
     ecWin = createGroup( &ecWin, ecY, ecX, ecRows, ecCols, "Consumed" );
     paintConsumedGroupData();
     
