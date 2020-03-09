@@ -29,13 +29,13 @@ static
 void    paintBatteryGroupData()
 {
     addFloatField( batteryWin, 1, 1, "Volts", batteryVoltage, 1, 4 );
-    addFloatField( batteryWin, 1, 13, "Amps", batteryCurrent, 1, 4 );
-    addFloatField( batteryWin, 3, 1, "Min", minBatteryVoltage, 1, 4 );
-    addFloatField( batteryWin, 3, 13, "Max", maxBatteryVoltage, 1, 4 );
+    addFloatField( batteryWin, 1, 15, "Amps", batteryCurrent, 1, 4 );
+    addFloatField( batteryWin, 3, 1, "Min V", minBatteryVoltage, 1, 4 );
+    addFloatField( batteryWin, 3, 15, "Max V", maxBatteryVoltage, 1, 4 );
     addFloatField( batteryWin, 5, 1, "Temp", batteryTemp,  0, 3 );
-    addFloatField( batteryWin, 5, 13, "SoC", batterySoC,  0, 3 );
+    addFloatField( batteryWin, 5, 15, "SoC", batterySoC,  0, 3 );
     addTextField( batteryWin, 7, 1, "Charging", chargingStatus );
-    addTextField( batteryWin, 8, 1, "Status", batteryStatusVoltage );    
+    addTextField( batteryWin, 9, 1, "Status", batteryStatusVoltage );    
 }
 
 // -----------------------------------------------------------------------------
@@ -46,6 +46,7 @@ void    paintLoadGroupData()
     addFloatField( loadWin, 3, 1, "Amps", loadCurrent, 2, 4 );
     addFloatField( loadWin, 5, 1, "Watts", loadPower, 2, 4 );
     addTextField( loadWin, 7, 1, "Status", dischargeRunning );
+    addTextField( loadWin, 9, 1, "Load", "Light" );
 }
 
 // -----------------------------------------------------------------------------
@@ -96,7 +97,7 @@ void    showHomePanel ()
     setActivePanel( HOME_PANEL );
     
     int     pvY = 0, pvX = 0;
-    int     pvRows = 10;
+    int     pvRows = 11;
     int     pvCols = 20;
     
     pvWin = createGroup( &pvWin, pvY, pvX, pvRows, pvCols, "PV" );
@@ -124,7 +125,7 @@ void    showHomePanel ()
     //paintDeviceGroupData();
     int     ctlY = pvY + pvRows;
     int     ctlX = pvX;
-    int     ctlRows = pvRows;
+    int     ctlRows = 9;
     int     ctlCols = 28;
     ctlWin = createGroup( &ctlWin, ctlY, ctlX, ctlRows, ctlCols, "Controller" );
     paintDeviceGroupData();
@@ -135,14 +136,14 @@ void    showHomePanel ()
     //int egCols = 15;
     int egY = ctlY;
     int egX = pvX + ctlCols;
-    int egRows = 10;
+    int egRows = ctlRows;
     int egCols = 18;
     egWin = createGroup( &egWin, egY, egX, egRows, egCols, "Generated" );
     paintGeneratedGroupData();
     
     int ecY = egY ;  // + egRows;
     int ecX = pvX + egCols + ctlCols;
-    int ecRows = 10;
+    int ecRows = ctlRows;
     int ecCols = 18;
     ecWin = createGroup( &ecWin, ecY, ecX, ecRows, ecCols, "Consumed" );
     paintConsumedGroupData();
