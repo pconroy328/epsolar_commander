@@ -40,7 +40,7 @@ void    setVoltageUpperLowerBounds()
 
 
 
-static  char    *version = "0.2a";
+static  char    *version = "0.2b [bug]";
 
 
 
@@ -92,8 +92,11 @@ int main (int argc, char *argv[])
     menuDisplayMessage( "Waiting for data from solar charge controller..." );
     
     int loopCount = 0;
-    while (deviceTemp < 0 && loopCount < 10)
+    while (deviceTemp < 0 && loopCount < 10) {
         sleep( 1 );
+        loopCount += 1;
+    }
+    
     showMenu();
     
     while (TRUE) {       

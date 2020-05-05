@@ -111,10 +111,10 @@ float   batteryLowerLimitTemperature = -9.9;
 // -----------------------------------------------------------------------------
 void    connectLocally (const char *devicePort)
 {   
-    //if (!epsolarModbusConnect( devicePort, 1 )) {
-    //    Logger_LogFatal( "Unable to open %s to connect to the solar charge controller", devicePort );
-    //    return;
-    //}
+    if (!epsolarModbusConnect( devicePort, 1 )) {
+        Logger_LogFatal( "Unable to open %s to connect to the solar charge controller", devicePort );
+        return;
+    }
 
    
     Logger_LogInfo( "Attempting to communicate w/ controller\n" );
