@@ -326,8 +326,61 @@ void    editLengthOfNight ()
     showLoadPanel();   
 }
 
+
+// -----------------------------------------------------------------------------
+#include <time.h>
+static  void timerHelper (void)
+{
+    time_t  current_time;
+    struct  tm  *tmPtr;
+ 
+    /* Obtain current time as seconds elapsed since the Epoch. */
+    current_time = time( NULL );
+    if (current_time > 0) {
+        /* Convert to local time format. */
+        tmPtr = localtime( &current_time );
+    }
+    
+    //
+    // Set Off to two mins from now, on to four mins from "now"
+    int onSec = 0;
+    int onMin = tmPtr->tm_min;
+    int onHour = tmPtr->tm_hour;
+    
+    if (onMin == 58) {
+        onMin = 0;
+        if (onHour == 23)
+            onHour = 0;
+        else
+            onHour += 1;
+    } else {
+        onMin += 2;
+    }
+    
+    int offSec = 0;
+    int offMin = onMin;
+    int offHour = onHour;
+    
+    if (offMin == 58) {
+        offMin = 0;
+        if (offHour == 23)
+            offHour = 0;
+        else
+            offHour += 1;
+    } else {
+        offMin += 2;
+    } 
+    
+    
+    Logger_LogWarning( "Testing load on/off helper. Setting off to %0d2:%0d2:%0d2  and on to %0d2:%0d2:%0d2\n",
+                        offHour, offMin, offSec, onHour, onMin, onSec );
+    
+    eps_setLoadOnOffTimers( offHour, offMin, offSec, onHour, onMin, onSec );
+}
+
+
 #define     MIN_SELECTION       1
-#define     MAX_SELECTION       15
+#define     MAX_SELECTION       16
 // -----------------------------------------------------------------------------
 void    editLoadPanel ()
 {
@@ -381,6 +434,7 @@ void    editLoadPanel ()
             case    13: editLoadControlTimer();             break;
             case    14: editTimer( 1, 1 );                  break;
             case    15: editTimer( 1, 0 );                  break;
+            case    16: timerHelper();                      break;
         }
     }
 }
