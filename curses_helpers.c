@@ -413,7 +413,7 @@ void openDialog (WINDOW **win, const char *title, const char *text)
     //
     // Windows coordinate systems are local to that window!
     wmove( *win, 0, 1 );
-    wprintw( *win, title );
+    wprintw( *win, "%s", title );
     wrefresh( *win );
 
 

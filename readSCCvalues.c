@@ -189,8 +189,8 @@ void *local_readSCCValues (void *x_void_ptr)
         batteryStatusTemperature = eps_getBatteryStatusTemperature( batteryStatusBits );
 
         
-        dischargingStatusBits = eps_getdisChargingEquipmentStatusBits();
-        dischargeRunning = (eps_isdischargeStatusRunning( dischargingStatusBits ) ? "On " : "Off" );
+        dischargingStatusBits = eps_getDischargingEquipmentStatusBits();
+        dischargeRunning = (eps_isDischargeStatusRunning( dischargingStatusBits ) ? "On " : "Off" );
         
         energyConsumedToday = eps_getConsumedEnergyToday();
         energyConsumedMonth = eps_getConsumedEnergyMonth();
