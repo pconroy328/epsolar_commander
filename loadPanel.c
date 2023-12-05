@@ -68,6 +68,9 @@ void    paintLoadData ()
     addTextField( timerPanel, beginRow, beginCol,   "14. Timer One - On  ", buf1 );
     addTextField( timerPanel, beginRow++, beginCol + 35, "15. Timer One - Off ", buf3 );
             
+    beginRow = 1;
+    addTextField( timerPanel, beginRow++, beginCol, "16. NEW - Test On/Off Helper", "" );
+
     wrefresh( panel );
 }
 

@@ -40,7 +40,7 @@ void    setVoltageUpperLowerBounds()
 
 
 
-static  char    *version = "0.2b [bug]";
+static  char    *version = "0.9 [timer helper]";
 
 
 
